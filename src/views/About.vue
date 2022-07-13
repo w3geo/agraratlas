@@ -94,10 +94,10 @@
 </template>
 
 <script>
-import logo from '../assets/logo.svg'
+import logo from '../assets/logo.svg';
 
 export default {
-  name: 'HelloWorld',
+  name: 'About', // eslint-disable-line vue/multi-word-component-names
 
   data: () => ({
     ecosystem: [
@@ -148,5 +148,5 @@ export default {
       },
     ],
   }),
-}
+};
 </script>
