@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar density="compact">
       <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>Agrar-GIS</v-app-bar-title>
+      <v-app-bar-title>AgrarGIS</v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer">
       <v-list>
@@ -26,7 +26,7 @@ export default {
     drawer: false,
     items: [
       { text: 'Karte', to: '/' },
-      { text: 'Über Agrar-GIS', to: '/about' },
+      { text: 'Über AgrarGIS', to: '/about' },
     ],
   }),
 };
