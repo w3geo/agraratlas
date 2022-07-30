@@ -5,18 +5,21 @@
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
+    "build-app": "shx mv public/map data/map && vite build && shx mv data/map public/map",
     "dev": "vite",
+    "data": "cd data && tippecanoe --maximum-zoom=12 --no-tile-compression --detect-shared-borders --maximum-tile-bytes=6430000 --low-detail=9 --full-detail=9 --force -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson && tippecanoe --minimum-zoom=13 --maximum-zoom=13 --no-tile-compression --detect-shared-borders --maximum-tile-bytes=6430000 --low-detail=9 --full-detail=9 --allow-existing -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson invekos_feldstuecke_2022_polygon.geojson && tippecanoe --minimum-zoom=14 --maximum-zoom=15 --no-tile-compression --detect-shared-borders --maximum-tile-bytes=6430000 --low-detail=9 --allow-existing -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson invekos_schlaege_2022_polygon.geojson && cd ..",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.vue src .eslintrc.cjs"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "ol": "^6.14.1",
+    "ol": "^6.15.1",
+    "ol-mapbox-style": "^8.2.0",
     "roboto-fontface": "*",
+    "size-sensor": "^1.0.1",
     "vue": "^3.2.25",
     "vue-router": "^4.1.2",
-    "vuetify": "^3.0.0-beta.0",
-    "webfontloader": "^1.0.0"
+    "vuetify": "^3.0.0-beta.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
@@ -24,8 +27,9 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^9.2.0",
+    "shx": "^0.3.4",
     "vite": "^2.9.9",
-    "vite-plugin-vuetify": "^1.0.0-alpha.0",
+    "vite-plugin-vuetify": "^1.0.0-alpha.14",
     "vue-cli-plugin-vuetify": "~2.5.1"
   }
 }

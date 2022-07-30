@@ -6,6 +6,11 @@ import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '',
+  build: {
+    sourcemap: true,
+    cssCodeSplit: false,
+  },
   plugins: [
     vue(),
     vuetify({ autoImport: true }),

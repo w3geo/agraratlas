@@ -39,7 +39,7 @@
 import logo from '../assets/logo.svg';
 
 export default {
-  name: 'About', // eslint-disable-line vue/multi-word-component-names
+  name: 'About',
 
   data: () => ({
     importantLinks: [

@@ -3,14 +3,14 @@
     <v-app-bar density="compact">
       <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>AgrarGIS</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <PlaceSearch @search="onSearch"></PlaceSearch>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer">
       <v-list>
-        <v-list-item-group>
-          <v-list-item v-for="item in items" :key="item.text" :to="item.to">
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
+        <v-list-item v-for="item in items" :key="item.text" :to="item.to">
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-main>
@@ -19,15 +19,27 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  name: 'App',
-  data: () => ({
-    drawer: false,
-    items: [
-      { text: 'Karte', to: '/' },
-      { text: 'Über AgrarGIS', to: '/about' },
-    ],
-  }),
+<script setup>
+import { ref } from 'vue';
+import GeoJSON from 'ol/format/GeoJSON';
+import PlaceSearch from './components/PlaceSearch.vue';
+import useMap from './composables/useMap';
+
+const { map } = useMap();
+const drawer = ref(false);
+const items = [
+  { text: 'Karte', to: '/' },
+  { text: 'Über AgrarGIS', to: '/about' },
+];
+
+const geojson = new GeoJSON();
+
+const onSearch = (value) => {
+  if (value) {
+    map.getView().fit(geojson.readGeometry(value.geometry), {
+      maxZoom: 19,
+      duration: 500,
+    });
+  }
 };
 </script>
