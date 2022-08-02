@@ -1,0 +1,204 @@
+{
+  "version": 8,
+  "center": [15.886230,46.754915],
+  "zoom": 6,
+  "sources": {
+    "geolandbasemap": {
+      "type": "raster",
+      "tiles": [
+        "https://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
+        "https://maps1.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
+        "https://maps2.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
+        "https://maps3.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
+        "https://maps4.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png"
+      ],
+      "tileSize": 256,
+      "maxzoom": 19,
+      "attribution": "Grundkarte: <a href=\"https://basemap.at/\">basemap.at</a>",
+      "bounds": [8.782379, 46.358770, 17.5, 49.037872]
+    },
+    "bmaporthofoto30cm": {
+      "type": "raster",
+      "tiles": [
+        "https://maps.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
+        "https://maps1.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
+        "https://maps2.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
+        "https://maps3.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
+        "https://maps4.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg"
+      ],
+      "tileSize": 256,
+      "maxzoom": 19,
+      "attribution": "Grundkarte: <a href=\"https://basemap.at/\">basemap.at</a>",
+      "bounds": [8.782379, 46.358770, 17.5, 49.037872]
+    },
+    "neigungsklassen": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "agrargis": {
+      "type": "vector",
+      "tiles": [
+        "./tiles/{z}/{x}/{y}.pbf"
+      ],
+      "attribution": "&copy; <a href=\"https://www.agrargis.org/\">AgrarGIS</a>",
+      "minzoom": 0,
+      "maxzoom": 15,
+      "bounds": [8.520834, 45.501410, 19.131931, 49.518238]
+    }
+  },
+  "layers": [{
+    "id": "geolandbasemap",
+    "type": "raster",
+    "source": "geolandbasemap",
+    "maxzoom": 16
+  }, {
+    "id": "bmaporthofoto30cm",
+    "type": "raster",
+    "source": "bmaporthofoto30cm",
+    "minzoom": 16
+  }, {
+    "id": "neigungsklassen",
+    "type": "raster",
+    "source": "neigungsklassen",
+    "minzoom": 14,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    }
+  }, {
+    "id": "bdfl_l40_gab8",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l40_gab8",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "bdfl_l34_feucht_torfgebiete",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l34_feucht_torfgebiete",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "bdfl_l32_belastete_gewaesser_polygon",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l32_belastete_gewaesser_polygon",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "bdfl_l32_belastete_gewaesser_line",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l32_belastete_gewaesser_line",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "line-color": "#bada55",
+      "line-opacity": 0.5,
+      "line-width": 1.5
+    }
+  }, {
+    "id": "bdfl_l31_begruente_abflusswege",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l31_begruente_abflusswege",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "bdfl_l16_grundwasserschutz_acker",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l16_grundwasserschutz_acker",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "dfl_l13_besondere_lebensraumtypen",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "dfl_l13_besondere_lebensraumtypen",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "bdfl_l08_seehoehe_1200m",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l08_seehoehe_1200m",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "#bada55",
+      "fill-opacity": 0.5
+    }
+  }, {
+    "id": "stehende_gewaesser",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "stehende_gewaesser",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "fill-color": "blue",
+      "fill-opacity": 0.3
+    }
+  }, {
+    "id": "gewaessernetz",
+    "type": "line",
+    "source": "agrargis",
+    "source-layer": "gewaessernetz",
+    "layout": { "visibility": "none" },
+    "paint": {
+      "line-color": "blue",
+      "line-opacity": 0.3,
+      "line-width": 2
+    }
+  }, {
+    "id": "invekos_schlaege_2022_polygon",
+    "type": "line",
+    "source": "agrargis",
+    "source-layer": "invekos_schlaege_2022_polygon",
+    "minzoom": 14,
+    "paint": {
+      "line-color": "rgb(238, 90, 78)",
+      "line-width": 2
+    }
+  }, {
+    "id": "invekos_schlaege_2022_polygon_fill",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "invekos_schlaege_2022_polygon",
+    "minzoom": 14,
+    "paint": {
+      "fill-color": "rgba(0, 0, 0, 0)"
+    }
+  }]
+}
