@@ -3,17 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve": "vite preview",
     "build": "vite build",
     "build-app": "shx mv public/map data/map && vite build && shx mv data/map public/map",
+    "data": "npm run tiles && npm run sprites",
     "dev": "vite",
-    "data": "cd data && tippecanoe --maximum-zoom=13 --no-tile-compression --detect-shared-borders --maximum-tile-bytes=6430000 --low-detail=9 --full-detail=9 --force -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson && tippecanoe --minimum-zoom=14 --maximum-zoom=15 --no-tile-compression --detect-shared-borders --maximum-tile-bytes=6430000 --low-detail=9 --allow-existing -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson invekos_schlaege_2022_polygon.geojson && cd ..",
+    "lint": "eslint --ext .js,.vue src .eslintrc.cjs",
     "preview": "vite preview",
-    "lint": "eslint --ext .js,.vue src .eslintrc.cjs"
+    "serve": "vite preview",
+    "sprites": "spritezero public/map/sprite public/map/icons/ --ratio=1 && spritezero public/map/sprite@2x public/map/icons/ --ratio=2",
+    "tiles": "cd data && tippecanoe --maximum-zoom=8 --no-tile-compression --maximum-tile-bytes=620000 --detect-shared-borders --low-detail=9 --full-detail=9 --force -e ../public/map/tiles bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson && tippecanoe --minimum-zoom=9 --maximum-zoom=11 --no-tile-compression --maximum-tile-bytes=620000 --detect-shared-borders --low-detail=9 --full-detail=9 --allow-existing -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson && tippecanoe --minimum-zoom=12 --maximum-zoom=15 --no-tile-compression --detect-shared-borders --use-attribute-for-id fid -x geo_id -x inspire_id -x gml_id -x gml_identifier -x geo_type -x gml_geom -x gml_length -x geo_part_key -x log_pkey -x geom_date_created --low-detail=9 --allow-existing -e ../public/map/tiles stehende_gewaesser.geojson gewaessernetz.geojson bdfl_l08_seehoehe_1200m.geojson bdfl_l13_besondere_lebensraumtypen.geojson bdfl_l16_grundwasserschutz_acker.geojson bdfl_l26_wasserrahmenrichtlinie_ertragslagen.geojson bdfl_l31_begruente_abflusswege.geojson bdfl_l32_belastete_gewaesser_polygon.geojson bdfl_l32_belastete_gewaesser_line.geojson bdfl_l34_feucht_torfgebiete.geojson bdfl_l40_gab8.geojson invekos_schlaege_2022_polygon.geojson && cd .."
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "ol": "^6.15.1",
+    "ol": "^7.0.0-dev.1659380084947",
     "ol-mapbox-style": "^8.2.0",
     "roboto-fontface": "*",
     "size-sensor": "^1.0.1",
@@ -22,6 +24,7 @@
     "vuetify": "^3.0.0-beta.5"
   },
   "devDependencies": {
+    "@beyondtracks/spritezero-cli": "^2.3.1",
     "@vitejs/plugin-vue": "^2.3.3",
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",

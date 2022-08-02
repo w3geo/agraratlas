@@ -2,6 +2,7 @@
   "version": 8,
   "center": [15.886230,46.754915],
   "zoom": 6,
+  "sprite": "./sprite",
   "sources": {
     "geolandbasemap": {
       "type": "raster",
@@ -47,7 +48,7 @@
       "attribution": "&copy; <a href=\"https://www.agrargis.org/\">AgrarGIS</a>",
       "minzoom": 0,
       "maxzoom": 15,
-      "bounds": [8.520834, 45.501410, 19.131931, 49.518238]
+      "bounds": [8.782379, 46.358770, 17.5, 49.037872]
     }
   },
   "layers": [{
@@ -74,20 +75,44 @@
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l40_gab8",
-    "layout": { "visibility": "none" },
     "paint": {
-      "fill-color": "#bada55",
-      "fill-opacity": 0.5
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l40_gab8_detail",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l40_gab8",
+    "paint": {
+      "fill-color": "#a6cee3"
+    },
+    "layout": {
+      "visibility": "none"
     }
   }, {
     "id": "bdfl_l34_feucht_torfgebiete",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l34_feucht_torfgebiete",
-    "layout": { "visibility": "none" },
     "paint": {
-      "fill-color": "#bada55",
-      "fill-opacity": 0.5
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l34_feucht_torfgebiete_detail",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l34_feucht_torfgebiete",
+    "paint": {
+      "fill-color": "hatch-any"
+    },
+    "layout": {
+      "visibility": "none"
     }
   }, {
     "id": "bdfl_l32_belastete_gewaesser_polygon",
@@ -115,30 +140,66 @@
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l31_begruente_abflusswege",
-    "layout": { "visibility": "none" },
     "paint": {
-      "fill-color": "#bada55",
-      "fill-opacity": 0.5
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l31_begruente_abflusswege_detail",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l31_begruente_abflusswege",
+    "paint": {
+      "fill-color": "#b2df8a"
+    },
+    "layout": {
+      "visibility": "none"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
-    "layout": { "visibility": "none" },
     "paint": {
-      "fill-color": "#bada55",
-      "fill-opacity": 0.5
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen_detail",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "paint": {
+      "fill-color": "#33a02c"
+    },
+    "layout": {
+      "visibility": "none"
     }
   }, {
     "id": "bdfl_l16_grundwasserschutz_acker",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l16_grundwasserschutz_acker",
-    "layout": { "visibility": "none" },
     "paint": {
-      "fill-color": "#bada55",
-      "fill-opacity": 0.5
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l16_grundwasserschutz_acker_detail",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l16_grundwasserschutz_acker",
+    "paint": {
+      "fill-color": "#fb9a99"
+    },
+    "layout": {
+      "visibility": "none"
     }
   }, {
     "id": "dfl_l13_besondere_lebensraumtypen",
@@ -155,10 +216,22 @@
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l08_seehoehe_1200m",
-    "layout": { "visibility": "none" },
     "paint": {
-      "fill-color": "#bada55",
-      "fill-opacity": 0.5
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l08_seehoehe_1200m_detail",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l08_seehoehe_1200m",
+    "paint": {
+      "fill-color": "#e31a1c"
+    },
+    "layout": {
+      "visibility": "none"
     }
   }, {
     "id": "stehende_gewaesser",
@@ -186,7 +259,6 @@
     "type": "line",
     "source": "agrargis",
     "source-layer": "invekos_schlaege_2022_polygon",
-    "minzoom": 14,
     "paint": {
       "line-color": "rgb(238, 90, 78)",
       "line-width": 2
@@ -196,9 +268,19 @@
     "type": "fill",
     "source": "agrargis",
     "source-layer": "invekos_schlaege_2022_polygon",
-    "minzoom": 14,
     "paint": {
-      "fill-color": "rgba(0, 0, 0, 0)"
+      "fill-color": [
+        "case",
+        ["boolean", ["feature-state", "selected"], false],
+        "rgba(0, 0, 0, 0)",
+        "rgba(0, 0, 0, 0.1)"
+      ],
+      "fill-outline-color": [
+        "case",
+        ["boolean", ["feature-state", "selected"], false],
+        "#FF9900",
+        "rgba(0, 0, 0, 0)"
+      ]
     }
   }]
 }

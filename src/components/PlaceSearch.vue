@@ -1,18 +1,20 @@
 <template>
   <v-autocomplete
-    hide-details single-line clearable
+    v-model="model"
+    v-model:search="search"
+    hide-details
+    single-line
+    clearable
     density="compact"
     prepend-inner-icon="mdi-magnify"
-    v-model="model"
     :items="items"
     :loading="isLoading"
     item-title="properties.name"
-    v-model:search="search"
     hide-no-data
     hide-selected
-    placeholder="Ortssuche"
+    placeholder="Adresse, Riedname, ..."
     return-object
-  ></v-autocomplete>
+  />
 </template>
 
 <script setup>

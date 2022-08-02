@@ -1,14 +1,33 @@
 <template>
   <v-app>
-    <v-app-bar density="compact">
-      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar
+      density="compact"
+      flat
+    >
+      <v-app-bar-nav-icon
+        variant="text"
+        @click.stop="drawer = !drawer"
+      />
       <v-app-bar-title>AgrarGIS</v-app-bar-title>
-      <v-spacer></v-spacer>
-      <PlaceSearch @search="onSearch"></PlaceSearch>
+      <v-spacer />
+      <v-col
+        cols="12"
+        sm="6"
+        md="3"
+      >
+        <PlaceSearch
+          class="placesearch"
+          @search="onSearch"
+        />
+      </v-col>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer">
       <v-list>
-        <v-list-item v-for="item in items" :key="item.text" :to="item.to">
+        <v-list-item
+          v-for="item in items"
+          :key="item.text"
+          :to="item.to"
+        >
           <v-list-item-title>{{ item.text }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -43,3 +62,9 @@ const onSearch = (value) => {
   }
 };
 </script>
+
+<style scoped>
+.placesearch {
+  white-space: nowrap;
+}
+</style>

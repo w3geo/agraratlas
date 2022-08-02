@@ -10,7 +10,7 @@ to install the project's dependencies.
 
 ## Prepare data
 
-This project requires vector tiles for its maps. Vector tiles are created with [Tippecanoe](https://github.com/mapbox/tippecanoe/), which needs to be installed on the system that creates the tiles.
+This project requires vector tiles and styles for its maps. Vector tiles are created with [Tippecanoe](https://github.com/mapbox/tippecanoe/), which needs to be installed on the system that creates the tiles. Styles need sprites, which are built from the icons provided in `public/map/icons/`.
 
 1. Download the layers as zip from the URL provided by Manuel Illmeyer
 2. Unzip the content of the zip to the `data/` Folder
