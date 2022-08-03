@@ -73,6 +73,7 @@ watch(schlagInfo, (value) => {
     setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });
   }
   lastId = value?.id;
+  layerOfInterest.value = null;
 });
 
 watch(layerOfInterest, (value) => {
