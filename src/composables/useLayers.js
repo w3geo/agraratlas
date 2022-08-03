@@ -1,7 +1,7 @@
 import { getSource, setFeatureState } from 'ol-mapbox-style';
 import { buffer } from 'ol/extent';
 import { toFeature } from 'ol/render/Feature';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import useMap from './useMap';
 
 /**
@@ -14,10 +14,13 @@ import useMap from './useMap';
  */
 
 /** @type {import('vue').Ref<SchlagInfo>} */
-let schlagInfo;
+const schlagInfo = ref();
 
 /** @type {import('vue').Ref<Array<string>>} */
-let layersOfInterest;
+const layersOfInterest = ref([]);
+
+/** @type {import('vue').Ref<string>} */
+const layerOfInterest = ref();
 
 const { map } = useMap();
 
@@ -28,18 +31,15 @@ function getSchlagAtPixel(pixel) {
   );
 }
 
+let listenersRegistered = false;
+
+let lastId;
 function registerMapListeners() {
-  let lastId;
   map.on('click', (event) => {
     const selectedRenderFeature = getSchlagAtPixel(event.pixel);
-    schlagInfo.value = selectedRenderFeature?.getProperties();
     const id = selectedRenderFeature?.getId();
+    schlagInfo.value = id ? { ...selectedRenderFeature.getProperties(), id } : undefined;
     if (id !== lastId) {
-      if (lastId) {
-        setFeatureState(map, { source: 'agrargis', id: lastId }, null);
-      }
-      setFeatureState(map, { source: 'agrargis', id }, { selected: true });
-      lastId = id;
       if (selectedRenderFeature) {
         const extent = buffer(selectedRenderFeature.getGeometry().getExtent(), 0.0001);
         const features = getSource(map, 'agrargis')
@@ -54,19 +54,39 @@ function registerMapListeners() {
           return previous;
         }, {}));
         layersOfInterest.value = layers;
+      } else {
+        layersOfInterest.value = [];
       }
     }
   });
   map.on('pointermove', (event) => {
     map.getTargetElement().style.cursor = getSchlagAtPixel(event.pixel) ? 'pointer' : '';
   });
+  listenersRegistered = true;
 }
 
-export default function useSchlag() {
-  if (!schlagInfo) {
-    schlagInfo = ref();
-    layersOfInterest = ref([]);
+watch(schlagInfo, (value) => {
+  if (lastId) {
+    setFeatureState(map, { source: 'agrargis', id: lastId }, null);
+  }
+  if (value) {
+    setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });
+  }
+  lastId = value?.id;
+});
+
+watch(layerOfInterest, (value) => {
+  const { layers } = map.get('mapbox-style');
+  const any = layers.filter((layer) => layer.metadata?.group === 'any');
+  any.forEach((layer) => { layer.layout = { ...layer.layout, visibility: value ? 'none' : 'visible' }; });
+  const one = layers.filter((layer) => layer.metadata?.group === 'one');
+  one.forEach((layer) => { layer.layout = { ...layer.layout, visibility: layer.metadata?.layer === value ? 'visible' : 'none' }; });
+  getSource(map, 'agrargis').changed();
+});
+
+export default function useLayers() {
+  if (!listenersRegistered) {
     registerMapListeners();
   }
-  return { schlagInfo, layersOfInterest };
+  return { schlagInfo, layersOfInterest, layerOfInterest };
 }

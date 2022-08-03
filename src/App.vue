@@ -2,7 +2,6 @@
   <v-app>
     <v-app-bar
       density="compact"
-      flat
     >
       <v-app-bar-nav-icon
         variant="text"

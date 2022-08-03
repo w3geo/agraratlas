@@ -24,7 +24,7 @@
           <v-switch
             v-for="(layer, index) in layersOfInterest"
             :key="index"
-            v-model="visibleLayer"
+            v-model="layerOfInterest"
             :label="layer"
             :value="layer"
             hide-details
@@ -44,15 +44,13 @@ import {
   ref, onMounted, onBeforeUnmount, watch,
 } from 'vue';
 import { bind } from 'size-sensor';
-import { getSource } from 'ol-mapbox-style';
 import useMap from '../composables/useMap';
-import useSchlag from '../composables/useSchlag';
+import useLayers from '../composables/useLayers';
 
 const mapContainer = ref();
 const panel = ref();
-const visibleLayer = ref();
 const { map } = useMap();
-const { schlagInfo, layersOfInterest } = useSchlag();
+const { schlagInfo, layersOfInterest, layerOfInterest } = useLayers();
 let unbind;
 
 onMounted(() => {
@@ -67,20 +65,15 @@ watch(panel, (value) => {
     if (map.getView().getZoom() < 12) {
       map.getView().animate({ zoom: 12, duration: 500 });
     }
+  } else {
+    schlagInfo.value = null;
   }
 });
+
 watch(schlagInfo, (value) => {
   if (value) {
     panel.value = 'schlag';
   }
-});
-watch(visibleLayer, (value) => {
-  const { layers } = map.get('mapbox-style');
-  const any = layers.filter((layer) => layer.metadata?.group === 'any');
-  any.forEach((layer) => { layer.layout = { ...layer.layout, visibility: value ? 'none' : 'visible' }; });
-  const one = layers.filter((layer) => layer.id.endsWith('_detail'));
-  one.forEach((layer) => { layer.layout = { ...layer.layout, visibility: layer.id === `${value}_detail` ? 'visible' : 'none' }; });
-  getSource(map, 'agrargis').changed();
 });
 </script>
 
