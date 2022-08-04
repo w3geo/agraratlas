@@ -15,7 +15,10 @@ const initialExtent = [9.33583, 46.08870, 17.42424, 49.36705];
 /** @type {Map} */
 let map;
 
-function createMap(mapReady) {
+/** @type {import('vue').Ref<boolean>} */
+const mapReady = ref(false);
+
+function createMap() {
   useGeographic();
   map = new Map({
     controls: defaults({ attributionOptions: { collapsible: false } }),
@@ -39,14 +42,12 @@ function createMap(mapReady) {
 /**
  * @returns {{
  *   map: Map,
- *   mapReady: import("vue").Ref<boolean>,
- *   schlagInfo: import("vue").Ref<SchlagInfo>,
+ *   mapReady: import("vue").Ref<boolean>
  * }}
  */
 export default function useMap() {
-  const mapReady = ref(!!map);
   if (!map) {
-    createMap(mapReady);
+    createMap();
   }
   return { map, mapReady };
 }

@@ -30,6 +30,15 @@
             hide-details
             density="compact"
           />
+          <v-switch
+            v-for="(value, layer, index) in aspectClasses"
+            :key="index"
+            v-model="layerOfInterest"
+            :label="layer + ' (Anteil ' + formatPercent(value) + ')'"
+            :value="layer"
+            hide-details
+            density="compact"
+          />
         </v-expansion-panel-text>
         <v-expansion-panel-text v-else>
           Klicken Sie auf einen Schlag, um Informationen zu erhalten.
@@ -46,11 +55,14 @@ import {
 import { bind } from 'size-sensor';
 import useMap from '../composables/useMap';
 import useLayers from '../composables/useLayers';
+import useAspect from '../composables/useAspect';
+import { formatPercent } from '../util/formatters';
 
 const mapContainer = ref();
 const panel = ref();
 const { map } = useMap();
 const { schlagInfo, layersOfInterest, layerOfInterest } = useLayers();
+const { aspectClasses } = useAspect();
 let unbind;
 
 onMounted(() => {

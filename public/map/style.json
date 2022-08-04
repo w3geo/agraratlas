@@ -40,6 +40,62 @@
       ],
       "maxzoom": 19
     },
+    "neigungsklassen_1": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_1&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "neigungsklassen_2": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_2&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "neigungsklassen_3": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_3&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "neigungsklassen_4": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_4&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "neigungsklassen_5": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_5&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "neigungsklassen_6": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_6&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
+    "neigungsklassen_7": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_7&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ],
+      "maxzoom": 19
+    },
     "agrargis": {
       "type": "vector",
       "tiles": [
@@ -69,6 +125,97 @@
     "layout": { "visibility": "none" },
     "paint": {
       "raster-opacity": 0.3
+    }
+  }, {
+    "id": "neigungsklassen_1",
+    "type": "raster",
+    "source": "neigungsklassen_1",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung 0 - <10%"
+    }
+  }, {
+    "id": "neigungsklassen_2",
+    "type": "raster",
+    "source": "neigungsklassen_2",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung 10 - <15%"
+    }
+  }, {
+    "id": "neigungsklassen_3",
+    "type": "raster",
+    "source": "neigungsklassen_3",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung 15 - <18%"
+    }
+  }, {
+    "id": "neigungsklassen_4",
+    "type": "raster",
+    "source": "neigungsklassen_4",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung 18 - <25%"
+    }
+  }, {
+    "id": "neigungsklassen_5",
+    "type": "raster",
+    "source": "neigungsklassen_5",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung 25 - <35%"
+    }
+  }, {
+    "id": "neigungsklassen_6",
+    "type": "raster",
+    "source": "neigungsklassen_6",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung 35 - <50%"
+    }
+  }, {
+    "id": "neigungsklassen_7",
+    "type": "raster",
+    "source": "neigungsklassen_7",
+    "minzoom": 12,
+    "layout": { "visibility": "none" },
+    "paint": {
+      "raster-opacity": 0.3
+    },
+    "metadata": {
+      "group": "one",
+      "layer": "Hangneigung >=50%"
     }
   }, {
     "id": "bdfl_l40_gab8-any",
