@@ -13,7 +13,7 @@ const initialExtent = [9.33583, 46.08870, 17.42424, 49.36705];
 
 useGeographic();
 
-const map = new Map({
+export const map = new Map({
   controls: defaults({ attributionOptions: { collapsible: false } }),
   view: new View({
     maxResolution: 78271.51696402048,
@@ -25,7 +25,7 @@ const map = new Map({
 map.addInteraction(new Link());
 map.addControl(new ScaleLine());
 
-const mapReady = apply(map, './map/style.json').then(() => {
+export const mapReady = apply(map, './map/style.json').then(() => {
   map.getLayers().getArray().forEach((layer) => {
     layer.getSource().tileOptions.transition = undefined;
   });

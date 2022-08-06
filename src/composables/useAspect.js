@@ -7,8 +7,8 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import { Style, Fill } from 'ol/style';
 import { ref, watch } from 'vue';
 import { toLonLat } from 'ol/proj';
-import { useLayers } from './useLayers';
-import { useMap } from './useMap';
+import { schlagInfo } from './useLayers';
+import { map, mapReady } from './useMap';
 
 const aspectClassesByRGB = {
   '255,255,191': 'Neigung 0 - <10%',
@@ -19,9 +19,6 @@ const aspectClassesByRGB = {
   '227,75,51': 'Neigung 35 - <50%',
   '215,25,28': 'Neigung >=50%',
 };
-
-const { schlagInfo } = useLayers();
-const { map, mapReady } = useMap();
 
 /** @type {import('vue').Ref<Object<string, number>>} */
 const aspectClasses = ref({});
@@ -35,7 +32,7 @@ mapReady.then(() => {
   });
   const calculationLayer = new VectorTileLayer({
     source: getSource(map, 'agrargis'),
-    style: (feature) => (feature.getId() === schlagInfo.value.id ? style : undefined),
+    style: (feature) => (feature.getId() === schlagInfo.value?.id ? style : undefined),
   });
   const aspectSource = getSource(map, 'neigungsklassen');
   const aspectLayer = new TileLayer({

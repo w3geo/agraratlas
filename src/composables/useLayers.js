@@ -3,10 +3,11 @@ import {
 } from 'ol-mapbox-style';
 import { buffer as bufferExtent, extend, getCenter } from 'ol/extent';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import { getPointResolution } from 'ol/proj';
+import { getPointResolution, transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
 import { ref, watch } from 'vue';
-import { useMap } from './useMap';
+import { useRoute, useRouter } from 'vue-router';
+import { map, mapReady } from './useMap';
 
 /**
  * @typedef SchlagInfo
@@ -21,10 +22,8 @@ import { useMap } from './useMap';
 
 const schlaegeLayer = 'invekos_schlaege_2022_polygon';
 
-const { map, mapReady } = useMap();
-
 /** @type {import('vue').Ref<SchlagInfo>} */
-const schlagInfo = ref();
+export const schlagInfo = ref();
 
 /** @type {import('vue').Ref<Array<string>>} */
 const layersOfInterest = ref([]);
@@ -76,6 +75,26 @@ function getSchlagExtent(feature) {
     .filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === schlaegeLayer)
     .forEach((renderFeature) => extend(extent, renderFeature.getGeometry().getExtent()));
   return extent;
+}
+
+function setSchlag(schlagId) {
+  if (schlagId && schlagId !== schlagInfo.value?.id) {
+    map.once('rendercomplete', () => {
+      const features = getSource(map, 'agrargis').getFeaturesInExtent(
+        transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857'),
+      ).filter((feature) => feature.get('layer') === 'invekos_schlaege_2022_polygon');
+      const feature = features.find((f) => f.getId() === Number(schlagId));
+      schlagInfo.value = feature ? {
+        ...feature.getProperties(),
+        id: feature.getId(),
+        extent: getSchlagExtent(feature),
+      } : null;
+    });
+    map.render();
+  }
+  if (!schlagId) {
+    schlagInfo.value = null;
+  }
 }
 
 map.on('singleclick', (event) => {
@@ -153,6 +172,8 @@ watch(layerOfInterest, (value) => {
   });
 });
 
+let unwatchRoute;
+
 /**
  * @returns {{
  *   schlagInfo: import('vue').Ref<SchlagInfo>,
@@ -161,5 +182,16 @@ watch(layerOfInterest, (value) => {
  * }}
  */
 export function useLayers() {
+  if (!unwatchRoute) {
+    const route = useRoute();
+    const router = useRouter();
+    setSchlag(route.params.schlagId);
+    unwatchRoute = watch(() => route.params.schlagId, setSchlag);
+    watch(schlagInfo, (value) => {
+      if (value?.id !== Number(route.params.schlagId)) {
+        router.push({ params: { schlagId: value?.id } });
+      }
+    });
+  }
   return { schlagInfo, layersOfInterest, layerOfInterest };
 }
