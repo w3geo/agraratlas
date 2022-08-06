@@ -4,7 +4,6 @@ import { defaults } from 'ol/control';
 import ScaleLine from 'ol/control/ScaleLine';
 import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
-import { ref } from 'vue';
 import { apply, renderTransparent } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
 
@@ -12,42 +11,29 @@ renderTransparent(true);
 
 const initialExtent = [9.33583, 46.08870, 17.42424, 49.36705];
 
-/** @type {Map} */
-let map;
+useGeographic();
 
-/** @type {import('vue').Ref<boolean>} */
-const mapReady = ref(false);
+const map = new Map({
+  controls: defaults({ attributionOptions: { collapsible: false } }),
+  view: new View({
+    maxResolution: 78271.51696402048,
+    extent: initialExtent,
+    center: getCenter(initialExtent),
+    zoom: 0,
+  }),
+});
+map.addInteraction(new Link());
+map.addControl(new ScaleLine());
 
-function createMap() {
-  useGeographic();
-  map = new Map({
-    controls: defaults({ attributionOptions: { collapsible: false } }),
-    view: new View({
-      maxResolution: 78271.51696402048,
-      extent: initialExtent,
-      center: getCenter(initialExtent),
-      zoom: 0,
-    }),
+const mapReady = apply(map, './map/style.json').then(() => {
+  map.getLayers().getArray().forEach((layer) => {
+    layer.getSource().tileOptions.transition = undefined;
   });
-  map.addInteraction(new Link());
-  map.addControl(new ScaleLine());
-  apply(map, './map/style.json').then(() => {
-    map.getLayers().getArray().forEach((layer) => {
-      layer.getSource().tileOptions.transition = undefined;
-    });
-    mapReady.value = true;
-  });
-}
+});
 
 /**
- * @returns {{
- *   map: Map,
- *   mapReady: import("vue").Ref<boolean>
- * }}
+ * @returns {{ map: Map, mapReady: Promise<void> }}
  */
-export default function useMap() {
-  if (!map) {
-    createMap();
-  }
+export function useMap() {
   return { map, mapReady };
 }

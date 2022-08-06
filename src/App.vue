@@ -11,8 +11,8 @@
       <v-spacer />
       <v-col
         cols="12"
-        sm="6"
-        md="3"
+        sm="8"
+        md="4"
       >
         <PlaceSearch
           class="placesearch"
@@ -41,7 +41,8 @@
 import { ref } from 'vue';
 import GeoJSON from 'ol/format/GeoJSON';
 import PlaceSearch from './components/PlaceSearch.vue';
-import useMap from './composables/useMap';
+import { useMap } from './composables/useMap';
+import router from './plugins/router';
 
 const { map } = useMap();
 const drawer = ref(false);
@@ -58,6 +59,7 @@ const onSearch = (value) => {
       maxZoom: 19,
       duration: 500,
     });
+    router.push('/');
   }
 };
 </script>

@@ -6,10 +6,10 @@
   <v-col
     class="expansion-panel"
     cols="12"
-    sm="12"
-    md="6"
-    lg="6"
-    xl="4"
+    sm="10"
+    md="5"
+    lg="4"
+    xl="3"
   >
     <v-expansion-panels v-model="panel">
       <v-expansion-panel
@@ -34,7 +34,7 @@
             v-for="(value, layer, index) in aspectClasses"
             :key="index"
             v-model="layerOfInterest"
-            :label="layer + ' (Anteil ' + formatPercent(value) + ')'"
+            :label="layer + ' (' + value.toFixed(2) + ' ha)'"
             :value="layer"
             hide-details
             density="compact"
@@ -53,16 +53,15 @@ import {
   ref, onMounted, onBeforeUnmount, watch,
 } from 'vue';
 import { bind } from 'size-sensor';
-import useMap from '../composables/useMap';
-import useLayers from '../composables/useLayers';
-import useAspect from '../composables/useAspect';
-import { formatPercent } from '../util/formatters';
+import { useMap } from '../composables/useMap';
+import { useLayers } from '../composables/useLayers';
+import { useAspect } from '../composables/useAspect';
 
-const mapContainer = ref();
-const panel = ref();
 const { map } = useMap();
 const { schlagInfo, layersOfInterest, layerOfInterest } = useLayers();
 const { aspectClasses } = useAspect();
+const mapContainer = ref();
+const panel = ref();
 let unbind;
 
 onMounted(() => {
@@ -70,15 +69,16 @@ onMounted(() => {
   map.setTarget(mapContainer.value);
 });
 
-onBeforeUnmount(() => unbind());
+onBeforeUnmount(() => {
+  unbind();
+  map.setTarget(null);
+});
 
 watch(panel, (value) => {
   if (value === 'schlag') {
     if (map.getView().getZoom() < 12) {
       map.getView().animate({ zoom: 12, duration: 500 });
     }
-  } else {
-    schlagInfo.value = null;
   }
 });
 

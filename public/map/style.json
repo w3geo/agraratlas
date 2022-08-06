@@ -124,7 +124,7 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     }
   }, {
     "id": "neigungsklassen_1",
@@ -133,11 +133,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung 0 - <10%"
+      "label": "Neigung 0 - <10%"
     }
   }, {
     "id": "neigungsklassen_2",
@@ -146,11 +146,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung 10 - <15%"
+      "label": "Neigung 10 - <15%"
     }
   }, {
     "id": "neigungsklassen_3",
@@ -159,11 +159,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung 15 - <18%"
+      "label": "Neigung 15 - <18%"
     }
   }, {
     "id": "neigungsklassen_4",
@@ -172,11 +172,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung 18 - <25%"
+      "label": "Neigung 18 - <25%"
     }
   }, {
     "id": "neigungsklassen_5",
@@ -185,11 +185,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung 25 - <35%"
+      "label": "Neigung 25 - <35%"
     }
   }, {
     "id": "neigungsklassen_6",
@@ -198,11 +198,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung 35 - <50%"
+      "label": "Neigung 35 - <50%"
     }
   }, {
     "id": "neigungsklassen_7",
@@ -211,11 +211,11 @@
     "minzoom": 12,
     "layout": { "visibility": "none" },
     "paint": {
-      "raster-opacity": 0.3
+      "raster-opacity": 0.4
     },
     "metadata": {
       "group": "one",
-      "layer": "Hangneigung >=50%"
+      "label": "Neigung >=50%"
     }
   }, {
     "id": "bdfl_l40_gab8-any",
@@ -226,7 +226,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l40_gab8",
+      "label": "PSM-Schutzgebiete (WRRL) (GAB8)",
       "group": "any"
     }
   }, {
@@ -235,13 +235,14 @@
     "source": "agrargis",
     "source-layer": "bdfl_l40_gab8",
     "paint": {
-      "fill-color": "#a6cee3"
+      "fill-color": "#a6cee3",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l40_gab8",
+      "label": "PSM-Schutzgebiete (WRRL) (GAB8)",
       "group": "one"
     }
   }, {
@@ -253,7 +254,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l34_feucht_torfgebiete",
+      "label": "Feuchtgebiete und Torfflächen",
       "group": "any"
     }
   }, {
@@ -268,7 +269,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l34_feucht_torfgebiete",
+      "label": "Feuchtgebiete und Torfflächen",
       "group": "one"
     }
   }, {
@@ -280,7 +281,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l32_belastete_gewaesser_polygon",
+      "label": "Belastete Gewässer (NGWP)",
       "group": "any"
     }
   }, {
@@ -289,18 +290,19 @@
     "source": "agrargis",
     "source-layer": "bdfl_l32_belastete_gewaesser_polygon",
     "paint": {
-      "fill-color": "#bada55"
+      "fill-color": "rgb(50, 37, 229)",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l32_belastete_gewaesser_polygon",
+      "label": "Belastete Gewässer (NGWP)",
       "group": "one"
     }
   }, {
     "id": "bdfl_l32_belastete_gewaesser_line-any",
-    "type": "fill",
+    "type": "line",
     "source": "agrargis",
     "source-layer": "bdfl_l32_belastete_gewaesser_line",
     "paint": {
@@ -308,23 +310,23 @@
       "line-width": 1
     },
     "metadata": {
-      "layer": "bdfl_l32_belastete_gewaesser_line",
+      "label": "Belastete Gewässer (NGWP)",
       "group": "any"
     }
   }, {
     "id": "bdfl_l32_belastete_gewaesser_line-one",
-    "type": "fill",
+    "type": "line",
     "source": "agrargis",
     "source-layer": "bdfl_l32_belastete_gewaesser_line",
     "paint": {
-      "line-color": "#bada55",
-      "line-width": 1.5
+      "line-color": "rgb(50, 37, 229)",
+      "line-width": 4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l32_belastete_gewaesser_line",
+      "label": "Belastete Gewässer (NGWP)",
       "group": "one"
     }
   }, {
@@ -336,7 +338,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l31_begruente_abflusswege",
+      "label": "Begrünte Abflusswege",
       "group": "any"
     }
   }, {
@@ -345,13 +347,14 @@
     "source": "agrargis",
     "source-layer": "bdfl_l31_begruente_abflusswege",
     "paint": {
-      "fill-color": "#b2df8a"
+      "fill-color": "#b2df8a",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l31_begruente_abflusswege",
+      "label": "Begrünte Abflusswege",
       "group": "one"
     }
   }, {
@@ -363,22 +366,109 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+      "label": "Wasserrahmenrichtlinie Ertragslagen",
       "group": "any"
     }
   }, {
-    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-one",
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch_3",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "filter": ["==", "el", "EL hoch 3"],
     "paint": {
-      "fill-color": "#33a02c"
+      "fill-color": "rgb(33, 32, 255)",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+      "label": "Wasserrahmenrichtlinie Ertragslagen EL hoch 3",
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch_2",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "filter": ["==", "el", "EL hoch 2"],
+    "paint": {
+      "fill-color": "rgb(60, 255, 40)",
+      "fill-opacity": 0.4
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Wasserrahmenrichtlinie Ertragslagen EL hoch 2",
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "filter": ["==", "el", "EL hoch"],
+    "paint": {
+      "fill-color": "rgb(253, 241, 45)",
+      "fill-opacity": 0.4
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Wasserrahmenrichtlinie Ertragslagen EL hoch",
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_mittel",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "filter": ["==", "el", "EL mittel"],
+    "paint": {
+      "fill-color": "rgb(198, 35, 197)",
+      "fill-opacity": 0.4
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Wasserrahmenrichtlinie Ertragslagen EL mittel",
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_mittel_10",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "filter": ["==", "el", "EL mittel -10%"],
+    "paint": {
+      "fill-color": "rgb(252, 93, 33)",
+      "fill-opacity": 0.4
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Wasserrahmenrichtlinie Ertragslagen EL mittel -10%",
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_niedrig",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
+    "filter": ["==", "el", "EL niedrig"],
+    "paint": {
+      "fill-color": "rgb(44, 214, 248)",
+      "fill-opacity": 0.4
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Wasserrahmenrichtlinie Ertragslagen EL niedrig",
       "group": "one"
     }
   }, {
@@ -390,7 +480,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l16_grundwasserschutz_acker",
+      "label": "Grundwasserschutz Acker",
       "group": "any"
     }
   }, {
@@ -399,13 +489,14 @@
     "source": "agrargis",
     "source-layer": "bdfl_l16_grundwasserschutz_acker",
     "paint": {
-      "fill-color": "#fb9a99"
+      "fill-color": "rgb(0, 97, 241)",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l16_grundwasserschutz_acker",
+      "label": "Grundwasserschutz Acker",
       "group": "one"
     }
   }, {
@@ -417,7 +508,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "dfl_l13_besondere_lebensraumtypen",
+      "label": "Besondere Lebensraumtypen",
       "group": "any"
     }
   }, {
@@ -426,13 +517,14 @@
     "source": "agrargis",
     "source-layer": "dfl_l13_besondere_lebensraumtypen",
     "paint": {
-      "fill-color": "#fdbf6f"
+      "fill-color": "#fdbf6f",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "dfl_l13_besondere_lebensraumtypen",
+      "label": "Besondere Lebensraumtypen",
       "group": "one"
     }
   }, {
@@ -444,7 +536,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "bdfl_l08_seehoehe_1200m",
+      "label": "Seehöhe über 1200m",
       "group": "any"
     }
   }, {
@@ -453,13 +545,14 @@
     "source": "agrargis",
     "source-layer": "bdfl_l08_seehoehe_1200m",
     "paint": {
-      "fill-color": "#e31a1c"
+      "fill-color": "rgb(153, 153, 153)",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "bdfl_l08_seehoehe_1200m",
+      "label": "Seehöhe über 1200m",
       "group": "one"
     }
   }, {
@@ -471,7 +564,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "layer": "stehende_gewaesser",
+      "label": "Stehende Gewässer",
       "group": "any"
     }
   }, {
@@ -480,13 +573,14 @@
     "source": "agrargis",
     "source-layer": "stehende_gewaesser",
     "paint": {
-      "fill-color": "#cab2d6"
+      "fill-color": "#cab2d6",
+      "fill-opacity": 0.4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "stehende_gewaesser",
+      "label": "Stehende Gewässer",
       "group": "one"
     }
   }, {
@@ -499,7 +593,7 @@
       "line-width": 1
     },
     "metadata": {
-      "layer": "gewaessernetz",
+      "label": "Gewässernetz",
       "group": "any"
     }
   }, {
@@ -509,13 +603,13 @@
     "source-layer": "gewaessernetz",
     "paint": {
       "line-color": "#ff7f00",
-      "line-width": 2
+      "line-width": 4
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "layer": "gewaessernetz",
+      "label": "Gewässernetz",
       "group": "one"
     }
   }, {
@@ -537,7 +631,7 @@
         "case",
         ["boolean", ["feature-state", "selected"], false],
         "rgba(0, 0, 0, 0)",
-        "rgba(0, 0, 0, 0.2)"
+        "rgba(0, 0, 0, 0.3)"
       ],
       "fill-outline-color": [
         "case",

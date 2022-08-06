@@ -30,7 +30,19 @@
           </a>
         </v-row>
       </v-col>
+      <v-col
+        class="mb-5"
+        cols="12"
+      >
+        <h2 class="headline font-weight-bold mb-5">
+          Haftungsausschluss
+        </h2>
 
+        <v-row justify="center">
+          Aus den Angaben in dieser Applikation sind keinerlei Rechtsansprüche ableitbar.
+          Alle Angaben ohne Gewähr.
+        </v-row>
+      </v-col>
     </v-row>
   </v-container>
 </template>

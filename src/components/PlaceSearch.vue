@@ -12,7 +12,8 @@
     item-title="properties.name"
     hide-no-data
     hide-selected
-    placeholder="Adresse, Riedname, ..."
+    filter-mode="contains"
+    placeholder="Adresse, Ort, Riedname, ..."
     return-object
   />
 </template>
@@ -32,6 +33,12 @@ const getPlaces = async (value) => {
     try {
       const response = await fetch(`https://kataster.bev.gv.at/api/all/?term=${value}`);
       const { data } = await response.json();
+      data.features.forEach((feature) => {
+        const { properties } = feature;
+        if (!properties.name && properties.objectType === '11') {
+          properties.name = `${properties.plz} ${properties.ort} ${properties.strasse} ${properties.hnr}`;
+        }
+      });
       items.value = data.features;
     } finally {
       isLoading.value = false;
