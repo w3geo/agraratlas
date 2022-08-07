@@ -62,6 +62,9 @@ mapReady.then(() => {
 /**
  */
 function calculateAspectClasses() {
+  if (!calculationMap || schlagInfo.value?.loading) {
+    return;
+  }
   calculationMap.getLayers().item(0).changed(); // update style
   calculationMap.getView().setCenter(toLonLat(getCenter(schlagInfo.value.extent)));
 
@@ -95,11 +98,7 @@ function calculateAspectClasses() {
   });
 }
 
-watch(schlagInfo, (value, oldValue) => {
-  if (value && value.id !== oldValue?.id) {
-    calculateAspectClasses(schlagInfo, calculationMap);
-  }
-});
+watch(schlagInfo, calculateAspectClasses);
 
 /**
  * @returns {{

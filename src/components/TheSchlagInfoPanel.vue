@@ -5,7 +5,7 @@
     <v-expansion-panel-title>
       Schlag Informationen
     </v-expansion-panel-title>
-    <v-expansion-panel-text v-if="schlagInfo">
+    <v-expansion-panel-text v-if="!schlagInfo.loading">
       <div>Fläche: {{ schlagInfo.sl_flaeche_brutto_ha.toFixed(2) }} ha</div>
       <div>{{ schlagInfo.snar_bezeichnung }}</div>
       <v-switch

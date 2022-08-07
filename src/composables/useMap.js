@@ -4,7 +4,7 @@ import { defaults } from 'ol/control';
 import ScaleLine from 'ol/control/ScaleLine';
 import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
-import { apply, renderTransparent } from 'ol-mapbox-style';
+import { apply, getSource, renderTransparent } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
 
 renderTransparent(true);
@@ -26,8 +26,10 @@ map.addInteraction(new Link());
 map.addControl(new ScaleLine());
 
 export const mapReady = apply(map, './map/style.json').then(() => {
-  map.getLayers().getArray().forEach((layer) => {
-    layer.getSource().tileOptions.transition = undefined;
+  map.get('mapbox-style').layers.forEach((layer) => {
+    if (layer.metadata?.group === 'base') {
+      getSource(map, layer.source).tileOptions.transition = undefined;
+    }
   });
 });
 

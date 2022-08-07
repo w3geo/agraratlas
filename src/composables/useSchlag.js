@@ -12,12 +12,13 @@ import { map, mapReady } from './useMap';
 /**
  * @typedef SchlagInfo
  * @property {number} id
- * @property {number} fart_id
- * @property {number} fs_kennung
- * @property {number} sl_flaeche_brutto_ha
- * @property {string} snar_bezeichnung
- * @property {string} snar_code
- * @property {import("ol/extent").Extent} extent
+ * @property {boolean} loading
+ * @property {number} [fart_id]
+ * @property {number} [fs_kennung]
+ * @property {number} [sl_flaeche_brutto_ha]
+ * @property {string} [snar_bezeichnung]
+ * @property {string} [snar_code]
+ * @property {import("ol/extent").Extent} [extent]
  */
 
 const schlaegeLayer = 'invekos_schlaege_2022_polygon';
@@ -77,69 +78,75 @@ function getSchlagExtent(feature) {
   return extent;
 }
 
-function setSchlag(schlagId) {
-  if (schlagId && schlagId !== schlagInfo.value?.id) {
+function setLayersOfInterest(selectedRenderFeature) {
+  if (selectedRenderFeature) {
+    const schlagExtent = getSchlagExtent(selectedRenderFeature);
+    const resolution = map.getView().getResolution();
+    const buffer = getPointResolution(
+      map.getView().getProjection(),
+      resolution,
+      getCenter(schlagExtent),
+      'm',
+    ) * (10 / resolution);
+    const bufferedExtent = bufferExtent(schlagExtent, buffer); // small buffer (10m)
+    const features = getSource(map, 'agrargis')
+      .getFeaturesInExtent(bufferedExtent)
+      .map((renderFeature) => toFeature(renderFeature))
+      .filter((feature) => feature.getGeometry().intersectsExtent(bufferedExtent));
+    recordStyleLayer(true);
+    const layers = Object.keys(features.reduce((previous, current) => {
+      current.set('mapbox-layer', undefined);
+      filterStyle(current, resolution);
+      const layer = current.get('mapbox-layer')?.id;
+      if (layer && layer !== schlaegeLayer) {
+        previous[layer] = true;
+      }
+      return previous;
+    }, {}));
+    recordStyleLayer(false);
+    const mapboxLayers = map.get('mapbox-style').layers;
+    layersOfInterest.value = layers.map((layer) => mapboxLayers
+      .find((mapboxLayer) => mapboxLayer.id === layer).metadata?.label);
+  } else {
+    layersOfInterest.value = [];
+  }
+}
+
+function findSchlag(schlagId) {
+  return new Promise((resolve) => {
     map.once('rendercomplete', () => {
       const features = getSource(map, 'agrargis').getFeaturesInExtent(
         transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857'),
       ).filter((feature) => feature.get('layer') === 'invekos_schlaege_2022_polygon');
       const feature = features.find((f) => f.getId() === Number(schlagId));
-      schlagInfo.value = feature ? {
-        ...feature.getProperties(),
-        id: feature.getId(),
-        extent: getSchlagExtent(feature),
-      } : null;
+      resolve(feature);
     });
     map.render();
-  }
-  if (!schlagId) {
-    schlagInfo.value = null;
+  });
+}
+
+function setSchlagId(id) {
+  if (Number(id) !== schlagInfo.value?.id) {
+    schlagInfo.value = id ? {
+      loading: true,
+      id: Number(id),
+    } : null;
   }
 }
 
-map.on('singleclick', (event) => {
+function setSchlagInfo(feature) {
+  schlagInfo.value = feature ? {
+    ...feature.getProperties(),
+    loading: false,
+    id: feature.getId(),
+    extent: getSchlagExtent(feature),
+  } : null;
+}
+
+map.on('click', (event) => {
   const selectedRenderFeature = getSchlagAtPixel(event.pixel);
-  const lastId = schlagInfo.value?.id;
-  const id = selectedRenderFeature?.getId();
-  if (id !== lastId) {
-    if (selectedRenderFeature) {
-      const schlagExtent = getSchlagExtent(selectedRenderFeature);
-      const resolution = map.getView().getResolution();
-      const buffer = getPointResolution(
-        map.getView().getProjection(),
-        resolution,
-        getCenter(schlagExtent),
-        'm',
-      ) * (10 / resolution);
-      const bufferedExtent = bufferExtent(schlagExtent, buffer); // small buffer (10m)
-      const features = getSource(map, 'agrargis')
-        .getFeaturesInExtent(bufferedExtent)
-        .map((renderFeature) => toFeature(renderFeature))
-        .filter((feature) => feature.getGeometry().intersectsExtent(bufferedExtent));
-      recordStyleLayer(true);
-      const layers = Object.keys(features.reduce((previous, current) => {
-        current.set('mapbox-layer', undefined);
-        filterStyle(current, resolution);
-        const layer = current.get('mapbox-layer')?.id;
-        if (layer && layer !== schlaegeLayer) {
-          previous[layer] = true;
-        }
-        return previous;
-      }, {}));
-      recordStyleLayer(false);
-      schlagInfo.value = {
-        ...selectedRenderFeature.getProperties(),
-        id,
-        extent: schlagExtent,
-      };
-      const mapboxLayers = map.get('mapbox-style').layers;
-      layersOfInterest.value = layers.map((layer) => mapboxLayers
-        .find((mapboxLayer) => mapboxLayer.id === layer).metadata?.label);
-    } else {
-      schlagInfo.value = null;
-      layersOfInterest.value = [];
-    }
-  }
+  setLayersOfInterest(selectedRenderFeature);
+  setSchlagInfo(selectedRenderFeature);
 });
 map.on('pointermove', (event) => {
   map.getTargetElement().style.cursor = getSchlagAtPixel(event.pixel) ? 'pointer' : '';
@@ -150,7 +157,14 @@ watch(schlagInfo, (value, oldValue) => {
     setFeatureState(map, { source: 'agrargis', id: oldValue.id }, null);
   }
   if (value) {
-    setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });
+    if (value.loading) {
+      findSchlag(value.id).then((feature) => {
+        setLayersOfInterest(feature);
+        setSchlagInfo(feature);
+      });
+    } else {
+      setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });
+    }
   }
   layerOfInterest.value = null;
 });
@@ -185,8 +199,8 @@ export function useSchlag() {
   if (!unwatchRoute) {
     const route = useRoute();
     const router = useRouter();
-    setSchlag(route.params.schlagId);
-    unwatchRoute = watch(() => route.params.schlagId, setSchlag);
+    setSchlagId(route.params.schlagId);
+    unwatchRoute = watch(() => route.params.schlagId, setSchlagId);
     watch(schlagInfo, (value) => {
       if (value?.id !== Number(route.params.schlagId)) {
         router.push({ params: { schlagId: value?.id } });
