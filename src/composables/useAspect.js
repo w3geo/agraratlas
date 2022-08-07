@@ -7,7 +7,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import { Style, Fill } from 'ol/style';
 import { ref, watch } from 'vue';
 import { toLonLat } from 'ol/proj';
-import { schlagInfo } from './useLayers';
+import { schlagInfo } from './useSchlag';
 import { map, mapReady } from './useMap';
 
 const aspectClassesByRGB = {

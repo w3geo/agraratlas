@@ -11,20 +11,25 @@
     lg="4"
     xl="3"
   >
-    <the-map-info-panel />
+    <v-expansion-panels v-model="panel">
+      <the-schlag-info-panel @schlag="panel = 'schlag'" />
+      <the-map-tool-panel />
+    </v-expansion-panels>
   </v-col>
 </template>
 
 <script setup>
 import {
-  ref, onMounted, onBeforeUnmount,
+  ref, onMounted, onBeforeUnmount, watch,
 } from 'vue';
 import { bind } from 'size-sensor';
 import { useMap } from '../composables/useMap';
-import TheMapInfoPanel from '../components/TheMapInfoPanel.vue';
+import TheSchlagInfoPanel from '../components/TheSchlagInfoPanel.vue';
+import TheMapToolPanel from '../components/TheMapToolPanel.vue';
 
 const { map } = useMap();
 const mapContainer = ref();
+const panel = ref();
 let unbind;
 
 onMounted(() => {
@@ -35,6 +40,14 @@ onMounted(() => {
 onBeforeUnmount(() => {
   unbind();
   map.setTarget(null);
+});
+
+watch(panel, (value) => {
+  if (value === 'schlag') {
+    if (map.getView().getZoom() < 12) {
+      map.getView().animate({ zoom: 12, duration: 500 });
+    }
+  }
 });
 
 </script>

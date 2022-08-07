@@ -108,15 +108,22 @@
     }
   },
   "layers": [{
-    "id": "geolandbasemap",
+    "id": "Übersichtskarte",
     "type": "raster",
     "source": "geolandbasemap",
-    "maxzoom": 12
+    "metadata": {
+      "group": "base"
+    }
   }, {
-    "id": "bmaporthofoto30cm",
+    "id": "Orthofoto",
     "type": "raster",
     "source": "bmaporthofoto30cm",
-    "minzoom": 12
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "group": "base"
+    }
   }, {
     "id": "neigungsklassen",
     "type": "raster",
@@ -605,7 +612,12 @@
     "source": "agrargis",
     "source-layer": "invekos_schlaege_2022_polygon",
     "paint": {
-      "line-color": "rgb(238, 90, 78)",
+      "line-color": [
+        "case",
+        ["boolean", ["feature-state", "selected"], false],
+        "#FF9900",
+        "rgb(238, 90, 78)"
+      ],
       "line-width": 2
     }
   }, {

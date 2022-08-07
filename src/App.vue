@@ -14,7 +14,7 @@
         sm="8"
         md="4"
       >
-        <PlaceSearch
+        <place-search
           class="placesearch"
           @search="onSearch"
         />
