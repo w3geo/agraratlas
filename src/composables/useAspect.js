@@ -34,6 +34,7 @@ mapReady.then(() => {
   });
   const source = getSource(map, 'agrargis');
   const calculationLayer = new VectorTileLayer({
+    renderMode: 'vector',
     source: new VectorTileSource({
       tileUrlFunction: source.getTileUrlFunction(),
       tileGrid: source.getTileGrid(),
