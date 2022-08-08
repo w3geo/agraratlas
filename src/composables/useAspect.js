@@ -4,6 +4,8 @@ import { getCenter, getHeight, getWidth } from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
 import XYZSource from 'ol/source/XYZ';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import VectorTileSource from 'ol/source/VectorTile';
+import MVT from 'ol/format/MVT';
 import { Style, Fill } from 'ol/style';
 import { ref, watch } from 'vue';
 import { toLonLat } from 'ol/proj';
@@ -30,8 +32,13 @@ mapReady.then(() => {
   const style = new Style({
     fill: new Fill({ color: 'black' }),
   });
+  const source = getSource(map, 'agrargis');
   const calculationLayer = new VectorTileLayer({
-    source: getSource(map, 'agrargis'),
+    source: new VectorTileSource({
+      tileUrlFunction: source.getTileUrlFunction(),
+      tileGrid: source.getTileGrid(),
+      format: new MVT({ layers: ['invekos_schlaege_2022_polygon'] }),
+    }),
     style: (feature) => (feature.getId() === schlagInfo.value?.id ? style : undefined),
   });
   const aspectSource = getSource(map, 'neigungsklassen');
@@ -51,31 +58,35 @@ mapReady.then(() => {
     event.context.globalCompositeOperation = 'source-over';
   });
   calculationMap = new Map({
+    target: document.createElement('div'),
     layers: [calculationLayer, aspectLayer],
     controls: [],
     interactions: [],
     pixelRatio: 1,
-    view: new View({ zoom: 17 }),
+    view: new View({
+      maxResolution: 78271.51696402048,
+      zoom: 14,
+    }),
   });
+  document.body.appendChild(calculationMap.getTargetElement());
 });
 
-/**
- */
+/** @type {() => void} */
+let onRenderComplete;
+
 function calculateAspectClasses() {
-  if (!calculationMap || schlagInfo.value?.loading) {
+  if (!schlagInfo.value || schlagInfo.value.loading) {
     return;
   }
-  calculationMap.getLayers().item(0).changed(); // update style
-  calculationMap.getView().setCenter(toLonLat(getCenter(schlagInfo.value.extent)));
+  if (onRenderComplete) {
+    calculationMap.un('rendercomplete', onRenderComplete);
+  }
+  aspectClasses.value = {};
 
-  const width = Math.ceil(getWidth(schlagInfo.value.extent));
-  const height = Math.ceil(getHeight(schlagInfo.value.extent));
-  const target = document.createElement('div');
-  calculationMap.setTarget(target);
-  calculationMap.setSize([width, height]);
+  const schlag = schlagInfo.value;
 
-  calculationMap.once('rendercomplete', () => {
-    const canvas = target.querySelector('canvas');
+  onRenderComplete = () => {
+    const canvas = calculationMap.getTargetElement().querySelector('canvas');
     const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
     const buckets = {};
     for (let i = 0, ii = imageData.data.length; i < ii; i += 4) {
@@ -87,15 +98,26 @@ function calculateAspectClasses() {
     const total = Object.values(buckets).reduce((a, b) => a + b, 0);
     aspectClasses.value = total ? Object.keys(aspectClassesByRGB).reduce((a, b) => {
       if (buckets[b]) {
-        const area = (buckets[b] / total) * schlagInfo.value.sl_flaeche_brutto_ha;
+        const area = (buckets[b] / total) * schlag.sl_flaeche_brutto_ha;
         if (area >= 0.01) {
           a[aspectClassesByRGB[b]] = area;
         }
       }
       return a;
     }, {}) : {};
-    setTimeout(() => calculationMap.setTarget(null), 0);
-  });
+    onRenderComplete = undefined;
+  };
+
+  const resolution = calculationMap.getView().getResolution();
+  const width = Math.ceil(getWidth(schlag.extent) / resolution);
+  const height = Math.ceil(getHeight(schlag.extent) / resolution);
+  console.log(width, height);
+  calculationMap.getTargetElement().style.width = `${width}px`;
+  calculationMap.getTargetElement().style.height = `${height}px`;
+  calculationMap.setSize([width, height]);
+  calculationMap.getView().setCenter(toLonLat(getCenter(schlag.extent)));
+  calculationMap.once('rendercomplete', onRenderComplete);
+  calculationMap.getLayers().item(0).changed(); // update style
 }
 
 watch(schlagInfo, calculateAspectClasses);

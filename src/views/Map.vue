@@ -11,7 +11,10 @@
     lg="4"
     xl="3"
   >
-    <v-expansion-panels v-model="panel">
+    <v-expansion-panels
+      ref="panels"
+      v-model="panel"
+    >
       <the-schlag-info-panel @schlag="panel = 'schlag'" />
       <the-map-tool-panel />
     </v-expansion-panels>
@@ -49,7 +52,6 @@ watch(panel, (value) => {
     }
   }
 });
-
 </script>
 
 <style scoped>

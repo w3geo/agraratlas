@@ -6,8 +6,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import { getPointResolution, transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
 import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { map, mapReady } from './useMap';
+import { map, mapLoading, mapReady } from './useMap';
 
 /**
  * @typedef SchlagInfo
@@ -89,9 +88,10 @@ function setLayersOfInterest(selectedRenderFeature) {
       'm',
     ) * (10 / resolution);
     const bufferedExtent = bufferExtent(schlagExtent, buffer); // small buffer (10m)
-    const features = getSource(map, 'agrargis')
-      .getFeaturesInExtent(bufferedExtent)
-      .map((renderFeature) => toFeature(renderFeature))
+    let features = getSource(map, 'agrargis')
+      .getFeaturesInExtent(bufferedExtent);
+    console.log(features.length);
+    features = features.map((renderFeature) => toFeature(renderFeature))
       .filter((feature) => feature.getGeometry().intersectsExtent(bufferedExtent));
     recordStyleLayer(true);
     const layers = Object.keys(features.reduce((previous, current) => {
@@ -107,6 +107,7 @@ function setLayersOfInterest(selectedRenderFeature) {
     const mapboxLayers = map.get('mapbox-style').layers;
     layersOfInterest.value = layers.map((layer) => mapboxLayers
       .find((mapboxLayer) => mapboxLayer.id === layer).metadata?.label);
+    console.log(bufferedExtent, layersOfInterest.value);
   } else {
     layersOfInterest.value = [];
   }
@@ -115,23 +116,15 @@ function setLayersOfInterest(selectedRenderFeature) {
 function findSchlag(schlagId) {
   return new Promise((resolve) => {
     map.once('rendercomplete', () => {
-      const features = getSource(map, 'agrargis').getFeaturesInExtent(
-        transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857'),
-      ).filter((feature) => feature.get('layer') === 'invekos_schlaege_2022_polygon');
+      const extent = transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857');
+      const features = getSource(map, 'agrargis')
+        .getFeaturesInExtent(extent)
+        .filter((feature) => feature.get('layer') === 'invekos_schlaege_2022_polygon');
       const feature = features.find((f) => f.getId() === Number(schlagId));
       resolve(feature);
     });
     map.render();
   });
-}
-
-function setSchlagId(id) {
-  if (Number(id) !== schlagInfo.value?.id) {
-    schlagInfo.value = id ? {
-      loading: true,
-      id: Number(id),
-    } : null;
-  }
 }
 
 function setSchlagInfo(feature) {
@@ -153,11 +146,12 @@ map.on('pointermove', (event) => {
 });
 
 watch(schlagInfo, (value, oldValue) => {
-  if (oldValue) {
+  if (oldValue && !oldValue.loading) {
     setFeatureState(map, { source: 'agrargis', id: oldValue.id }, null);
   }
   if (value) {
     if (value.loading) {
+      layerOfInterest.value = null;
       findSchlag(value.id).then((feature) => {
         setLayersOfInterest(feature);
         setSchlagInfo(feature);
@@ -165,28 +159,29 @@ watch(schlagInfo, (value, oldValue) => {
     } else {
       setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });
     }
+  } else {
+    layerOfInterest.value = null;
   }
-  layerOfInterest.value = null;
 });
 
 watch(layerOfInterest, (value) => {
-  const { sources, layers } = map.get('mapbox-style');
-  const mapLayers = map.getLayers().getArray();
-  const any = layers.filter((l) => l.metadata?.group === 'any');
-  any.forEach((l) => { l.layout = { ...l.layout, visibility: value ? 'none' : 'visible' }; });
-  const one = layers.filter((layer) => layer.metadata?.group === 'one');
-  one.forEach((layer) => {
-    layer.layout = { ...layer.layout, visibility: layer.metadata?.label === value ? 'visible' : 'none' };
-    const mapLayer = mapLayers.find((l) => l.get('mapbox-source') === layer.source);
-    if (sources[layer.source].type === 'raster') {
-      mapLayer.setVisible(layer.metadata?.label === value);
-    } else {
-      mapLayer.changed();
-    }
+  mapReady.then(() => {
+    const { sources, layers } = map.get('mapbox-style');
+    const mapLayers = map.getLayers().getArray();
+    const any = layers.filter((l) => l.metadata?.group === 'any');
+    any.forEach((l) => { l.layout = { ...l.layout, visibility: value ? 'none' : 'visible' }; });
+    const one = layers.filter((layer) => layer.metadata?.group === 'one');
+    one.forEach((layer) => {
+      layer.layout = { ...layer.layout, visibility: layer.metadata?.label === value ? 'visible' : 'none' };
+      const mapLayer = mapLayers.find((l) => l.get('mapbox-source') === layer.source);
+      if (sources[layer.source].type === 'raster') {
+        mapLayer.setVisible(layer.metadata?.label === value);
+      } else {
+        mapLayer.changed();
+      }
+    });
   });
 });
-
-let unwatchRoute;
 
 /**
  * @returns {{
@@ -196,16 +191,5 @@ let unwatchRoute;
  * }}
  */
 export function useSchlag() {
-  if (!unwatchRoute) {
-    const route = useRoute();
-    const router = useRouter();
-    setSchlagId(route.params.schlagId);
-    unwatchRoute = watch(() => route.params.schlagId, setSchlagId);
-    watch(schlagInfo, (value) => {
-      if (value?.id !== Number(route.params.schlagId)) {
-        router.push({ params: { schlagId: value?.id } });
-      }
-    });
-  }
   return { schlagInfo, layersOfInterest, layerOfInterest };
 }

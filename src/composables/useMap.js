@@ -6,6 +6,9 @@ import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
 import { apply, getSource, renderTransparent } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
+import { ref } from 'vue';
+
+export const mapLoading = ref(false);
 
 renderTransparent(true);
 
@@ -24,6 +27,8 @@ export const map = new Map({
 });
 map.addInteraction(new Link());
 map.addControl(new ScaleLine());
+map.on('loadstart', () => { mapLoading.value = true; });
+map.on('loadend', () => { mapLoading.value = false; });
 
 export const mapReady = apply(map, './map/style.json').then(() => {
   map.get('mapbox-style').layers.forEach((layer) => {
@@ -37,5 +42,5 @@ export const mapReady = apply(map, './map/style.json').then(() => {
  * @returns {{ map: Map, mapReady: Promise<void> }}
  */
 export function useMap() {
-  return { map, mapReady };
+  return { map, mapReady, mapLoading };
 }
