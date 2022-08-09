@@ -22,10 +22,13 @@
         <details
           v-if="layersOfInterest?.length"
           open
-          class="details"
-          @click="toggleDetails($event)"
         >
-          <summary>Möglicherweise relevante Themen</summary>
+          <summary
+            class="details"
+            @click="toggleDetails($event)"
+          >
+            Möglicherweise relevante Themen
+          </summary>
           <v-switch
             v-for="(layer, index) in layersOfInterest"
             :key="index"
@@ -36,11 +39,13 @@
             density="compact"
           />
         </details>
-        <details
-          class="details"
-          @click="toggleDetails($event)"
-        >
-          <summary>Hangneigung</summary>
+        <details>
+          <summary
+            class="details"
+            @click="toggleDetails($event)"
+          >
+            Hangneigung
+          </summary>
           <v-switch
             v-for="(value, layer, index) in aspectClasses"
             :key="index"
