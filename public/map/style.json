@@ -311,6 +311,33 @@
       "group": "one"
     }
   }, {
+    "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-any",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l33_pufferstreifen_belastete_gewaesser",
+    "paint": {
+      "fill-pattern": "hatch-any"
+    },
+    "metadata": {
+      "label": "Pufferstreifen belasteter Gewässer",
+      "group": "any"
+    }
+  }, {
+    "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l33_pufferstreifen_belastete_gewaesser",
+    "paint": {
+      "fill-color": "rgb(147, 248, 104)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Pufferstreifen belasteter Gewässer",
+      "group": "one"
+    }
+  }, {
     "id": "bdfl_l31_begruente_abflusswege-any",
     "type": "fill",
     "source": "agrargis",
