@@ -78,7 +78,12 @@ watch(panel, (value) => {
     right: 0.5em;
   }
   div.ol-rotate {
-    top: 5.5em;
+    top: 6em;
+    left: inherit;
+    right: 0.5em;
+  }
+  div.ol-gps {
+    top: 4em;
     left: inherit;
     right: 0.5em;
   }

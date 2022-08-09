@@ -1,6 +1,6 @@
 import 'ol/ol.css';
 import { Map, View } from 'ol';
-import { defaults } from 'ol/control';
+import { Control, defaults } from 'ol/control';
 import ScaleLine from 'ol/control/ScaleLine';
 import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
@@ -25,8 +25,21 @@ export const map = new Map({
     zoom: 0,
   }),
 });
-map.addInteraction(new Link());
+const gps = document.createElement('div');
+gps.title = 'Auf meinen Standort zentrieren';
+gps.className = 'ol-control ol-unselectable ol-gps';
+gps.innerHTML = '<button><i class="mdi mdi-crosshairs-gps"></i></button>';
+gps.addEventListener('click', () => {
+  navigator.geolocation.getCurrentPosition((position) => map.getView().animate({
+    center: [position.coords.longitude, position.coords.latitude],
+    zoom: 18,
+  }));
+});
+map.addControl(new Control({
+  element: gps,
+}));
 map.addControl(new ScaleLine());
+map.addInteraction(new Link());
 map.on('loadstart', () => { mapLoading.value = true; });
 map.on('loadend', () => { mapLoading.value = false; });
 
