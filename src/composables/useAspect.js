@@ -8,7 +8,7 @@ import VectorTileSource from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
 import { Style, Fill } from 'ol/style';
 import { ref, watch } from 'vue';
-import { toLonLat } from 'ol/proj';
+import { transformExtent } from 'ol/proj';
 import { schlagInfo } from './useSchlag';
 import { map, mapReady } from './useMap';
 
@@ -69,7 +69,6 @@ mapReady.then(() => {
       zoom: 14,
     }),
   });
-  document.body.appendChild(calculationMap.getTargetElement());
 });
 
 /** @type {() => void} */
@@ -110,13 +109,11 @@ function calculateAspectClasses() {
   };
 
   const resolution = calculationMap.getView().getResolution();
-  const width = Math.ceil(getWidth(schlag.extent) / resolution);
-  const height = Math.ceil(getHeight(schlag.extent) / resolution);
-  console.log(width, height);
-  calculationMap.getTargetElement().style.width = `${width}px`;
-  calculationMap.getTargetElement().style.height = `${height}px`;
+  const extent = transformExtent(schlag.extent, 'EPSG:4326', 'EPSG:3857');
+  const width = Math.ceil(getWidth(extent) / resolution);
+  const height = Math.ceil(getHeight(extent) / resolution);
   calculationMap.setSize([width, height]);
-  calculationMap.getView().setCenter(toLonLat(getCenter(schlag.extent)));
+  calculationMap.getView().setCenter(getCenter(schlag.extent));
   calculationMap.once('rendercomplete', onRenderComplete);
   calculationMap.getLayers().item(0).changed(); // update style
 }

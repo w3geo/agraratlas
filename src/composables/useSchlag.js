@@ -6,7 +6,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import { getPointResolution, transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
 import { ref, watch } from 'vue';
-import { map, mapLoading, mapReady } from './useMap';
+import { map, mapReady } from './useMap';
 
 /**
  * @typedef SchlagInfo
@@ -74,12 +74,12 @@ function getSchlagExtent(feature) {
     .getFeaturesInExtent(bufferExtent(extent, 10))
     .filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === schlaegeLayer)
     .forEach((renderFeature) => extend(extent, renderFeature.getGeometry().getExtent()));
-  return extent;
+  return transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
 }
 
 function setLayersOfInterest(selectedRenderFeature) {
   if (selectedRenderFeature) {
-    const schlagExtent = getSchlagExtent(selectedRenderFeature);
+    const schlagExtent = transformExtent(schlagInfo.value.extent, 'EPSG:4326', 'EPSG:3857');
     const resolution = map.getView().getResolution();
     const buffer = getPointResolution(
       map.getView().getProjection(),
@@ -90,7 +90,6 @@ function setLayersOfInterest(selectedRenderFeature) {
     const bufferedExtent = bufferExtent(schlagExtent, buffer); // small buffer (10m)
     let features = getSource(map, 'agrargis')
       .getFeaturesInExtent(bufferedExtent);
-    console.log(features.length);
     features = features.map((renderFeature) => toFeature(renderFeature))
       .filter((feature) => feature.getGeometry().intersectsExtent(bufferedExtent));
     recordStyleLayer(true);
@@ -107,7 +106,6 @@ function setLayersOfInterest(selectedRenderFeature) {
     const mapboxLayers = map.get('mapbox-style').layers;
     layersOfInterest.value = layers.map((layer) => mapboxLayers
       .find((mapboxLayer) => mapboxLayer.id === layer).metadata?.label);
-    console.log(bufferedExtent, layersOfInterest.value);
   } else {
     layersOfInterest.value = [];
   }
@@ -115,15 +113,17 @@ function setLayersOfInterest(selectedRenderFeature) {
 
 function findSchlag(schlagId) {
   return new Promise((resolve) => {
-    map.once('rendercomplete', () => {
-      const extent = transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857');
-      const features = getSource(map, 'agrargis')
-        .getFeaturesInExtent(extent)
-        .filter((feature) => feature.get('layer') === 'invekos_schlaege_2022_polygon');
-      const feature = features.find((f) => f.getId() === Number(schlagId));
-      resolve(feature);
+    mapReady.then(() => {
+      map.once('rendercomplete', () => {
+        const extent = transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857');
+        const features = getSource(map, 'agrargis')
+          .getFeaturesInExtent(extent)
+          .filter((feature) => feature.get('layer') === 'invekos_schlaege_2022_polygon');
+        const feature = features.find((f) => f.getId() === Number(schlagId));
+        resolve(feature);
+      });
+      map.render();
     });
-    map.render();
   });
 }
 
@@ -138,8 +138,8 @@ function setSchlagInfo(feature) {
 
 map.on('click', (event) => {
   const selectedRenderFeature = getSchlagAtPixel(event.pixel);
-  setLayersOfInterest(selectedRenderFeature);
   setSchlagInfo(selectedRenderFeature);
+  setLayersOfInterest(selectedRenderFeature);
 });
 map.on('pointermove', (event) => {
   map.getTargetElement().style.cursor = getSchlagAtPixel(event.pixel) ? 'pointer' : '';
@@ -153,8 +153,8 @@ watch(schlagInfo, (value, oldValue) => {
     if (value.loading) {
       layerOfInterest.value = null;
       findSchlag(value.id).then((feature) => {
-        setLayersOfInterest(feature);
         setSchlagInfo(feature);
+        setLayersOfInterest(feature);
       });
     } else {
       setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });

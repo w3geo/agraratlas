@@ -15,7 +15,7 @@
       ref="panels"
       v-model="panel"
     >
-      <the-schlag-info-panel @schlag="panel = 'schlag'" />
+      <the-schlag-info-panel @schlag="switchSchlag" />
       <the-map-tool-panel />
     </v-expansion-panels>
   </v-col>
@@ -35,6 +35,13 @@ const mapContainer = ref();
 const panel = ref();
 let unbind;
 
+function switchSchlag(expaneded) {
+  if (expaneded) {
+    panel.value = 'schlag';
+  } else {
+    panel.value = null;
+  }
+}
 onMounted(() => {
   unbind = bind(mapContainer.value, () => map.updateSize());
   map.setTarget(mapContainer.value);
