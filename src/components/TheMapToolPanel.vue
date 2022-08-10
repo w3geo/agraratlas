@@ -14,17 +14,6 @@
         hide-details
         density="compact"
       />
-      Transparenz
-      <v-slider
-        v-model="opacity"
-        :max="1"
-        :min="0"
-        :step="0.1"
-        thumb-color="white"
-        color="gray"
-        hide-details
-        density="compact"
-      />
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
@@ -32,5 +21,5 @@
 <script setup>
 import { useLayers } from '../composables/useLayers';
 
-const { baseLayers, baseLayer, opacity } = useLayers();
+const { baseLayers, baseLayer } = useLayers();
 </script>

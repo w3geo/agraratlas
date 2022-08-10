@@ -16,12 +16,15 @@
     </v-expansion-panel-title>
     <v-expansion-panel-text v-if="schlagInfo && !schlagInfo.loading">
       <div>Fläche: {{ schlagInfo.sl_flaeche_brutto_ha.toFixed(2) }} ha</div>
-      <div>{{ schlagInfo.snar_bezeichnung }}</div>
+      <div class="pb-2">
+        {{ schlagInfo.snar_bezeichnung }}
+      </div>
       <!-- v-treeview is not yet available in Vuetify for Vue3 -->
       <div ref="details">
         <details
           v-if="layersOfInterest?.length"
           open
+          class="pb-2"
         >
           <summary
             class="details"
@@ -39,7 +42,7 @@
             density="compact"
           />
         </details>
-        <details>
+        <details class="pb-2">
           <summary
             class="details"
             @click="toggleDetails($event)"
@@ -57,6 +60,19 @@
           />
         </details>
       </div>
+      <v-slider
+        v-model="opacity"
+        class="ma-0"
+        prepend-icon="mdi-opacity"
+        :max="1"
+        :min="0"
+        :step="0.1"
+        thumb-color="white"
+        color="gray"
+        hide-details
+        density="compact"
+        title="Deckkraft"
+      />
     </v-expansion-panel-text>
     <v-expansion-panel-text v-else>
       Klicken Sie auf einen Schlag, um Informationen zu erhalten.
@@ -72,8 +88,10 @@ import { equals } from 'ol/coordinate';
 import { useSchlag } from '../composables/useSchlag';
 import { useAspect } from '../composables/useAspect';
 import { useMap } from '../composables/useMap';
+import { useLayers } from '../composables/useLayers';
 
 const { schlagInfo, layersOfInterest, layerOfInterest } = useSchlag();
+const { opacity } = useLayers();
 const { aspectClasses } = useAspect();
 const { map } = useMap();
 const route = useRoute();
@@ -148,5 +166,8 @@ setSchlagId(route.params.schlagId);
 <style scoped>
   .details {
     cursor: pointer;
+  }
+  .v-input--density-compact {
+    --v-input-control-height: 32px;
   }
 </style>
