@@ -1,6 +1,6 @@
 import { getLayer } from 'ol-mapbox-style';
-import { ref, watch } from 'vue';
-import { map, mapReady } from './useMap';
+import { computed, ref, watch } from 'vue';
+import { map, mapReady, mapView } from './useMap';
 
 /** @type {import('vue').Ref<Array<string>>} */
 const baseLayers = ref([]);
@@ -11,9 +11,8 @@ const baseLayer = ref();
 /** @type {import('vue').Ref<number>} */
 const opacity = ref(0.7);
 
-function getAutoBaseLayerIndex() {
-  return map.getView().getZoom() > 14 ? 1 : 0;
-}
+/** @type {import('vue').ComputedRef<0|1>} */
+const autoBaseLayerIndex = computed(() => (mapView.value.zoom > 14 ? 1 : 0));
 
 function setLayerOpacity(mapboxLayer) {
   if (mapboxLayer.metadata?.group !== 'base') {
@@ -32,8 +31,7 @@ function setLayerOpacity(mapboxLayer) {
 mapReady.then(() => {
   const { layers } = map.get('mapbox-style');
   baseLayers.value = layers.filter((l) => l.metadata?.group === 'base').map((l) => l.id);
-  const autoBaseLayerIndex = getAutoBaseLayerIndex();
-  baseLayer.value = baseLayers.value[autoBaseLayerIndex];
+  baseLayer.value = baseLayers.value[autoBaseLayerIndex.value];
   layers.forEach(setLayerOpacity);
 });
 
@@ -46,7 +44,7 @@ watch(baseLayer, (value) => {
       getLayer(map, layer.id).setVisible(layer.id === value);
     }
   });
-  userModified = baseLayers.value.indexOf(value) !== getAutoBaseLayerIndex();
+  userModified = baseLayers.value.indexOf(value) !== autoBaseLayerIndex.value;
 });
 
 watch(opacity, () => {
@@ -54,9 +52,9 @@ watch(opacity, () => {
   layers.forEach(setLayerOpacity);
 });
 
-map.on('moveend', () => {
+watch(autoBaseLayerIndex, () => {
   if (!userModified) {
-    baseLayer.value = baseLayers.value[getAutoBaseLayerIndex()];
+    baseLayer.value = baseLayers.value[autoBaseLayerIndex.value];
   }
 });
 

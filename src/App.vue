@@ -56,6 +56,7 @@ const geojson = new GeoJSON();
 const onSearch = (value) => {
   if (value) {
     map.getView().fit(geojson.readGeometry(value.geometry), {
+      minZoom: 12,
       maxZoom: 19,
       duration: 500,
     });

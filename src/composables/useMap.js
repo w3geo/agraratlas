@@ -8,7 +8,17 @@ import { apply, getSource, renderTransparent } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
 import { ref } from 'vue';
 
-export const mapLoading = ref(false);
+/**
+ * @typedef {Object} MapView
+ * @property {number} zoom
+ * @property {import("ol/coordinate").Coordinate} center
+ */
+
+/**
+ * @readonly
+ * @type {import('vue').Ref<MapView>}
+ */
+export const mapView = ref({ zoom: 0, center: [0, 0] });
 
 renderTransparent(true);
 
@@ -40,8 +50,13 @@ map.addControl(new Control({
 }));
 map.addControl(new ScaleLine());
 map.addInteraction(new Link());
-map.on('loadstart', () => { mapLoading.value = true; });
-map.on('loadend', () => { mapLoading.value = false; });
+map.on('moveend', () => {
+  const view = map.getView();
+  mapView.value = {
+    zoom: view.getZoom(),
+    center: view.getCenter(),
+  };
+});
 
 export const mapReady = apply(map, './map/style.json').then(() => {
   map.get('mapbox-style').layers.forEach((layer) => {
@@ -55,5 +70,5 @@ export const mapReady = apply(map, './map/style.json').then(() => {
  * @returns {{ map: Map, mapReady: Promise<void> }}
  */
 export function useMap() {
-  return { map, mapReady, mapLoading };
+  return { map, mapReady, mapView };
 }
