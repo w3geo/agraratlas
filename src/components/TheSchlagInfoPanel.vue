@@ -74,6 +74,9 @@
         title="Deckkraft"
       />
     </v-expansion-panel-text>
+    <v-expansion-panel-text v-else-if="mapView.zoom < 12">
+      Verwenden Sie die Suche oder klicken Sie in die Karte, um Schläge anzuzeigen.
+    </v-expansion-panel-text>
     <v-expansion-panel-text v-else>
       Klicken Sie auf einen Schlag, um Informationen zu erhalten.
     </v-expansion-panel-text>
@@ -81,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getCenter } from 'ol/extent';
 import { equals } from 'ol/coordinate';
@@ -93,11 +96,16 @@ import { useLayers } from '../composables/useLayers';
 const { schlagInfo, layersOfInterest, layerOfInterest } = useSchlag();
 const { opacity } = useLayers();
 const { aspectClasses } = useAspect();
-const { map } = useMap();
+const { map, mapView } = useMap();
 const route = useRoute();
 const router = useRouter();
-const canCenter = ref(false);
 const details = ref();
+
+const canCenter = computed(() => schlagInfo.value?.extent && !equals(
+  getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
+  mapView.value.center.map((v) => v.toFixed(4)),
+));
+
 const emit = defineEmits(['schlag']);
 
 function toggleDetails(event) {
@@ -110,28 +118,6 @@ function toggleDetails(event) {
     });
   }
 }
-
-function calculateCanCenter() {
-  canCenter.value = schlagInfo.value?.extent && !equals(
-    getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
-    map.getView().getCenter().map((v) => v.toFixed(4)),
-  );
-}
-
-watch(schlagInfo, (value) => {
-  if (details.value && value && !value.loading) {
-    const panels = details.value.querySelectorAll('details');
-    panels.forEach((panel, i) => {
-      if (i === panels.length - 2) {
-        panel.setAttribute('open', '');
-      } else {
-        panel.removeAttribute('open');
-      }
-    });
-  }
-  calculateCanCenter();
-});
-map.on('moveend', calculateCanCenter);
 
 function center() {
   map.getView().fit(schlagInfo.value.extent, {
@@ -150,12 +136,44 @@ function setSchlagId(id) {
   }
 }
 
+/**
+ * @param {import("ol/MapBrowserEvent.js").default} event
+ */
+function zoomTo12(event) {
+  map.getView().animate({
+    zoom: 12,
+    center: event.coordinate,
+    duration: 500,
+  });
+}
+
 watch(schlagInfo, (value) => {
   if (value?.id !== Number(route.params.schlagId)) {
     router.push({ params: { schlagId: value?.id } });
   }
   if (value && !value.loading) {
     emit('schlag', true);
+  }
+  if (details.value && value && !value.loading) {
+    const panels = details.value.querySelectorAll('details');
+    panels.forEach((panel, i) => {
+      if (i === panels.length - 2) {
+        panel.setAttribute('open', '');
+      } else {
+        panel.removeAttribute('open');
+      }
+    });
+  }
+});
+
+let zoomOnClick = false;
+watch(mapView, (value) => {
+  if (!zoomOnClick && value.zoom < 12) {
+    zoomOnClick = true;
+    map.once('click', zoomTo12);
+  } else {
+    zoomOnClick = false;
+    map.un('click', zoomTo12);
   }
 });
 

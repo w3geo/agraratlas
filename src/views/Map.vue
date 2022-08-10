@@ -32,7 +32,7 @@ import TheMapToolPanel from '../components/TheMapToolPanel.vue';
 
 const { map } = useMap();
 const mapContainer = ref();
-const panel = ref();
+const panel = ref('schlag');
 let unbind;
 
 function switchSchlag(expaneded) {
