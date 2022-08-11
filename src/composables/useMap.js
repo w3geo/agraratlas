@@ -59,9 +59,15 @@ map.on('moveend', () => {
 });
 
 export const mapReady = apply(map, './map/style.json').then(() => {
-  map.get('mapbox-style').layers.forEach((layer) => {
+  const { layers, sources } = map.get('mapbox-style');
+  layers.forEach((layer) => {
     if (layer.metadata?.group === 'base') {
       getSource(map, layer.source).tileOptions.transition = undefined;
+    }
+  });
+  Object.keys(sources).forEach((source) => {
+    if (source.startsWith('neigungsklassen')) {
+      getSource(map, source).interpolate_ = false; // eslint-disable-line
     }
   });
 });

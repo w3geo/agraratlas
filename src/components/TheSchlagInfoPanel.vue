@@ -5,14 +5,19 @@
     <v-expansion-panel-title>
       Schlag Informationen <v-spacer /><v-btn
         v-if="canCenter"
+        icon
         flat
         rounded
         size="x-small"
-        icon="mdi-crosshairs"
         color="transparent"
         title="Zentrieren"
         @click.stop="center"
-      />
+      >
+        <v-icon
+          size="small"
+          icon="mdi-crosshairs"
+        />
+      </v-btn>
     </v-expansion-panel-title>
     <v-expansion-panel-text v-if="schlagInfo && !schlagInfo.loading">
       <div>Fläche: {{ schlagInfo.sl_flaeche_brutto_ha.toFixed(2) }} ha</div>

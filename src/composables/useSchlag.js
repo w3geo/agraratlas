@@ -7,6 +7,7 @@ import { getPointResolution, transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
 import { ref, watch } from 'vue';
 import { map, mapReady } from './useMap';
+import { draw, measure } from './useTools';
 
 /**
  * @typedef SchlagInfo
@@ -137,11 +138,13 @@ function setSchlagInfo(feature) {
 }
 
 map.on('click', (event) => {
+  if (measure.value || draw.value) { return; }
   const selectedRenderFeature = getSchlagAtPixel(event.pixel);
   setSchlagInfo(selectedRenderFeature);
   setLayersOfInterest(selectedRenderFeature);
 });
 map.on('pointermove', (event) => {
+  if (measure.value || draw.value) { return; }
   map.getTargetElement().style.cursor = getSchlagAtPixel(event.pixel) ? 'pointer' : '';
 });
 
