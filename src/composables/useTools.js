@@ -861,6 +861,7 @@ export const draw = ref();
 const drawHandler = createSketch();
 watch(draw, (value) => {
   if (value) {
+    measure.value = null;
     drawHandler(value);
   } else {
     stopSketching();
@@ -876,6 +877,7 @@ export const measure = ref();
 const measureHandler = measureTool();
 watch(measure, (value) => {
   if (value) {
+    draw.value = null;
     measureHandler(value);
   } else {
     stopMeasure();
