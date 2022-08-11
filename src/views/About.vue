@@ -59,6 +59,10 @@ export default {
         text: 'Agrarportal',
         href: 'https://agrarportal.inspire.gv.at/',
       },
+      {
+        text: 'Konvertierung Shapefile -> GeoJSON',
+        href: 'https://mapshaper.org/',
+      },
     ],
     logo,
   }),
