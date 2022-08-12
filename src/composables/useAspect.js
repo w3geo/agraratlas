@@ -107,7 +107,8 @@ function calculateAspectClasses() {
     aspectClasses.value = total ? Object.keys(aspectClassesByRGB).reduce((a, b) => {
       if (buckets[b]) {
         const area = (buckets[b] / total) * schlag.sl_flaeche_brutto_ha;
-        if (area >= 0.01) {
+        if (area >= 0.005) {
+          // only include classes that cover more than 2 raster cells
           a[aspectClassesByRGB[b]] = area;
         }
       }
