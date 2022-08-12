@@ -38,7 +38,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_1": {
@@ -47,7 +47,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_1&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_2": {
@@ -56,7 +56,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_2&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_3": {
@@ -65,7 +65,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_3&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_4": {
@@ -74,7 +74,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_4&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_5": {
@@ -83,7 +83,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_5&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_6": {
@@ -92,7 +92,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_6&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "neigungsklassen_7": {
@@ -101,7 +101,7 @@
       "tiles": [
         "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_7&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
       ],
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 14
     },
     "agrargis": {
@@ -110,7 +110,7 @@
         "./tiles/{z}/{x}/{y}.pbf"
       ],
       "attribution": "&copy; <a href=\"https://www.agrargis.org/\">AgrarGIS</a>",
-      "minzoom": 12,
+      "minzoom": 9,
       "maxzoom": 15,
       "bounds": [8.782379, 46.358770, 17.5, 49.037872]
     }
@@ -136,13 +136,13 @@
     "id": "neigungsklassen",
     "type": "raster",
     "source": "neigungsklassen",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" }
   }, {
     "id": "neigungsklassen_1",
     "type": "raster",
     "source": "neigungsklassen_1",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
@@ -152,7 +152,7 @@
     "id": "neigungsklassen_2",
     "type": "raster",
     "source": "neigungsklassen_2",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
@@ -162,7 +162,7 @@
     "id": "neigungsklassen_3",
     "type": "raster",
     "source": "neigungsklassen_3",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
@@ -172,7 +172,7 @@
     "id": "neigungsklassen_4",
     "type": "raster",
     "source": "neigungsklassen_4",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
@@ -182,7 +182,7 @@
     "id": "neigungsklassen_5",
     "type": "raster",
     "source": "neigungsklassen_5",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
@@ -192,7 +192,7 @@
     "id": "neigungsklassen_6",
     "type": "raster",
     "source": "neigungsklassen_6",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
@@ -202,7 +202,7 @@
     "id": "neigungsklassen_7",
     "type": "raster",
     "source": "neigungsklassen_7",
-    "minzoom": 12,
+    "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
