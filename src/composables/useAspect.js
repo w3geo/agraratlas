@@ -18,7 +18,7 @@ const aspectClassesByRGB = {
   '254,201,128': 'Neigung 15 - <18%',
   '253,174,97': 'Neigung 18 - <25%',
   '240,124,74': 'Neigung 25 - <35%',
-  '227,75,51': 'Neigung 35 - <50%',
+  '228,75,51': 'Neigung 35 - <50%',
   '215,25,28': 'Neigung >=50%',
 };
 
@@ -88,6 +88,14 @@ function calculateAspectClasses() {
   onRenderComplete = () => {
     const canvas = calculationMap.getTargetElement().querySelector('canvas');
     const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+    /*
+    const debugCanvas = document.createElement('canvas');
+    debugCanvas.width = canvas.width;
+    debugCanvas.height = canvas.height;
+    const debugContext = debugCanvas.getContext('2d');
+    debugContext.putImageData(imageData, 0, 0);
+    document.body.appendChild(debugCanvas);
+    */
     const buckets = {};
     for (let i = 0, ii = imageData.data.length; i < ii; i += 4) {
       const key = imageData.data.slice(i, i + 3).join(',');
@@ -99,7 +107,8 @@ function calculateAspectClasses() {
     aspectClasses.value = total ? Object.keys(aspectClassesByRGB).reduce((a, b) => {
       if (buckets[b]) {
         const area = (buckets[b] / total) * schlag.sl_flaeche_brutto_ha;
-        if (area >= 0.01) {
+        if (area >= 0.005) {
+          // only include classes that cover more than 2 raster cells
           a[aspectClassesByRGB[b]] = area;
         }
       }
