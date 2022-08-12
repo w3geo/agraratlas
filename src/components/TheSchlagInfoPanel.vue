@@ -10,7 +10,7 @@
         rounded
         size="x-small"
         color="transparent"
-        title="Zentrieren"
+        title="Auf Schlag zoomen"
         @click.stop="center"
       >
         <v-icon
@@ -106,10 +106,10 @@ const route = useRoute();
 const router = useRouter();
 const details = ref();
 
-const canCenter = computed(() => schlagInfo.value?.extent && !equals(
+const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
   getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
   mapView.value.center.map((v) => v.toFixed(4)),
-));
+) || mapView.value.zoom < 12));
 
 const emit = defineEmits(['schlag']);
 
