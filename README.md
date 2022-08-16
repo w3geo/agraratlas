@@ -2,9 +2,9 @@
 
 ## Installation
 
-After cloning the repository, run
+Uses Node 18. After cloning the repository, run
 
-    npm install
+    npm install --legacy-peer-deps
 
 to install the project's dependencies.
 
