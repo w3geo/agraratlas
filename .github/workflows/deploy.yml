@@ -1,0 +1,32 @@
+name: Continuous Deployment Dev
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: |
+        npm ci
+        npm run build-app
+
+    - uses: BetaHuhn/do-spaces-action@v2.0.58
+      with:
+        access_key: ${{ secrets.S3_KEY }}
+        secret_key: ${{ secrets.S3_SECRET }}
+        space_name: 'w3geo'
+        space_region: 'fra1'
+        source: 'dist'
+        out_dir: 'agrargis'
+
