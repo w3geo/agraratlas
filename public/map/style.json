@@ -327,7 +327,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "label": "Pufferstreifen belasteter Gewässer",
+      "label": "Belastete Gewässer (NGWP)",
       "group": "any"
     }
   }, {
@@ -342,7 +342,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Pufferstreifen belasteter Gewässer",
+      "label": "Belastete Gewässer (NGWP)",
       "group": "one"
     }
   }, {
@@ -397,7 +397,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie Ertragslagen EL hoch 3",
+      "label": "Wasserrahmenrichtlinie EL hoch 3",
       "group": "one"
     }
   }, {
@@ -413,7 +413,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie Ertragslagen EL hoch 2",
+      "label": "Wasserrahmenrichtlinie EL hoch 2",
       "group": "one"
     }
   }, {
@@ -429,7 +429,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie Ertragslagen EL hoch",
+      "label": "Wasserrahmenrichtlinie EL hoch",
       "group": "one"
     }
   }, {
@@ -445,7 +445,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie Ertragslagen EL mittel",
+      "label": "Wasserrahmenrichtlinie EL mittel",
       "group": "one"
     }
   }, {
@@ -461,7 +461,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie Ertragslagen EL mittel -10%",
+      "label": "Wasserrahmenrichtlinie EL mittel -10%",
       "group": "one"
     }
   }, {
@@ -477,7 +477,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie Ertragslagen EL niedrig",
+      "label": "Wasserrahmenrichtlinie EL niedrig",
       "group": "one"
     }
   }, {
@@ -570,7 +570,7 @@
       "fill-pattern": "hatch-any"
     },
     "metadata": {
-      "label": "Stehende Gewässer",
+      "label": "Gewässer",
       "group": "any"
     }
   }, {
@@ -585,7 +585,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Stehende Gewässer",
+      "label": "Gewässer",
       "group": "one"
     }
   }, {
@@ -598,7 +598,7 @@
       "line-width": 1
     },
     "metadata": {
-      "label": "Gewässernetz",
+      "label": "Gewässer",
       "group": "any"
     }
   }, {
@@ -614,7 +614,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Gewässernetz",
+      "label": "Gewässer",
       "group": "one"
     }
   }, {
