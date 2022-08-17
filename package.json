@@ -22,7 +22,7 @@
     "size-sensor": "^1.0.1",
     "vue": "^3.2.25",
     "vue-router": "^4.1.2",
-    "vuetify": "^3.0.0-beta.5"
+    "vuetify": "^3.0.0-beta.8"
   },
   "devDependencies": {
     "@beyondtracks/spritezero-cli": "^2.3.1",

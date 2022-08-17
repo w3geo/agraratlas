@@ -24,19 +24,27 @@
       <div class="pb-2">
         {{ schlagInfo.snar_bezeichnung }}
       </div>
-      <!-- v-treeview is not yet available in Vuetify for Vue3 -->
-      <div ref="details">
-        <details
-          v-if="layersOfInterest?.length"
-          open
-          class="pb-2"
+      <v-tabs
+        v-model="tab"
+        fixed-tabs
+        density="compact"
+      >
+        <v-tab
+          value="topics"
         >
-          <summary
-            class="details"
-            @click="toggleDetails($event)"
-          >
-            Möglicherweise relevante Themen
-          </summary>
+          Mögliche Themen
+        </v-tab>
+        <v-tab
+          value="aspect"
+        >
+          Hangneigung
+        </v-tab>
+      </v-tabs>
+      <v-window v-model="tab">
+        <v-window-item
+          class="pa-2"
+          value="topics"
+        >
           <v-switch
             v-for="(layer, index) in layersOfInterest"
             :key="index"
@@ -46,14 +54,11 @@
             hide-details
             density="compact"
           />
-        </details>
-        <details class="pb-2">
-          <summary
-            class="details"
-            @click="toggleDetails($event)"
-          >
-            Hangneigung
-          </summary>
+        </v-window-item>
+        <v-window-item
+          class="pa-2"
+          value="aspect"
+        >
           <v-switch
             v-for="(value, layer, index) in aspectClasses"
             :key="index"
@@ -63,8 +68,8 @@
             hide-details
             density="compact"
           />
-        </details>
-      </div>
+        </v-window-item>
+      </v-window>
       <v-slider
         v-model="opacity"
         class="ma-0"
@@ -105,6 +110,7 @@ const { map, mapView } = useMap();
 const route = useRoute();
 const router = useRouter();
 const details = ref();
+const tab = ref('topics');
 
 const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
   getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
@@ -112,17 +118,6 @@ const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
 ) || mapView.value.zoom < 12));
 
 const emit = defineEmits(['schlag']);
-
-function toggleDetails(event) {
-  if (!event.target.parentNode.open) {
-    const panels = details.value.querySelectorAll('details');
-    panels.forEach((panel) => {
-      if (panel !== event.target.parentNode) {
-        panel.removeAttribute('open');
-      }
-    });
-  }
-}
 
 function center() {
   map.getView().fit(schlagInfo.value.extent, {
@@ -155,6 +150,8 @@ function zoomTo12(event) {
 watch(schlagInfo, (value) => {
   if (value?.id !== Number(route.params.schlagId)) {
     router.push({ params: { schlagId: value?.id } });
+    layerOfInterest.value = null;
+    aspectClasses.value = null;
   }
   if (value && !value.loading) {
     emit('schlag', true);
@@ -189,8 +186,5 @@ setSchlagId(route.params.schlagId);
 <style scoped>
   .details {
     cursor: pointer;
-  }
-  .v-input--density-compact {
-    --v-input-control-height: 32px;
   }
 </style>
