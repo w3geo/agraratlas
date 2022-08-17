@@ -14,7 +14,6 @@
         @click.stop="center"
       >
         <v-icon
-          size="small"
           icon="mdi-crosshairs"
         />
       </v-btn>

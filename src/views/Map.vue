@@ -67,7 +67,7 @@ watch(panel, (value) => {
   }
   .expansion-panel {
     position: absolute;
-    top: 0em;
+    top: 60px;
     left: 0em;
     width: calc(100% - 3em);
   }
