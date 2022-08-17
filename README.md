@@ -2,9 +2,9 @@
 
 ## Installation
 
-Uses Node 18. After cloning the repository, run
+After cloning the repository, run
 
-    npm install --legacy-peer-deps
+    npm install
 
 to install the project's dependencies.
 
@@ -33,6 +33,12 @@ To deploy the application, copy the contents of the `dist/` folder of your S3 or
 To rebuild only the app, assuming that the vector tiles were already deployed, run
 
     npm run build-app
+
+## Creating sprites for the Mapbox Style file
+
+The sprites in `public/map/` are created from the svg images in `pulic/map/icons/`. When adding new svg images to that folder, run
+
+    npm run sprites
 
 ## Recommended IDE Setup
 
