@@ -45,9 +45,9 @@
           value="topics"
         >
           <v-switch
-            v-for="(layer, index) in layersOfInterest"
+            v-for="(layer, index) in availableLayersOfInterest"
             :key="index"
-            v-model="layerOfInterest"
+            v-model="layersOfInterest"
             :label="layer"
             :value="layer"
             hide-details
@@ -61,7 +61,7 @@
           <v-switch
             v-for="(value, layer, index) in aspectClasses"
             :key="index"
-            v-model="layerOfInterest"
+            v-model="layersOfInterest"
             :label="layer + ' (' + value.toFixed(2) + ' ha)'"
             :value="layer"
             hide-details
@@ -102,7 +102,7 @@ import { useAspect } from '../composables/useAspect';
 import { useMap } from '../composables/useMap';
 import { useLayers } from '../composables/useLayers';
 
-const { schlagInfo, layersOfInterest, layerOfInterest } = useSchlag();
+const { schlagInfo, availableLayersOfInterest, layersOfInterest } = useSchlag();
 const { opacity } = useLayers();
 const { aspectClasses } = useAspect();
 const { map, mapView } = useMap();
@@ -149,7 +149,7 @@ function zoomTo12(event) {
 watch(schlagInfo, (value) => {
   if (value?.id !== Number(route.params.schlagId)) {
     router.push({ params: { schlagId: value?.id } });
-    layerOfInterest.value = null;
+    layersOfInterest.value = [];
     aspectClasses.value = null;
   }
   if (value && !value.loading) {
