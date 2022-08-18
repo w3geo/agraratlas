@@ -1,5 +1,5 @@
 import {
-  applyStyle, getSource, recordStyleLayer, setFeatureState,
+  applyStyle, getLayer, getSource, recordStyleLayer, setFeatureState,
 } from 'ol-mapbox-style';
 import { buffer as bufferExtent, extend, getCenter } from 'ol/extent';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -27,10 +27,10 @@ const schlaegeLayer = 'invekos_schlaege_2022_polygon';
 export const schlagInfo = ref();
 
 /** @type {import('vue').Ref<Array<string>>} */
-const layersOfInterest = ref([]);
+const availableLayersOfInterest = ref([]);
 
-/** @type {import('vue').Ref<string>} */
-const layerOfInterest = ref();
+/** @type {import('vue').Ref<Array<string>>} */
+const layersOfInterest = ref([]);
 
 let filterStyle;
 
@@ -78,7 +78,7 @@ function getSchlagExtent(feature) {
   return transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
 }
 
-function setLayersOfInterest(selectedRenderFeature) {
+function setAvailableLayersOfInterest(selectedRenderFeature) {
   if (selectedRenderFeature) {
     const schlagExtent = transformExtent(schlagInfo.value.extent, 'EPSG:4326', 'EPSG:3857');
     const resolution = map.getView().getResolution();
@@ -105,10 +105,11 @@ function setLayersOfInterest(selectedRenderFeature) {
     }, {}));
     recordStyleLayer(false);
     const mapboxLayers = map.get('mapbox-style').layers;
-    layersOfInterest.value = layers.map((layer) => mapboxLayers
-      .find((mapboxLayer) => mapboxLayer.id === layer).metadata?.label);
+    availableLayersOfInterest.value = layers.map((layer) => mapboxLayers
+      .find((mapboxLayer) => mapboxLayer.id === layer).metadata?.label)
+      .reduce((acc, layer) => (acc.includes(layer) ? acc : [...acc, layer]), []);
   } else {
-    layersOfInterest.value = [];
+    availableLayersOfInterest.value = [];
   }
 }
 
@@ -141,7 +142,7 @@ map.on('click', (event) => {
   if (measure.value || draw.value) { return; }
   const selectedRenderFeature = getSchlagAtPixel(event.pixel);
   setSchlagInfo(selectedRenderFeature);
-  setLayersOfInterest(selectedRenderFeature);
+  setAvailableLayersOfInterest(selectedRenderFeature);
 });
 map.on('pointermove', (event) => {
   if (measure.value || draw.value) { return; }
@@ -154,45 +155,56 @@ watch(schlagInfo, (value, oldValue) => {
   }
   if (value) {
     if (value.loading) {
-      layerOfInterest.value = null;
+      layersOfInterest.value = [];
       findSchlag(value.id).then((feature) => {
         setSchlagInfo(feature);
-        setLayersOfInterest(feature);
+        setAvailableLayersOfInterest(feature);
       });
     } else {
       setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });
     }
   } else {
-    layerOfInterest.value = null;
+    layersOfInterest.value = [];
   }
 });
 
-watch(layerOfInterest, (value) => {
+watch(layersOfInterest, (value, previous) => {
+  const newLayer = layersOfInterest.value.find((layer) => !previous.includes(layer));
   mapReady.then(() => {
     const { sources, layers } = map.get('mapbox-style');
-    const mapLayers = map.getLayers().getArray();
     const any = layers.filter((l) => l.metadata?.group === 'any');
-    any.forEach((l) => { l.layout = { ...l.layout, visibility: value ? 'none' : 'visible' }; });
+    any.forEach((l) => { l.layout = { ...l.layout, visibility: value.length ? 'none' : 'visible' }; });
     const one = layers.filter((layer) => layer.metadata?.group === 'one');
     one.forEach((layer) => {
-      layer.layout = { ...layer.layout, visibility: layer.metadata?.label === value ? 'visible' : 'none' };
-      const mapLayer = mapLayers.find((l) => l.get('mapbox-source') === layer.source);
+      const visible = value.includes(layer.metadata?.label);
+      layer.layout = { ...layer.layout, visibility: visible ? 'visible' : 'none' };
+      const mapLayer = getLayer(map, layer.id);
       if (sources[layer.source].type === 'raster') {
-        mapLayer.setVisible(layer.metadata?.label === value);
+        mapLayer.setVisible(visible);
       } else {
         mapLayer.changed();
       }
     });
+    const rasterLayers = layersOfInterest.value.filter((label) => {
+      const layer = layers.find((l) => l.metadata?.label === label);
+      return layer.type === 'raster';
+    });
+    if (rasterLayers.length > 0 && rasterLayers.length < layersOfInterest.value.length) {
+      layersOfInterest.value = rasterLayers;
+    }
+    if (rasterLayers.length === 0 && layersOfInterest.value.length > 1) {
+      layersOfInterest.value = [newLayer];
+    }
   });
 });
 
 /**
  * @returns {{
  *   schlagInfo: import('vue').Ref<SchlagInfo>,
- *   layersOfInterest: import('vue').Ref<Array<string>>,
- *   layerOfInterest: import('vue').Ref<string>
+ *   availableLayersOfInterest: import('vue').Ref<Array<string>>,
+ *   layersOfInterest: import('vue').Ref<Array<string>>
  * }}
  */
 export function useSchlag() {
-  return { schlagInfo, layersOfInterest, layerOfInterest };
+  return { schlagInfo, availableLayersOfInterest, layersOfInterest };
 }
