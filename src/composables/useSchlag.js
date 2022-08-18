@@ -189,11 +189,12 @@ watch(layersOfInterest, (value, previous) => {
       const layer = layers.find((l) => l.metadata?.label === label);
       return layer.type === 'raster';
     });
+    if ((rasterLayers.length > 0 && rasterLayers.length === layersOfInterest.value.length - 1)
+      || (rasterLayers.length === 0 && layersOfInterest.value.length > 1)) {
+      layersOfInterest.value = [newLayer];
+    }
     if (rasterLayers.length > 0 && rasterLayers.length < layersOfInterest.value.length) {
       layersOfInterest.value = rasterLayers;
-    }
-    if (rasterLayers.length === 0 && layersOfInterest.value.length > 1) {
-      layersOfInterest.value = [newLayer];
     }
   });
 });
