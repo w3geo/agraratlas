@@ -4,9 +4,12 @@ import { Control, defaults } from 'ol/control';
 import ScaleLine from 'ol/control/ScaleLine';
 import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
-import { apply, getSource, renderTransparent } from 'ol-mapbox-style';
+import {
+  apply, applyStyle, getSource, renderTransparent,
+} from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
+import VectorTileLayer from 'ol/layer/VectorTile';
 
 /**
  * @typedef {Object} MapView
@@ -15,10 +18,9 @@ import { ref } from 'vue';
  */
 
 /**
- * @readonly
- * @type {import('vue').Ref<MapView>}
+ * @type {import('vue').ShallowRef<MapView>}
  */
-export const mapView = ref({ zoom: 0, center: [0, 0] });
+export const mapView = shallowRef({ zoom: 0, center: [0, 0] });
 
 renderTransparent(true);
 
@@ -55,6 +57,7 @@ map.on('moveend', () => {
   mapView.value = {
     zoom: view.getZoom(),
     center: view.getCenter(),
+    extent: view.calculateExtent(),
   };
 });
 
@@ -70,6 +73,25 @@ export const mapReady = apply(map, './map/style.json').then(() => {
       getSource(map, source).interpolate_ = false; // eslint-disable-line
     }
   });
+});
+
+/**
+ * @type {Promise<import("ol/style/Style.js").StyleFunction>}
+ */
+export const filterStyle = mapReady.then(async () => {
+  const style = JSON.parse(JSON.stringify(map.get('mapbox-style')));
+  style.layers.forEach((l) => {
+    if (l.metadata?.group === 'any') {
+      l.layout = { ...l.layout, visibility: 'none' };
+    } else if (l.metadata?.group === 'one') {
+      l.layout = { ...l.layout, visibility: 'visible' };
+    } else {
+      l.layout = { ...l.layout, visibility: 'none' };
+    }
+  });
+  const filterLayer = new VectorTileLayer();
+  await applyStyle(filterLayer, style, 'agrargis', './map/style.json');
+  return filterLayer.getStyle();
 });
 
 /**

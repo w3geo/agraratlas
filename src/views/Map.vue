@@ -16,6 +16,7 @@
       v-model="panel"
     >
       <the-schlag-info-panel @schlag="switchSchlag" />
+      <the-topic-panel />
       <the-map-tool-panel />
     </v-expansion-panels>
   </v-col>
@@ -29,6 +30,7 @@ import { bind } from 'size-sensor';
 import { useMap } from '../composables/useMap';
 import TheSchlagInfoPanel from '../components/TheSchlagInfoPanel.vue';
 import TheMapToolPanel from '../components/TheMapToolPanel.vue';
+import TheTopicPanel from '../components/TheTopicPanel.vue';
 
 const { map } = useMap();
 const mapContainer = ref();

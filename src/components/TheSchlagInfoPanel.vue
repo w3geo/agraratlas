@@ -23,52 +23,36 @@
       <div class="pb-2">
         {{ schlagInfo.snar_bezeichnung }}
       </div>
-      <v-tabs
-        v-model="tab"
-        fixed-tabs
+      <v-switch
+        v-model="onlyAspectsInSchlag"
+        label="Nur im Schlag vorhandene Hangneigungen"
+      />
+      <v-table
+        v-if="schlagInfo && !schlagInfo.loading"
         density="compact"
       >
-        <v-tab
-          value="topics"
-        >
-          Mögliche Themen
-        </v-tab>
-        <v-tab
-          value="aspect"
-        >
-          Hangneigung
-        </v-tab>
-      </v-tabs>
-      <v-window v-model="tab">
-        <v-window-item
-          class="pa-2"
-          value="topics"
-        >
-          <v-switch
-            v-for="(layer, index) in availableLayersOfInterest"
-            :key="index"
-            v-model="layersOfInterest"
-            :label="layer"
-            :value="layer"
-            hide-details
-            density="compact"
-          />
-        </v-window-item>
-        <v-window-item
-          class="pa-2"
-          value="aspect"
-        >
-          <v-switch
-            v-for="(value, layer, index) in aspectClasses"
-            :key="index"
-            v-model="layersOfInterest"
-            :label="layer + ' (' + value.toFixed(2) + ' ha)'"
-            :value="layer"
-            hide-details
-            density="compact"
-          />
-        </v-window-item>
-      </v-window>
+        <tbody>
+          <tr
+            v-for="(value, key) in filteredAspects"
+            :key="key"
+          >
+            <td>
+              <v-checkbox
+                v-model="value.visible"
+                density="compact"
+                hide-details
+              />
+            </td>
+            <td>{{ value.label }}</td>
+            <td>
+              {{ value.inSchlag
+                ? value.fraction < 0.005 ? '< 0.5%' : Math.round(value.fraction * 100) + '%'
+                : '-' }}
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+
       <v-slider
         v-model="opacity"
         class="ma-0"
@@ -102,14 +86,16 @@ import { useAspect } from '../composables/useAspect';
 import { useMap } from '../composables/useMap';
 import { useLayers } from '../composables/useLayers';
 
-const { schlagInfo, availableLayersOfInterest, layersOfInterest } = useSchlag();
+const { schlagInfo } = useSchlag();
 const { opacity } = useLayers();
-const { aspectClasses } = useAspect();
+const { aspects } = useAspect();
 const { map, mapView } = useMap();
 const route = useRoute();
 const router = useRouter();
-const details = ref();
-const tab = ref('topics');
+const onlyAspectsInSchlag = ref(true);
+
+const filteredAspects = computed(() => aspects
+  .filter((aspect) => (aspect.visible || !onlyAspectsInSchlag.value || aspect.inSchlag)));
 
 const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
   getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
@@ -149,21 +135,9 @@ function zoomTo12(event) {
 watch(schlagInfo, (value) => {
   if (value?.id !== Number(route.params.schlagId)) {
     router.push({ params: { schlagId: value?.id } });
-    layersOfInterest.value = [];
-    aspectClasses.value = null;
   }
   if (value && !value.loading) {
     emit('schlag', true);
-  }
-  if (details.value && value && !value.loading) {
-    const panels = details.value.querySelectorAll('details');
-    panels.forEach((panel, i) => {
-      if (i === panels.length - 2) {
-        panel.setAttribute('open', '');
-      } else {
-        panel.removeAttribute('open');
-      }
-    });
   }
 });
 
