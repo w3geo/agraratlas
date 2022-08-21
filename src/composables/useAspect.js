@@ -7,10 +7,11 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
 import { Style, Fill } from 'ol/style';
-import { ref, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { transformExtent } from 'ol/proj';
 import { schlagInfo } from './useSchlag';
 import { map, mapReady } from './useMap';
+import { SCHLAEGE_LAYER } from '../constants';
 
 const aspectClassesByRGB = {
   '255,255,191': 'Neigung 0 - <10%',
@@ -22,13 +23,35 @@ const aspectClassesByRGB = {
   '215,25,28': 'Neigung >=50%',
 };
 
-/** @type {import('vue').Ref<Object<string, number>>} */
-const aspectClasses = ref({});
+/**
+ * @typedef Aspect
+ * @property {string} label
+ * @property {boolean} inSchlag
+ * @property {number} fraction
+ * @property {boolean} visible
+ */
 
 /** @type {Map} */
 let calculationMap;
 
+/** @type {Array<Topic>} */
+export const aspects = reactive([]);
 mapReady.then(() => {
+  const { layers } = map.get('mapbox-style');
+  aspects.push(...Object.values(layers
+    .filter((l) => l.metadata?.group === 'one' && l.type === 'raster')
+    .map((l) => l.metadata?.label).reduce((acc, cur) => {
+      if (!(cur in acc)) {
+        acc[cur] = ({
+          label: cur,
+          fraction: 0,
+          inSchlag: false,
+          visible: false,
+        });
+      }
+      return acc;
+    }, {})));
+
   const style = new Style({
     fill: new Fill({ color: 'black' }),
   });
@@ -38,7 +61,7 @@ mapReady.then(() => {
     source: new VectorTileSource({
       tileUrlFunction: source.getTileUrlFunction(),
       tileGrid: source.getTileGrid(),
-      format: new MVT({ layers: ['invekos_schlaege_2022_polygon'] }),
+      format: new MVT({ layers: [SCHLAEGE_LAYER] }),
     }),
     style: (feature) => (feature.getId() === schlagInfo.value?.id ? style : undefined),
   });
@@ -81,7 +104,6 @@ function calculateAspectClasses() {
   if (onRenderComplete) {
     calculationMap.un('rendercomplete', onRenderComplete);
   }
-  aspectClasses.value = {};
 
   const schlag = schlagInfo.value;
 
@@ -104,16 +126,18 @@ function calculateAspectClasses() {
       }
     }
     const total = Object.values(buckets).reduce((a, b) => a + b, 0);
-    aspectClasses.value = total ? Object.keys(aspectClassesByRGB).reduce((a, b) => {
-      if (buckets[b]) {
-        const area = (buckets[b] / total) * schlag.sl_flaeche_brutto_ha;
-        if (area >= 0.005) {
-          // only include classes that cover more than 2 raster cells
-          a[aspectClassesByRGB[b]] = area;
-        }
+    const aspectClasses = Object.keys(aspectClassesByRGB).reduce((acc, cur) => {
+      if (buckets[cur]) {
+        const fraction = total ? (buckets[cur] / total) : 0;
+        acc[aspectClassesByRGB[cur]] = fraction;
       }
-      return a;
-    }, {}) : {};
+      return acc;
+    }, {});
+    aspects.forEach((a) => {
+      const fraction = aspectClasses[a.label];
+      a.inSchlag = fraction !== undefined;
+      a.fraction = fraction === undefined ? 0 : fraction;
+    });
     onRenderComplete = undefined;
   };
 
@@ -129,11 +153,6 @@ function calculateAspectClasses() {
 
 watch(schlagInfo, calculateAspectClasses);
 
-/**
- * @returns {{
- *   aspectClasses: import('vue').Ref<Object<string, number>>
- * }}
- */
 export function useAspect() {
-  return { aspectClasses };
+  return { aspects };
 }
