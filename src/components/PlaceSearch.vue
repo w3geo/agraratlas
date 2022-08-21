@@ -31,15 +31,19 @@ const getPlaces = async (value) => {
   if (!isLoading.value && value.length > 3) {
     isLoading.value = true;
     try {
-      const response = await fetch(`https://kataster.bev.gv.at/api/all/?term=${value}`);
+      const response = await fetch(`https://kataster.bev.gv.at/api/all/?term=${encodeURIComponent(value)}`);
       const { data } = await response.json();
-      data.features.forEach((feature) => {
+      data?.features.forEach((feature) => {
         const { properties } = feature;
         if (!properties.name && properties.objectType === '11') {
           properties.name = `${properties.plz} ${properties.ort} ${properties.strasse} ${properties.hnr}`;
         }
+        if (properties.objectType === '7701') {
+          properties.name = `${properties.name} ${properties.kg}`;
+        }
       });
-      items.value = data.features;
+      items.value = data?.features
+        .filter((feature) => ![4, 21].includes(feature.properties.objectType));
     } finally {
       isLoading.value = false;
     }
@@ -54,3 +58,14 @@ watch(model, (value) => {
   emit('search', value);
 });
 </script>
+
+<style>
+/*
+ * Workaround for v-autocomplete list getting too high
+ * Cannot be scoped, so this might affect other components
+ * TODO Report Vuetify bug
+ */
+.v-list {
+  max-height: 80vh;
+}
+</style>
