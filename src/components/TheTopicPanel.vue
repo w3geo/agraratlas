@@ -57,7 +57,7 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
 watch(selectedTopic, (value) => {
-  showOverview.value = value !== 'none';
+  showOverview.value = value === 'any';
   topics.forEach((topic) => {
     topic.visible = topic.label === value;
   });

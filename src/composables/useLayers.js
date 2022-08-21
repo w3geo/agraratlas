@@ -36,7 +36,7 @@ function setLayerOpacity(mapboxLayer) {
 function updateAnyTopicVisibility() {
   const { layers } = map.get('mapbox-style');
   const any = layers.filter((l) => l.metadata?.group === 'any');
-  const visibility = showOverview.value || topics.some((t) => t.visible) ? 'visible' : 'none';
+  const visibility = showOverview.value ? 'visible' : 'none';
   any.forEach((layer) => {
     layer.layout = { ...layer.layout, visibility };
     getLayer(map, layer.id).changed();
