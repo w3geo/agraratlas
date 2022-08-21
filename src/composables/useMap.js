@@ -8,7 +8,7 @@ import {
   apply, applyStyle, getSource, renderTransparent,
 } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
 
 /**
@@ -18,9 +18,9 @@ import VectorTileLayer from 'ol/layer/VectorTile';
  */
 
 /**
- * @type {import('vue').Ref<MapView>}
+ * @type {import('vue').ShallowRef<MapView>}
  */
-export const mapView = ref({ zoom: 0, center: [0, 0] });
+export const mapView = shallowRef({ zoom: 0, center: [0, 0] });
 
 renderTransparent(true);
 
