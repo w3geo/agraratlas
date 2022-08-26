@@ -15,12 +15,11 @@ import { SCHLAEGE_LAYER } from '../constants';
 
 const aspectClassesByRGB = {
   '255,255,191': 'Neigung 0 - <10%',
-  '254,228,160': 'Neigung 10 - <15%',
-  '254,201,128': 'Neigung 15 - <18%',
-  '253,174,97': 'Neigung 18 - <25%',
-  '240,124,74': 'Neigung 25 - <35%',
-  '228,75,51': 'Neigung 35 - <50%',
-  '215,25,28': 'Neigung >=50%',
+  '254,228,160': 'Neigung 10 - <18%',
+  '254,201,128': 'Neigung 18 - <25%',
+  '253,174,97': 'Neigung 25 - <35%',
+  '240,124,74': 'Neigung 35 - <50%',
+  '228,75,51': 'Neigung >=50%',
 };
 
 /**
