@@ -95,15 +95,6 @@
       "minzoom": 9,
       "maxzoom": 14
     },
-    "neigungsklassen_7": {
-      "type": "raster",
-      "tileSize": 512,
-      "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_7&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
-      ],
-      "minzoom": 9,
-      "maxzoom": 14
-    },
     "agrargis": {
       "type": "vector",
       "tiles": [
@@ -155,7 +146,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 10 - <15%"
+      "label": "Neigung 10 - <18%"
     }
   }, {
     "id": "neigungsklassen_3",
@@ -165,7 +156,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 15 - <18%"
+      "label": "Neigung 18 - <25%"
     }
   }, {
     "id": "neigungsklassen_4",
@@ -175,7 +166,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 18 - <25%"
+      "label": "Neigung 25 - <35%"
     }
   }, {
     "id": "neigungsklassen_5",
@@ -185,22 +176,12 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 25 - <35%"
+      "label": "Neigung 35 - <50%"
     }
   }, {
     "id": "neigungsklassen_6",
     "type": "raster",
     "source": "neigungsklassen_6",
-    "minzoom": 9,
-    "layout": { "visibility": "none" },
-    "metadata": {
-      "group": "one",
-      "label": "Neigung 35 - <50%"
-    }
-  }, {
-    "id": "neigungsklassen_7",
-    "type": "raster",
-    "source": "neigungsklassen_7",
     "minzoom": 9,
     "layout": { "visibility": "none" },
     "metadata": {
