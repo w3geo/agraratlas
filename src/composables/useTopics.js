@@ -12,6 +12,7 @@ import { schlagInfo } from './useSchlag';
 /**
  * @typedef Topic
  * @property {string} label
+ * @property {string} color
  * @property {boolean} inExtent
  * @property {boolean} inSchlagExtent
  * @property {boolean} visible
@@ -23,10 +24,11 @@ mapReady.then(() => {
   const { layers } = map.get('mapbox-style');
   topics.push(...Object.values(layers
     .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster')
-    .map((l) => l.metadata?.label).reduce((acc, cur) => {
-      if (!(cur in acc)) {
-        acc[cur] = ({
-          label: cur,
+    .map((l) => ({ label: l.metadata?.label, color: l.paint?.['fill-color'] })).reduce((acc, { label, color }) => {
+      if (!(label in acc)) {
+        acc[label] = ({
+          label,
+          color,
           inExtent: false,
           inSchlagExtent: false,
           visible: false,
