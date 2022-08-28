@@ -25,6 +25,7 @@ const aspectClassesByRGB = {
 /**
  * @typedef Aspect
  * @property {string} label
+ * @property {string} color
  * @property {boolean} inSchlag
  * @property {number} fraction
  * @property {boolean} visible
@@ -43,6 +44,7 @@ mapReady.then(() => {
       if (!(cur in acc)) {
         acc[cur] = ({
           label: cur,
+          color: `rgb(${Object.keys(aspectClassesByRGB)[Object.values(aspectClassesByRGB).indexOf(cur)]})`,
           fraction: 0,
           inSchlag: false,
           visible: false,
