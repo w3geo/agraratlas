@@ -17,9 +17,9 @@
     >
       <the-schlag-info-panel @schlag="switchSchlag" />
       <the-topic-panel />
-      <the-map-tool-panel />
     </v-expansion-panels>
   </v-col>
+  <the-map-tool-panel-new />
   <the-base-layer-switcher />
 </template>
 
@@ -30,7 +30,7 @@ import {
 import { bind } from 'size-sensor';
 import { useMap } from '../composables/useMap';
 import TheSchlagInfoPanel from '../components/TheSchlagInfoPanel.vue';
-import TheMapToolPanel from '../components/TheMapToolPanel.vue';
+import TheMapToolPanelNew from '../components/TheMapToolPanelNew.vue';
 import TheTopicPanel from '../components/TheTopicPanel.vue';
 import TheBaseLayerSwitcher from '../components/TheBaseLayerSwitcher.vue';
 
