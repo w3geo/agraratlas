@@ -20,6 +20,7 @@
       <the-map-tool-panel />
     </v-expansion-panels>
   </v-col>
+  <the-base-layer-switcher />
 </template>
 
 <script setup>
@@ -31,6 +32,7 @@ import { useMap } from '../composables/useMap';
 import TheSchlagInfoPanel from '../components/TheSchlagInfoPanel.vue';
 import TheMapToolPanel from '../components/TheMapToolPanel.vue';
 import TheTopicPanel from '../components/TheTopicPanel.vue';
+import TheBaseLayerSwitcher from '../components/TheBaseLayerSwitcher.vue';
 
 const { map } = useMap();
 const mapContainer = ref();
