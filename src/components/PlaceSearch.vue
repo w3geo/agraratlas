@@ -15,6 +15,7 @@
     filter-mode="contains"
     placeholder="Adresse, Ort, Riedname, ..."
     return-object
+    class="roundedStyle"
   />
 </template>
 
@@ -67,5 +68,14 @@ watch(model, (value) => {
  */
 .v-list {
   max-height: 80vh;
+}
+
+.roundedStyle {
+  border-radius: 4px;
+}
+
+.v-field__outline::before {
+  border-radius: 4px;
+  border: 1px solid #999!important;
 }
 </style>
