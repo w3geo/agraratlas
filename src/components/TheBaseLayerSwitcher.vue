@@ -83,12 +83,12 @@
 <script setup>
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
-import { panelControl } from '../composables/panelControl';
+import { usePanelControl } from '../composables/usePanelControl';
 import { useLayers } from '../composables/useLayers';
 
 const { baseLayer } = useLayers();
 
-const { panels } = panelControl();
+const { panels } = usePanelControl();
 
 function switchMode(newMode) {
   baseLayer.value = newMode;
