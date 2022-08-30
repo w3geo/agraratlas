@@ -95,9 +95,9 @@ import { watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
-import { panelControl } from '../composables/panelControl';
+import { usePanelControl } from '../composables/usePanelControl';
 
-const { panels } = panelControl();
+const { panels } = usePanelControl();
 const { schlagInfo } = useSchlag();
 const { map, mapView } = useMap();
 const route = useRoute();

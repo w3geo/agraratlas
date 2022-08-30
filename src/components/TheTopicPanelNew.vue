@@ -197,11 +197,11 @@ import { computed, ref, watch } from 'vue';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
-import { panelControl } from '../composables/panelControl';
+import { usePanelControl } from '../composables/usePanelControl';
 import { useAspect } from '../composables/useAspect';
 import { mapView } from '../composables/useMap';
 
-const { panels } = panelControl();
+const { panels } = usePanelControl();
 const { topics } = useTopics();
 const { opacity, showOverview } = useLayers();
 const { schlagInfo } = useSchlag();

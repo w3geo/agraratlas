@@ -17,6 +17,6 @@ const panels = ref({
  *   panels: import('vue').Ref<panels>,
  * }}
  */
-export function panelControl() {
+export function usePanelControl() {
   return { panels };
 }

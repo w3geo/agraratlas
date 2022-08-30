@@ -184,9 +184,9 @@
 
 <script setup>
 import { useTools } from '../composables/useTools';
-import { panelControl } from '../composables/panelControl';
+import { usePanelControl } from '../composables/usePanelControl';
 
-const { panels } = panelControl();
+const { panels } = usePanelControl();
 
 const {
   draw, clearDraw, measure, clearMeasure, importJson, exportJson,
