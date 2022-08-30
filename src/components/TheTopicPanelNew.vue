@@ -160,10 +160,12 @@
               />
             </v-col>
             <v-col
+              style="cursor: pointer"
               cols="6"
               class="pa-1 pt-2 text-body-2"
               :class="{'font-weight-bold' : schlagInfo && value.inSchlag,
                        'textDisabled': mapView.zoom < 9}"
+              @click="value.visible = !value.visible"
             >
               {{ value.label }}
             </v-col>
