@@ -112,7 +112,60 @@
         </div>
       </v-window-item>
       <v-window-item value="neigungen">
-        Hangneigungen...
+        <v-row
+          no-gutters
+          class="text-body-2 font-weight-bold lineBelow mt-3"
+        >
+          <v-col
+            cols="2"
+            class="pa-2"
+          />
+          <v-col
+            cols="6"
+            class="pa-2"
+          >
+            Hangneigung
+          </v-col>
+          <v-col
+            cols="4"
+            class="pa-2"
+          >
+            <span v-if="schlagInfo && !schlagInfo.loading">Anteil/Schlag</span>
+          </v-col>
+        </v-row>
+        <v-row
+          v-for="(value, key) in aspects"
+          :key="key"
+          no-gutters
+        >
+          <v-col
+            cols="2"
+            class="px-2 pt-1"
+          >
+            <v-checkbox
+              v-model="value.visible"
+              class="denseBox"
+              :disabled="mapView.zoom < 9"
+              density="compact"
+              hide-details
+            />
+          </v-col>
+          <v-col
+            cols="6"
+            class="pa-1 pt-2 text-body-2"
+          >
+            {{ value.label }}
+          </v-col>
+          <v-col
+            cols="4"
+            class="pa-1 pt-2 text-body-2"
+          >
+            <span v-if="schlagInfo && !schlagInfo.loading">
+              {{ value.inSchlag
+                ? value.fraction < 0.005 ? '< 0,5%' : Math.round(value.fraction * 100) + '%'
+                : '-' }}</span>
+          </v-col>
+        </v-row>
       </v-window-item>
     </v-window>
   </v-card>
@@ -124,11 +177,14 @@ import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
 import { panelControl } from '../composables/panelControl';
+import { useAspect } from '../composables/useAspect';
+import { mapView } from '../composables/useMap';
 
 const { panels } = panelControl();
 const { topics } = useTopics();
 const { showOverview } = useLayers();
 const { schlagInfo } = useSchlag();
+const { aspects } = useAspect();
 
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('any');
@@ -212,6 +268,10 @@ watch(selectedTopic, (value) => {
   .scrollDiv .v-selection-control.fat .v-label {
     font-weight: bold;
     color: #000;
+  }
+
+  .v-checkbox.denseBox .v-selection-control {
+    height: auto!important;
   }
 
 </style>
