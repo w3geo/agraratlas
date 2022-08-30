@@ -1,9 +1,9 @@
 <template>
   <v-btn
-    v-if="minimized"
+    v-if="!panels.baselayer"
     class="layerSwitcherButton pa-2"
     size="30"
-    @click="minimized = !minimized"
+    @click="panels.baselayer = !panels.baselayer"
   >
     <v-icon
       size="24"
@@ -13,7 +13,7 @@
     </v-icon>
   </v-btn>
   <v-card
-    v-if="!minimized"
+    v-if="panels.baselayer"
     class="layerSwitcherButton"
     width="320px"
     height="155px"
@@ -35,7 +35,7 @@
         <v-icon
           color="white"
           class="mr-1 mb-1"
-          @click="minimized = !minimized"
+          @click="panels.baselayer = !panels.baselayer"
         >
           mdi-close-box
         </v-icon>
@@ -96,14 +96,15 @@ import { ref } from 'vue';
 import auto from '../assets/auto.jpg';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
+import { panelControl } from '../composables/panelControl';
 
-const minimized = ref(true);
 const mapMode = ref('auto');
+
+const { panels } = panelControl();
 
 function switchMode(newMode) {
   mapMode.value = newMode;
 }
-
 </script>
 
 <style scoped>

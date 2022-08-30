@@ -1,9 +1,9 @@
 <template>
   <v-btn
-    v-if="minimized"
+    v-if="!panels.tools || panels.baselayer"
     class="layerSwitcherButton pa-2"
     size="30"
-    @click="minimized = !minimized"
+    @click="panels.tools = !panels.tools"
   >
     <v-icon
       size="24"
@@ -14,7 +14,7 @@
   </v-btn>
 
   <v-card
-    v-if="!minimized"
+    v-if="panels.tools && !panels.baselayer"
     class="layerSwitcherButton"
     width="440px"
     height="160px"
@@ -36,7 +36,7 @@
         <v-icon
           color="white"
           class="mr-1 mb-1"
-          @click="minimized = !minimized, draw = ''"
+          @click="panels.tools = !panels.tools, draw = ''"
         >
           mdi-close-box
         </v-icon>
@@ -185,12 +185,13 @@
 <script setup>
 import { ref } from 'vue';
 import { useTools } from '../composables/useTools';
+import { panelControl } from '../composables/panelControl';
+
+const { panels } = panelControl();
 
 const {
   draw, clearDraw, measure, clearMeasure, importJson, exportJson,
 } = useTools();
-
-const minimized = ref(true);
 
 </script>
 
