@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    v-if="!panels.schlag || panels.baselayer || panels.tools"
+    v-if="!panels.schlag"
     class="layerSwitcherButton pa-2"
     size="30"
     @click="panels.schlag = !panels.schlag"
@@ -14,7 +14,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.schlag && !panels.baselayer && !panels.tools"
+    v-if="panels.schlag"
     class="layerSwitcherButton"
     width="440px"
     height="105px"

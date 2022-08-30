@@ -1,7 +1,8 @@
 <template>
   <v-btn
-    v-if="!panels.themen || panels.baselayer || panels.tools"
+    v-if="!panels.themen"
     class="layerSwitcherButton pa-2"
+    :class="{noSchlag : !panels.schlag}"
     size="30"
     @click="panels.themen = !panels.themen"
   >
@@ -14,10 +15,11 @@
   </v-btn>
 
   <v-card
-    v-if="panels.themen && !panels.baselayer && !panels.tools"
+    v-if="panels.themen"
     class="layerSwitcherButton"
+    :class="{noSchlag : !panels.schlag}"
     width="440px"
-    height="calc(100vh - 350px)"
+    :height="topicVcard"
   >
     <v-row
       no-gutters
@@ -69,7 +71,10 @@
 
     <v-window v-model="tab">
       <v-window-item value="themen">
-        <div class="pa-2 scrollDiv">
+        <div
+          class="pa-2 scrollDiv"
+          :style="scrollDivCalc"
+        >
           <v-radio-group
             v-model="selectedTopic"
           >
@@ -112,7 +117,10 @@
         </div>
       </v-window-item>
       <v-window-item value="neigungen">
-        <div class="scrollDivLarger">
+        <div
+          class="scrollDiv"
+          :style="scrollDivLargerCalc"
+        >
           <v-row
             no-gutters
             class="text-body-2 font-weight-bold lineBelow mt-3"
@@ -218,6 +226,49 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
   ? 'Nur für den gewählten Schlag mögliche Themen'
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
+const topicVcard = computed(() => {
+  let minusPix = 350;
+  if (!panels.value.schlag) {
+    minusPix -= 60;
+  }
+  if (panels.value.baselayer) {
+    minusPix += 110;
+  }
+  if (panels.value.tools) {
+    minusPix += 115;
+  }
+
+  return `calc(100vh - ${minusPix}px)`;
+});
+
+const scrollDivCalc = computed(() => {
+  let minusPix = 505;
+  if (!panels.value.schlag) {
+    minusPix -= 60;
+  }
+  if (panels.value.baselayer) {
+    minusPix += 110;
+  }
+  if (panels.value.tools) {
+    minusPix += 115;
+  }
+  return `height: calc(100vh - ${minusPix}px);`;
+});
+
+const scrollDivLargerCalc = computed(() => {
+  let minusPix = 505 - 41;
+  if (!panels.value.schlag) {
+    minusPix -= 60;
+  }
+  if (panels.value.baselayer) {
+    minusPix += 110;
+  }
+  if (panels.value.tools) {
+    minusPix += 115;
+  }
+  return `height: calc(100vh - ${minusPix}px);`;
+});
+
 watch(selectedTopic, (value) => {
   showOverview.value = value === 'any';
   topics.forEach((topic) => {
@@ -232,6 +283,10 @@ watch(selectedTopic, (value) => {
     position: absolute;
     left: 10px;
     top: 180px;
+  }
+
+  .layerSwitcherButton.noSchlag {
+    top: 120px;
   }
 
   .boxHeader .v-col {
@@ -280,13 +335,12 @@ watch(selectedTopic, (value) => {
   }
 
   .scrollDiv {
-    height: calc(100vh - 505px);
     overflow: auto;
   }
 
-  .scrollDivLarger {
-    height: calc(100vh - 464px);
-    overflow: auto;
+  .layerSwitcherButton.noSchlag .scrollDiv {
+    height: calc(100vh - 485px);
+
   }
 
   .scrollDiv .mdi-radiobox-blank, .scrollDiv .mdi-radiobox-marked {

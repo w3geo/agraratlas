@@ -1,7 +1,8 @@
 <template>
   <v-btn
-    v-if="!panels.tools || panels.baselayer"
+    v-if="!panels.tools"
     class="layerSwitcherButton pa-2"
+    :class="{baseShow : panels.baselayer}"
     size="30"
     @click="panels.tools = !panels.tools"
   >
@@ -14,8 +15,9 @@
   </v-btn>
 
   <v-card
-    v-if="panels.tools && !panels.baselayer"
+    v-if="panels.tools"
     class="layerSwitcherButton"
+    :class="{baseShow : panels.baselayer}"
     width="440px"
     height="160px"
   >
@@ -199,6 +201,10 @@ const {
     position: absolute;
     left: 10px;
     bottom: 110px;
+  }
+
+  .layerSwitcherButton.baseShow {
+    bottom: 220px;
   }
 
   .boxHeader .v-col {
