@@ -367,4 +367,9 @@ watch(selectedTopic, (value) => {
     height: auto!important;
   }
 
+  .v-radio.v-selection-control--dirty .v-label {
+    color: #000;
+    opacity: 1;
+  }
+
 </style>
