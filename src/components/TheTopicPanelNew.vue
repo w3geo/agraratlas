@@ -154,6 +154,7 @@
             <v-col
               cols="6"
               class="pa-1 pt-2 text-body-2"
+              :class="{'font-weight-bold' : schlagInfo && value.inSchlag}"
             >
               {{ value.label }}
             </v-col>
