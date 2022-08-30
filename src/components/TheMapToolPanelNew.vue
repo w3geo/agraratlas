@@ -183,7 +183,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useTools } from '../composables/useTools';
 import { panelControl } from '../composables/panelControl';
 

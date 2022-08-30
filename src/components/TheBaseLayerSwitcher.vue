@@ -15,7 +15,7 @@
   <v-card
     v-if="panels.baselayer"
     class="layerSwitcherButton"
-    width="320px"
+    width="260px"
     height="155px"
   >
     <v-row
@@ -43,48 +43,37 @@
     </v-row>
     <v-row no-gutters>
       <v-col
-        cols="4"
+        cols="6"
         align="center"
         class="mapMode pa-2"
-        :class="{selected : mapMode=='auto'}"
-        @click="switchMode('auto')"
-      >
-        <v-img
-          :src="auto"
-          contain
-          class="mb-1"
-        /><div class="text-caption">
-          Automatisch
-        </div>
-      </v-col>
-      <v-col
-        cols="4"
-        align="center"
-        class="mapMode pa-2"
-        :class="{selected : mapMode=='topo'}"
-        @click="switchMode('topo')"
+        :class="{selected : baseLayer=='Übersichtskarte'}"
+        @click="switchMode('Übersichtskarte')"
       >
         <v-img
           :src="topo"
           contain
+          width="90"
+          height="90"
           class="mb-1"
         /><div class="text-caption">
-          Übersicht
+          <span>Übersichtskarte</span>
         </div>
       </v-col>
       <v-col
-        cols="4"
+        cols="6"
         align="center"
         class="mapMode pa-2"
-        :class="{selected : mapMode=='ortho'}"
-        @click="switchMode('ortho')"
+        :class="{selected : baseLayer=='Orthofoto'}"
+        @click="switchMode('Orthofoto')"
       >
         <v-img
           :src="ortho"
           contain
+          width="90"
+          height="90"
           class="mb-1"
         /><div class="text-caption">
-          Luftbild
+          <span>Orthofoto</span>
         </div>
       </v-col>
     </v-row>
@@ -92,18 +81,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import auto from '../assets/auto.jpg';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
 import { panelControl } from '../composables/panelControl';
+import { useLayers } from '../composables/useLayers';
 
-const mapMode = ref('auto');
+const { baseLayer } = useLayers();
 
 const { panels } = panelControl();
 
 function switchMode(newMode) {
-  mapMode.value = newMode;
+  baseLayer.value = newMode;
 }
 </script>
 
@@ -126,10 +114,15 @@ function switchMode(newMode) {
 
   .mapMode .v-img {
     border: 1px solid #fff;
-    opacity: .7;
+    opacity: .5;
   }
   .mapMode.selected .v-img {
     border: 1px solid #333;
     opacity: 1;
   }
+
+  .mapMode.selected span {
+    font-weight: bold;
+  }
+
 </style>
