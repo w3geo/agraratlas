@@ -7,7 +7,11 @@
         variant="text"
         @click.stop="drawer = !drawer"
       />
-      <v-app-bar-title>AgrarGIS</v-app-bar-title>
+      <v-app-bar-title
+        class="font-weight-black text-grey-darken-2"
+      >
+        INSPIRE AGRAR ATLAS
+      </v-app-bar-title>
       <v-spacer />
       <v-col
         cols="12"
