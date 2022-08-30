@@ -47,7 +47,7 @@
       v-model="tab"
       grow
       class="allTabs"
-      background-color="#eee"
+      background-color="#f6f6f6"
     >
       <v-tab
         value="themen"
@@ -112,62 +112,82 @@
         </div>
       </v-window-item>
       <v-window-item value="neigungen">
-        <v-row
-          no-gutters
-          class="text-body-2 font-weight-bold lineBelow mt-3"
-        >
-          <v-col
-            cols="2"
-            class="pa-2"
-          />
-          <v-col
-            cols="6"
-            class="pa-2"
+        <div class="scrollDivLarger">
+          <v-row
+            no-gutters
+            class="text-body-2 font-weight-bold lineBelow mt-3"
           >
-            Hangneigung
-          </v-col>
-          <v-col
-            cols="4"
-            class="pa-2"
-          >
-            <span v-if="schlagInfo && !schlagInfo.loading">Anteil/Schlag</span>
-          </v-col>
-        </v-row>
-        <v-row
-          v-for="(value, key) in aspects"
-          :key="key"
-          no-gutters
-        >
-          <v-col
-            cols="2"
-            class="px-2 pt-1"
-          >
-            <v-checkbox
-              v-model="value.visible"
-              class="denseBox"
-              :disabled="mapView.zoom < 9"
-              density="compact"
-              hide-details
+            <v-col
+              cols="2"
+              class="pa-2"
             />
-          </v-col>
-          <v-col
-            cols="6"
-            class="pa-1 pt-2 text-body-2"
+            <v-col
+              cols="6"
+              class="pa-2"
+            >
+              Hangneigung
+            </v-col>
+            <v-col
+              cols="4"
+              class="pa-2"
+            >
+              <span v-if="schlagInfo && !schlagInfo.loading">Anteil/Schlag</span>
+            </v-col>
+          </v-row>
+          <v-row
+            v-for="(value, key) in aspects"
+            :key="key"
+            no-gutters
           >
-            {{ value.label }}
-          </v-col>
-          <v-col
-            cols="4"
-            class="pa-1 pt-2 text-body-2"
-          >
-            <span v-if="schlagInfo && !schlagInfo.loading">
-              {{ value.inSchlag
-                ? value.fraction < 0.005 ? '< 0,5%' : Math.round(value.fraction * 100) + '%'
-                : '-' }}</span>
-          </v-col>
-        </v-row>
+            <v-col
+              cols="2"
+              class="px-2 pt-1"
+            >
+              <v-checkbox
+                v-model="value.visible"
+                class="denseBox"
+                :disabled="mapView.zoom < 9"
+                density="compact"
+                hide-details
+              />
+            </v-col>
+            <v-col
+              cols="6"
+              class="pa-1 pt-2 text-body-2"
+            >
+              {{ value.label }}
+            </v-col>
+            <v-col
+              cols="4"
+              class="pa-1 pt-2 text-body-2"
+            >
+              <span v-if="schlagInfo && !schlagInfo.loading">
+                {{ value.inSchlag
+                  ? value.fraction < 0.005 ? '< 0,5%' : Math.round(value.fraction * 100) + '%'
+                  : '-' }}</span>
+            </v-col>
+          </v-row>
+        </div>
       </v-window-item>
     </v-window>
+    <v-row
+      no-gutters
+      class="pa-2 lineAbove"
+    >
+      <v-slider
+        v-model="opacity"
+        class="ma-0"
+        prepend-icon="mdi-opacity"
+        :max="1"
+        :min="0"
+        :step="0.1"
+        thumb-color="white"
+        color="gray"
+        hide-details
+        density="compact"
+        title="Deckkraft"
+      />
+    </v-row>
   </v-card>
 </template>
 
@@ -182,7 +202,7 @@ import { mapView } from '../composables/useMap';
 
 const { panels } = panelControl();
 const { topics } = useTopics();
-const { showOverview } = useLayers();
+const { opacity, showOverview } = useLayers();
 const { schlagInfo } = useSchlag();
 const { aspects } = useAspect();
 
@@ -244,16 +264,27 @@ watch(selectedTopic, (value) => {
 .lineBelow {
   border-bottom: 1px solid #ddd;
 }
+.lineAbove {
+  border-top: 1px solid #ddd;
+  background-color: #f6f6f6;
+}
+
 </style>
 
 <style>
   /* only work if not scoped */
   .topicFilter {
-    border-top: 1px solid #666;
+    border-top: 1px solid #ddd;
+    background-color: #f6f6f6;
   }
 
   .scrollDiv {
-    height: calc(100vh - 460px);
+    height: calc(100vh - 505px);
+    overflow: auto;
+  }
+
+  .scrollDivLarger {
+    height: calc(100vh - 464px);
     overflow: auto;
   }
 
