@@ -27,7 +27,7 @@
         <v-icon class="mx-1">
           mdi-view-list
         </v-icon>
-        Fachinformationen / Hangneigungen:
+        Themen / Hangneigungen:
       </v-col>
       <v-col
         cols="2"
@@ -43,35 +43,76 @@
       </v-col>
     </v-row>
 
-    <v-switch
-      v-model="onlyTopicsInExtent"
-      :label="filterSwitchLabel"
-    />
-    <v-radio-group v-model="selectedTopic">
-      <v-radio
-        key="-2"
-        label="Nur Hintergrundkarte"
-        value="none"
-        density="compact"
-      />
-      <v-radio
-        key="-1"
-        label="Übersicht aller Themen"
-        value="any"
-        density="compact"
-      />
-      <template v-for="(topic, index) in topics">
-        <v-radio
-          v-if="!onlyTopicsInExtent ||
-            (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
-          :key="index"
-          :label="topic.label"
-          :value="topic.label"
-          hide-details
-          density="compact"
-        />
-      </template>
-    </v-radio-group>
+    <v-tabs
+      v-model="tab"
+      grow
+      class="allTabs"
+      background-color="#eee"
+    >
+      <v-tab
+        value="themen"
+        height="40"
+        class="tabInActive"
+        selected-class="tabActive left"
+      >
+        Themen
+      </v-tab>
+      <v-tab
+        value="neigungen"
+        height="40"
+        class="tabInActive"
+        selected-class="tabActive right"
+      >
+        Hangneigungen
+      </v-tab>
+    </v-tabs>
+
+    <v-window v-model="tab">
+      <v-window-item value="themen">
+        <div class="pa-2 scrollDiv">
+          <v-radio-group
+            v-model="selectedTopic"
+          >
+            <v-radio
+              key="-2"
+              label="Nur Hintergrundkarte"
+              value="none"
+              density="compact"
+            />
+            <v-radio
+              key="-1"
+              label="Übersicht aller Themen"
+              value="any"
+              density="compact"
+            />
+            <template v-for="(topic, index) in topics">
+              <v-radio
+                v-if="!onlyTopicsInExtent ||
+                  (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
+                :key="index"
+                :label="topic.label"
+                :value="topic.label"
+                hide-details
+                density="compact"
+              />
+            </template>
+          </v-radio-group>
+        </div>
+        <div
+          class="topicFilter px-2"
+        >
+          <v-checkbox
+            v-model="onlyTopicsInExtent"
+            density="compact"
+            hide-details
+            :label="filterSwitchLabel"
+          />
+        </div>
+      </v-window-item>
+      <v-window-item value="neigungen">
+        Hangneigungen...
+      </v-window-item>
+    </v-window>
   </v-card>
 </template>
 
@@ -90,7 +131,9 @@ const { schlagInfo } = useSchlag();
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('any');
 /** @type {import("vue").Ref<boolean>} */
-const onlyTopicsInExtent = ref(true);
+const onlyTopicsInExtent = ref(false);
+
+const tab = ref();
 
 const filterSwitchLabel = computed(() => (schlagInfo.value
   ? 'Nur für den gewählten Schlag mögliche Themen'
@@ -116,6 +159,49 @@ watch(selectedTopic, (value) => {
     height: 30px;
     line-height: 30px;
     background-color: #777;
+  }
+
+  .allTabs {
+    height: 40px!important;
+  }
+
+  .tabInActive {
+    border-bottom: 1px solid #666;
+  }
+.tabActive {
+  border-top: 1px solid #666;
+  border-bottom: none;
+  background-color: white;
+}
+
+.tabActive.left {
+  border-right: 1px solid #666;
+  border-top-right-radius: 8px!important;
+}
+.tabActive.right {
+  border-left: 1px solid #666;
+  border-top-left-radius: 8px!important;
+}
+</style>
+
+<style>
+  /* only work if not scoped */
+  .topicFilter {
+    border-top: 1px solid #666;
+  }
+
+  .scrollDiv {
+    height: calc(100vh - 470px);
+    overflow: auto;
+  }
+
+  .scrollDiv .mdi-radiobox-blank, .scrollDiv .mdi-radiobox-marked {
+    font-size: 15px!important;
+  }
+
+  .scrollDiv .v-label, .topicFilter .v-label, .topicFilter input {
+    font-size: 15px!important;
+
   }
 
 </style>
