@@ -162,7 +162,8 @@
             <v-col
               cols="6"
               class="pa-1 pt-2 text-body-2"
-              :class="{'font-weight-bold' : schlagInfo && value.inSchlag}"
+              :class="{'font-weight-bold' : schlagInfo && value.inSchlag,
+                       'textDisabled': mapView.zoom < 9}"
             >
               {{ value.label }}
             </v-col>
@@ -323,6 +324,10 @@ watch(selectedTopic, (value) => {
 .lineAbove {
   border-top: 1px solid #ddd;
   background-color: #f6f6f6;
+}
+
+.textDisabled {
+  color:#ddd;
 }
 
 </style>
