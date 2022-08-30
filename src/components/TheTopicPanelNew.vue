@@ -84,6 +84,7 @@
               label="Übersicht aller Themen"
               value="any"
               density="compact"
+              class="lineBelow"
             />
             <template v-for="(topic, index) in topics">
               <v-radio
@@ -94,6 +95,7 @@
                 :value="topic.label"
                 hide-details
                 density="compact"
+                :class="{fat : schlagInfo && topic.inSchlagExtent}"
               />
             </template>
           </v-radio-group>
@@ -182,6 +184,10 @@ watch(selectedTopic, (value) => {
   border-left: 1px solid #666;
   border-top-left-radius: 8px!important;
 }
+
+.lineBelow {
+  border-bottom: 1px solid #ddd;
+}
 </style>
 
 <style>
@@ -191,7 +197,7 @@ watch(selectedTopic, (value) => {
   }
 
   .scrollDiv {
-    height: calc(100vh - 470px);
+    height: calc(100vh - 460px);
     overflow: auto;
   }
 
@@ -201,7 +207,11 @@ watch(selectedTopic, (value) => {
 
   .scrollDiv .v-label, .topicFilter .v-label, .topicFilter input {
     font-size: 15px!important;
+  }
 
+  .scrollDiv .v-selection-control.fat .v-label {
+    font-weight: bold;
+    color: #000;
   }
 
 </style>
