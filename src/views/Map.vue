@@ -3,22 +3,8 @@
     ref="mapContainer"
     class="map"
   />
-  <v-col
-    class="expansion-panel"
-    cols="12"
-    sm="10"
-    md="5"
-    lg="4"
-    xl="3"
-  >
-    <v-expansion-panels
-      ref="panels"
-      v-model="panel"
-    >
-      <the-schlag-info-panel @schlag="switchSchlag" />
-      <the-topic-panel />
-    </v-expansion-panels>
-  </v-col>
+  <the-schlag-info-panel-new @schlag="switchSchlag" />
+  <the-topic-panel-new />
   <the-map-tool-panel-new />
   <the-base-layer-switcher />
 </template>
@@ -29,9 +15,9 @@ import {
 } from 'vue';
 import { bind } from 'size-sensor';
 import { useMap } from '../composables/useMap';
-import TheSchlagInfoPanel from '../components/TheSchlagInfoPanel.vue';
+import TheSchlagInfoPanelNew from '../components/TheSchlagInfoPanelNew.vue';
 import TheMapToolPanelNew from '../components/TheMapToolPanelNew.vue';
-import TheTopicPanel from '../components/TheTopicPanel.vue';
+import TheTopicPanelNew from '../components/TheTopicPanelNew.vue';
 import TheBaseLayerSwitcher from '../components/TheBaseLayerSwitcher.vue';
 
 const { map } = useMap();

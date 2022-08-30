@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
 /**
- * @typedef SchlagInfo
+ * @typedef panels
  * @property {baselayer} boolean
  * @property {tools} boolean
  * @property {themen} boolean
@@ -14,9 +14,7 @@ const panels = ref({
 
 /**
  * @returns {{
- *   schlagInfo: import('vue').Ref<SchlagInfo>,
- *   availableLayersOfInterest: import('vue').Ref<Array<string>>,
- *   layersOfInterest: import('vue').Ref<Array<string>>
+ *   panels: import('vue').Ref<panels>,
  * }}
  */
 export function panelControl() {
