@@ -162,9 +162,10 @@
             <v-col
               style="cursor: pointer"
               cols="6"
-              class="pa-1 pt-2 text-body-2"
-              :class="{'font-weight-bold' : schlagInfo && value.inSchlag,
-                       'textDisabled': mapView.zoom < 9}"
+              class="pa-1 pt-2 text-body-2 aspectLabel"
+              :class="{'selected' : schlagInfo && value.inSchlag,
+                       'active' : value.visible,
+                       'disabled': mapView.zoom < 9}"
               @click="value.visible = !value.visible"
             >
               {{ value.label }}
@@ -328,8 +329,19 @@ watch(selectedTopic, (value) => {
   background-color: #f6f6f6;
 }
 
-.textDisabled {
-  color:#ddd;
+.aspectLabel {
+  color: #000;
+  opacity: .7;
+}
+.aspectLabel.active {
+  opacity: .9;
+}
+.aspectLabel.selected {
+  font-weight: bold;
+  opacity: 1;
+}
+.aspectLabel.disabled {
+  opacity: .5;
 }
 
 </style>
@@ -361,15 +373,20 @@ watch(selectedTopic, (value) => {
   .scrollDiv .v-selection-control.fat .v-label {
     font-weight: bold;
     color: #000;
+    opacity: 1;
   }
 
   .v-checkbox.denseBox .v-selection-control {
     height: auto!important;
   }
 
-  .v-radio.v-selection-control--dirty .v-label {
+  .v-radio.v-selection-control .v-label {
     color: #000;
-    opacity: 1;
+    opacity: .7;
+  }
+  .v-radio.v-selection-control.v-selection-control--dirty .v-label {
+    color: #000;
+    opacity: .9;
   }
 
 </style>
