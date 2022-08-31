@@ -231,12 +231,12 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
 const topicVcard = computed(() => {
-  let minusPix = 350;
+  let minusPix = 320;
   if (!panels.value.schlag) {
     minusPix -= 60;
   }
   if (panels.value.baselayer) {
-    minusPix += 110;
+    minusPix += 70;
   }
   if (panels.value.tools) {
     minusPix += 115;
@@ -246,12 +246,12 @@ const topicVcard = computed(() => {
 });
 
 const scrollDivCalc = computed(() => {
-  let minusPix = 505;
+  let minusPix = 475;
   if (!panels.value.schlag) {
     minusPix -= 60;
   }
   if (panels.value.baselayer) {
-    minusPix += 110;
+    minusPix += 70;
   }
   if (panels.value.tools) {
     minusPix += 115;
@@ -260,12 +260,12 @@ const scrollDivCalc = computed(() => {
 });
 
 const scrollDivLargerCalc = computed(() => {
-  let minusPix = 505 - 41;
+  let minusPix = 475 - 41;
   if (!panels.value.schlag) {
     minusPix -= 60;
   }
   if (panels.value.baselayer) {
-    minusPix += 110;
+    minusPix += 70;
   }
   if (panels.value.tools) {
     minusPix += 115;
@@ -286,11 +286,11 @@ watch(selectedTopic, (value) => {
   .layerSwitcherButton {
     position: absolute;
     left: 10px;
-    top: 180px;
+    top: 170px;
   }
 
   .layerSwitcherButton.noSchlag {
-    top: 120px;
+    top: 110px;
   }
 
   .boxHeader .v-col {

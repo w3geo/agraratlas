@@ -14,7 +14,7 @@
   </v-btn>
   <v-card
     v-if="panels.baselayer"
-    class="layerSwitcherButton"
+    class="layerSwitcherButton lower"
     width="260px"
     height="155px"
   >
@@ -100,6 +100,9 @@ function switchMode(newMode) {
     position: absolute;
     left: 10px;
     bottom: 50px;
+  }
+  .layerSwitcherButton.lower {
+    bottom: 10px;
   }
 
   .boxHeader .v-col {
