@@ -206,7 +206,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { useMyDisplay } from '../composables/useMyDisplay';
+import { useDisplay } from 'vuetify';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
@@ -224,19 +224,20 @@ const { aspects } = useAspect();
 const selectedTopic = ref('any');
 /** @type {import("vue").Ref<boolean>} */
 const onlyTopicsInExtent = ref(false);
-const { mobile, lowVertical } = useMyDisplay();
-
-console.log(mobile.value, lowVertical.value);
 
 const tab = ref();
+const { width, height } = useDisplay();
 
 const filterSwitchLabel = computed(() => (schlagInfo.value
   ? 'Nur für den gewählten Schlag mögliche Themen'
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+const lowVertical = computed(() => (height.value < 740));
+
 const tooLow = computed(() => {
   let retVal = false;
-  if (lowVertical) {
+  if (lowVertical.value) {
     if (panels.value.baselayer || panels.value.tools) {
       retVal = true;
     }
@@ -302,6 +303,14 @@ watch(selectedTopic, (value) => {
     position: absolute;
     left: 10px;
     top: 170px;
+  }
+
+  .layerSwitcherButton.mobile,
+  .layerSwitcherButton.noSchlag.mobile {
+    left: auto;
+    right: 80px;
+    top: 4px;
+    z-index: 5000;
   }
 
   .layerSwitcherButton.noSchlag {

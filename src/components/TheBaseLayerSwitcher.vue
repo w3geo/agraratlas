@@ -2,6 +2,7 @@
   <v-btn
     v-if="!panels.baselayer"
     class="layerSwitcherButton pa-2"
+    :class="{mobile : mobile}"
     size="30"
     @click="panels.baselayer = !panels.baselayer"
   >
@@ -81,14 +82,18 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useLayers } from '../composables/useLayers';
 
 const { baseLayer } = useLayers();
-
+const { width, height } = useDisplay();
 const { panels } = usePanelControl();
+
+const mobile = computed(() => (width.value < 800 || height.value < 520));
 
 function switchMode(newMode) {
   baseLayer.value = newMode;
