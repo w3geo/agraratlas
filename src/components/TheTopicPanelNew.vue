@@ -15,7 +15,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.themen"
+    v-if="panels.themen && !tooLow"
     class="layerSwitcherButton"
     :class="{noSchlag : !panels.schlag}"
     width="440px"
@@ -206,6 +206,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
@@ -223,12 +224,24 @@ const { aspects } = useAspect();
 const selectedTopic = ref('any');
 /** @type {import("vue").Ref<boolean>} */
 const onlyTopicsInExtent = ref(false);
+const { height } = useDisplay();
 
 const tab = ref();
 
 const filterSwitchLabel = computed(() => (schlagInfo.value
   ? 'Nur für den gewählten Schlag mögliche Themen'
   : 'Nur im Kartenausschnitt sichtbare Themen'));
+
+const tooLow = computed(() => {
+  let retVal = false;
+  if (height.value < 740) {
+    if (panels.value.baselayer || panels.value.tools) {
+      retVal = true;
+    }
+  }
+
+  return retVal;
+});
 
 const topicVcard = computed(() => {
   let minusPix = 320;

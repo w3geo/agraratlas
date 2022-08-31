@@ -14,7 +14,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.schlag"
+    v-if="panels.schlag && !tooLow"
     class="layerSwitcherButton"
     width="440px"
     height="105px"
@@ -91,12 +91,14 @@
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { watch, computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useRoute, useRouter } from 'vue-router';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
 import { usePanelControl } from '../composables/usePanelControl';
 
+const { height } = useDisplay();
 const { panels } = usePanelControl();
 const { schlagInfo } = useSchlag();
 const { map, mapView } = useMap();
@@ -105,6 +107,16 @@ const router = useRouter();
 
 const emit = defineEmits(['schlag']);
 
+const tooLow = computed(() => {
+  let retVal = false;
+  if (height.value < 740) {
+    if (panels.value.baselayer || panels.value.tools) {
+      retVal = true;
+    }
+  }
+
+  return retVal;
+});
 function setSchlagId(id) {
   if (Number(id) !== schlagInfo.value?.id) {
     schlagInfo.value = id ? {
