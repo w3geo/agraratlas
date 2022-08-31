@@ -12,17 +12,6 @@
       >
         INSPIRE AGRAR ATLAS
       </v-app-bar-title>
-      <v-spacer />
-      <v-col
-        cols="12"
-        sm="8"
-        md="4"
-      >
-        <place-search
-          class="placesearch"
-          @search="onSearch"
-        />
-      </v-col>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer">
       <v-list>
@@ -35,6 +24,15 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <div
+      class="searchField"
+      :class="{'mobile' : mobile}"
+    >
+      <place-search
+        class="placesearch"
+        @search="onSearch"
+      />
+    </div>
     <v-main>
       <router-view />
     </v-main>
@@ -42,11 +40,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import GeoJSON from 'ol/format/GeoJSON';
 import PlaceSearch from './components/PlaceSearch.vue';
 import { useMap } from './composables/useMap';
 import router from './plugins/router';
+// import { useMyDisplay } from './composables/useMyDisplay';
+// const { mobile } = useMyDisplay();
+const { width, height } = useDisplay();
+
+const mobile = computed(() => (width.value < 800 || height.value < 520));
 
 const { map } = useMap();
 const drawer = ref(false);
@@ -72,5 +76,20 @@ const onSearch = (value) => {
 <style scoped>
 .placesearch {
   white-space: nowrap;
+}
+
+.searchField {
+  z-index: 2000;
+  position: absolute;
+  right: 10px;
+  top: 4px;
+  width: 50%;
+  max-width: 340px;
+}
+
+.searchField.mobile {
+  position: absolute;
+  top: 50px;
+  width: 100%;
 }
 </style>
