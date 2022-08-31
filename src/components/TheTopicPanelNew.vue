@@ -2,7 +2,7 @@
   <v-btn
     v-if="!panels.themen"
     class="layerSwitcherButton pa-2"
-    :class="{noSchlag : !panels.schlag}"
+    :class="{noSchlag : !panels.schlag, mobile : mobile}"
     size="30"
     @click="panels.themen = !panels.themen"
   >
@@ -206,7 +206,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { useDisplay } from 'vuetify';
+import { useMyDisplay } from '../composables/useMyDisplay';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
@@ -224,7 +224,9 @@ const { aspects } = useAspect();
 const selectedTopic = ref('any');
 /** @type {import("vue").Ref<boolean>} */
 const onlyTopicsInExtent = ref(false);
-const { height } = useDisplay();
+const { mobile, lowVertical } = useMyDisplay();
+
+console.log(mobile.value, lowVertical.value);
 
 const tab = ref();
 
@@ -234,7 +236,7 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
 
 const tooLow = computed(() => {
   let retVal = false;
-  if (height.value < 740) {
+  if (lowVertical) {
     if (panels.value.baselayer || panels.value.tools) {
       retVal = true;
     }

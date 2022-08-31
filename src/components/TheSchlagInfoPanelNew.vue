@@ -92,13 +92,13 @@
 
 <script setup>
 import { watch, computed } from 'vue';
-import { useDisplay } from 'vuetify';
 import { useRoute, useRouter } from 'vue-router';
+import { useMyDisplay } from '../composables/useMyDisplay';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
 import { usePanelControl } from '../composables/usePanelControl';
 
-const { height } = useDisplay();
+const { mobile, lowVertical } = useMyDisplay();
 const { panels } = usePanelControl();
 const { schlagInfo } = useSchlag();
 const { map, mapView } = useMap();
@@ -109,7 +109,7 @@ const emit = defineEmits(['schlag']);
 
 const tooLow = computed(() => {
   let retVal = false;
-  if (height.value < 740) {
+  if (lowVertical) {
     if (panels.value.baselayer || panels.value.tools) {
       retVal = true;
     }
