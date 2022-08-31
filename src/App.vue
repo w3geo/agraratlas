@@ -13,7 +13,10 @@
         INSPIRE AGRAR ATLAS
       </v-app-bar-title>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer">
+    <v-navigation-drawer
+      v-model="drawer"
+      disable-resize-watcher="true"
+    >
       <v-list>
         <v-list-item
           v-for="item in items"
@@ -24,7 +27,22 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <v-btn
+      v-if="mobile"
+      class="searchButton pa-2"
+      size="30"
+      @click="panels.search = !panels.search"
+    >
+      <v-icon
+        size="24"
+        color="grey-darken-2"
+      >
+        mdi-magnify
+      </v-icon>
+    </v-btn>
+
     <div
+      v-if="!mobile || panels.search"
       class="searchField"
       :class="{'mobile' : mobile}"
     >
@@ -46,11 +64,15 @@ import GeoJSON from 'ol/format/GeoJSON';
 import PlaceSearch from './components/PlaceSearch.vue';
 import { useMap } from './composables/useMap';
 import router from './plugins/router';
-// import { useMyDisplay } from './composables/useMyDisplay';
-// const { mobile } = useMyDisplay();
+import { usePanelControl } from './composables/usePanelControl';
+
+const { panels } = usePanelControl();
+
 const { width, height } = useDisplay();
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
+
+const mobileSearchActive = ref(false);
 
 const { map } = useMap();
 const drawer = ref(false);
@@ -74,6 +96,13 @@ const onSearch = (value) => {
 </script>
 
 <style scoped>
+  .searchButton {
+    position:absolute;
+    right: 10px;
+    top: 4px;
+    z-index: 5000;
+  }
+
 .placesearch {
   white-space: nowrap;
 }
@@ -90,6 +119,8 @@ const onSearch = (value) => {
 .searchField.mobile {
   position: absolute;
   top: 50px;
-  width: 100%;
+  width: 100vw;
+  max-width: 100vw;
+  background-color: white;;
 }
 </style>

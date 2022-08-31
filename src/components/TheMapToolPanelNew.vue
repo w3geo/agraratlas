@@ -2,7 +2,7 @@
   <v-btn
     v-if="!panels.tools"
     class="layerSwitcherButton pa-2"
-    :class="{baseShow : panels.baselayer}"
+    :class="{baseShow : panels.baselayer, mobile : mobile}"
     size="30"
     @click="panels.tools = !panels.tools"
   >
@@ -185,10 +185,15 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useTools } from '../composables/useTools';
 import { usePanelControl } from '../composables/usePanelControl';
 
+const { width, height } = useDisplay();
 const { panels } = usePanelControl();
+
+const mobile = computed(() => (width.value < 800 || height.value < 520));
 
 const {
   draw, clearDraw, measure, clearMeasure, importJson, exportJson,

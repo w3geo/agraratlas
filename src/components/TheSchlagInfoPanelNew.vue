@@ -2,6 +2,7 @@
   <v-btn
     v-if="!panels.schlag"
     class="layerSwitcherButton pa-2"
+    :class="{mobile : mobile}"
     size="30"
     @click="panels.schlag = !panels.schlag"
   >
@@ -93,12 +94,12 @@
 <script setup>
 import { watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useMyDisplay } from '../composables/useMyDisplay';
+import { useDisplay } from 'vuetify';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
 import { usePanelControl } from '../composables/usePanelControl';
 
-const { mobile, lowVertical } = useMyDisplay();
+const { width, height } = useDisplay();
 const { panels } = usePanelControl();
 const { schlagInfo } = useSchlag();
 const { map, mapView } = useMap();
@@ -107,9 +108,12 @@ const router = useRouter();
 
 const emit = defineEmits(['schlag']);
 
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+const lowVertical = computed(() => (height.value < 740));
+
 const tooLow = computed(() => {
   let retVal = false;
-  if (lowVertical) {
+  if (lowVertical.value) {
     if (panels.value.baselayer || panels.value.tools) {
       retVal = true;
     }
@@ -169,6 +173,13 @@ setSchlagId(route.params.schlagId);
     position: absolute;
     left: 10px;
     top: 60px;
+  }
+
+  .layerSwitcherButton.mobile {
+    left: auto;
+    right: 130px;
+    top: 4px;
+    z-index: 5000;
   }
 
   .boxHeader .v-col {
