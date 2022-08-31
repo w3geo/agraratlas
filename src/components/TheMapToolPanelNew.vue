@@ -200,11 +200,11 @@ const {
   .layerSwitcherButton {
     position: absolute;
     left: 10px;
-    bottom: 110px;
+    bottom: 100px;
   }
 
   .layerSwitcherButton.baseShow {
-    bottom: 220px;
+    bottom: 170px;
   }
 
   .boxHeader .v-col {
