@@ -3,11 +3,11 @@
     v-if="!panels.tools"
     class="layerSwitcherButton pa-2"
     :class="{baseShow : panels.baselayer, mobile : mobile}"
-    size="30"
+    size="mobile ? 20 : 30"
     @click="panels.tools = !panels.tools"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-hammer-wrench
@@ -185,7 +185,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useTools } from '../composables/useTools';
 import { usePanelControl } from '../composables/usePanelControl';
@@ -194,6 +194,11 @@ const { width, height } = useDisplay();
 const { panels } = usePanelControl();
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.tools) {
+    panels.value.tools = false;
+  }
+});
 
 const {
   draw, clearDraw, measure, clearMeasure, importJson, exportJson,
@@ -210,6 +215,15 @@ const {
 
   .layerSwitcherButton.baseShow {
     bottom: 170px;
+  }
+
+  .layerSwitcherButton.baseShow.mobile, .layerSwitcherButton.mobile  {
+    position: absolute;
+    left: auto;
+    bottom: auto;
+    right: 104px;
+    top: 6px;
+    z-index: 5000;
   }
 
   .boxHeader .v-col {

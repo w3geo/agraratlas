@@ -3,11 +3,11 @@
     v-if="!panels.baselayer"
     class="layerSwitcherButton pa-2"
     :class="{mobile : mobile}"
-    size="30"
+    size="mobile ? 20 : 30"
     @click="panels.baselayer = !panels.baselayer"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-layers
@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
@@ -94,6 +94,11 @@ const { width, height } = useDisplay();
 const { panels } = usePanelControl();
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.baselayer) {
+    panels.value.baselayer = false;
+  }
+});
 
 function switchMode(newMode) {
   baseLayer.value = newMode;
@@ -106,8 +111,18 @@ function switchMode(newMode) {
     left: 10px;
     bottom: 50px;
   }
+
   .layerSwitcherButton.lower {
     bottom: 10px;
+  }
+
+  .layerSwitcherButton.lower.mobile, .layerSwitcherButton.mobile  {
+    position: absolute;
+    left: auto;
+    bottom: auto;
+    right: 62px;
+    top: 6px;
+    z-index: 5000;
   }
 
   .boxHeader .v-col {

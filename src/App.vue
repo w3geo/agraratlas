@@ -8,38 +8,55 @@
         @click.stop="drawer = !drawer"
       />
       <v-app-bar-title
-        class="font-weight-black text-grey-darken-2"
+        v-if="!tooSmall"
+        class="font-weight-black text-grey-darken-2 pageTitle"
+        :class="{smaller : titleSmall}"
       >
-        INSPIRE AGRAR ATLAS
+        INSPIRE <br v-if="titleSmall">AGRAR ATLAS
       </v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
-      disable-resize-watcher="true"
+      disable-resize-watcher
+      temporary
     >
-      <v-list>
-        <v-list-item
-          v-for="item in items"
-          :key="item.text"
-          :to="item.to"
+      <v-row no-gutters>
+        <v-col
+          v-if="tooSmall"
+          cols="12"
+          class="pa-3 font-weight-black"
+          background-color="grey"
         >
-          <v-list-item-title>{{ item.text }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
+          INSPIRE AGRAR ATLAS
+        </v-col>
+      </v-row>
     </v-navigation-drawer>
     <v-btn
       v-if="mobile"
       class="searchButton pa-2"
-      size="30"
+      size="mobile ? 20 : 30"
       @click="panels.search = !panels.search"
     >
       <v-icon
-        size="24"
+        :size="mobile ? 18 : 24"
         color="grey-darken-2"
       >
         mdi-magnify
       </v-icon>
     </v-btn>
+
+    <div
+      v-if="mobile"
+      class="separator first"
+    />
+    <div
+      v-if="mobile"
+      class="separator second"
+    />
+    <div
+      v-if="mobile"
+      class="separator third"
+    />
 
     <div
       v-if="!mobile || panels.search"
@@ -71,8 +88,8 @@ const { panels } = usePanelControl();
 const { width, height } = useDisplay();
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
-
-const mobileSearchActive = ref(false);
+const titleSmall = computed(() => (width.value < 600));
+const tooSmall = computed(() => (width.value < 400));
 
 const { map } = useMap();
 const drawer = ref(false);
@@ -96,10 +113,28 @@ const onSearch = (value) => {
 </script>
 
 <style scoped>
+  .separator {
+    height: 48px;
+    width: 1px;
+    background-color: #eee;
+    position: absolute;
+    top: 0px;
+    z-index: 5000;
+  }
+
+  .separator.first {
+    right: 52px;
+  }
+  .separator.second {
+    right: 146px;
+  }
+  .separator.third {
+    right: 242px;
+  }
   .searchButton {
     position:absolute;
     right: 10px;
-    top: 4px;
+    top: 6px;
     z-index: 5000;
   }
 
@@ -123,4 +158,12 @@ const onSearch = (value) => {
   max-width: 100vw;
   background-color: white;;
 }
+.pageTitle {
+  font-size: 20px!important;
+}
+.pageTitle.smaller {
+  font-size: 14px!important;
+  line-height: 15px!important;
+}
+
 </style>

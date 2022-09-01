@@ -3,11 +3,11 @@
     v-if="!panels.schlag"
     class="layerSwitcherButton pa-2"
     :class="{mobile : mobile}"
-    size="30"
+    size="mobile ? 20 : 30"
     @click="panels.schlag = !panels.schlag"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-information
@@ -109,6 +109,11 @@ const router = useRouter();
 const emit = defineEmits(['schlag']);
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.schlag) {
+    panels.value.schlag = false;
+  }
+});
 const lowVertical = computed(() => (height.value < 740));
 
 const tooLow = computed(() => {
@@ -177,8 +182,8 @@ setSchlagId(route.params.schlagId);
 
   .layerSwitcherButton.mobile {
     left: auto;
-    right: 130px;
-    top: 4px;
+    right: 197px;
+    top: 6px;
     z-index: 5000;
   }
 
