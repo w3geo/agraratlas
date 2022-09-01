@@ -3,11 +3,11 @@
     v-if="!panels.themen"
     class="layerSwitcherButton pa-2"
     :class="{noSchlag : !panels.schlag, mobile : mobile}"
-    size="30"
+    size="mobile ? 20 : 30"
     @click="panels.themen = !panels.themen"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-view-list
@@ -233,6 +233,11 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.themen) {
+    panels.value.themen = false;
+  }
+});
 const lowVertical = computed(() => (height.value < 740));
 
 const tooLow = computed(() => {
@@ -308,8 +313,8 @@ watch(selectedTopic, (value) => {
   .layerSwitcherButton.mobile,
   .layerSwitcherButton.noSchlag.mobile {
     left: auto;
-    right: 80px;
-    top: 4px;
+    right: 155px;
+    top: 6px;
     z-index: 5000;
   }
 
