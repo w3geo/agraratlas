@@ -77,31 +77,72 @@
         >
           <v-radio-group
             v-model="selectedTopic"
+            class="width100"
           >
-            <v-radio
-              key="-2"
-              label="Nur Hintergrundkarte"
-              value="none"
-              density="compact"
-            />
-            <v-radio
-              key="-1"
-              label="Übersicht aller Themen"
-              value="any"
-              density="compact"
-              class="lineBelow"
-            />
-            <template v-for="(topic, index) in topics">
-              <v-radio
+            <v-row no-gutters>
+              <v-col cols="10">
+                <v-radio
+                  key="-2"
+                  label="Nur Hintergrundkarte"
+                  value="none"
+                  density="compact"
+                />
+              </v-col><v-col
+                cols="2"
+                class="pa-1"
+              >
+                <div
+                  class="colorBox"
+                  :style="'background-color: white;'"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters>
+              <v-col cols="10">
+                <v-radio
+                  key="-1"
+                  label="Übersicht aller Themen"
+                  value="any"
+                  density="compact"
+                />
+              </v-col><v-col
+                cols="2"
+                class="pa-1"
+              >
+                <img
+                  :src="schraffur"
+                  class="colorBox"
+                >
+              </v-col>
+            </v-row>
+            <template
+              v-for="(topic, index) in topics"
+              :key="index"
+            >
+              <v-row
                 v-if="!onlyTopicsInExtent ||
                   (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
-                :key="index"
-                :label="topic.label"
-                :value="topic.label"
-                hide-details
-                density="compact"
-                :class="{fat : schlagInfo && topic.inSchlagExtent}"
-              />
+                no-gutters
+              >
+                <v-col cols="10">
+                  <v-radio
+                    :label="topic.label"
+                    :value="topic.label"
+                    hide-details
+                    density="compact"
+                    :class="{fat : schlagInfo && topic.inSchlagExtent}"
+                  />
+                </v-col><v-col
+                  cols="2"
+                  class="pa-1"
+                >
+                  <div
+                    class="colorBox"
+                    :style="'background-color: ' + topic.color +';'"
+                  />
+                </v-col>
+              </v-row>
             </template>
           </v-radio-group>
         </div>
@@ -213,6 +254,7 @@ import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useAspect } from '../composables/useAspect';
 import { mapView } from '../composables/useMap';
+import schraffur from '../assets/schraffur.png';
 
 const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();
@@ -223,7 +265,7 @@ const { aspects } = useAspect();
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('any');
 /** @type {import("vue").Ref<boolean>} */
-const onlyTopicsInExtent = ref(false);
+const onlyTopicsInExtent = ref(true);
 
 const tab = ref();
 const { width, height } = useDisplay();
@@ -394,6 +436,11 @@ watch(selectedTopic, (value) => {
   opacity: .5;
 }
 
+.colorBox {
+  border: 1px solid #666;
+  width: 18px;
+  height: 18px;
+}
 </style>
 
 <style>
@@ -405,6 +452,10 @@ watch(selectedTopic, (value) => {
 
   .scrollDiv {
     overflow: auto;
+  }
+
+  div.width100 .v-selection-control-group {
+    width: 100%;
   }
 
   .layerSwitcherButton.noSchlag .scrollDiv {
