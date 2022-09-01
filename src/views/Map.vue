@@ -82,4 +82,14 @@ watch(panel, (value) => {
     top: 5em;
   }
 
+  div.ol-rotate {
+    top: 6em;
+    left: inherit;
+    right: 0.5em;
+  }
+
+  .ol-viewport.ol-touch div.ol-rotate {
+    top: 7.5em;
+  }
+
 </style>
