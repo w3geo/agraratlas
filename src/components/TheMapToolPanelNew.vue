@@ -1,13 +1,13 @@
 <template>
   <v-btn
-    v-if="!panels.tools"
+    v-if="!panels.tools || mobile"
     class="layerSwitcherButton pa-2"
-    :class="{baseShow : panels.baselayer}"
-    size="30"
-    @click="panels.tools = !panels.tools"
+    :class="{baseShow : panels.baselayer, mobile : mobile}"
+    size="mobile ? 20 : 30"
+    @click="panels.tools = !panels.tools, closeOthers('tools', mobile)"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-hammer-wrench
@@ -17,8 +17,8 @@
   <v-card
     v-if="panels.tools"
     class="layerSwitcherButton"
-    :class="{baseShow : panels.baselayer}"
-    width="440px"
+    :class="{baseShow : panels.baselayer, mobilepanel : mobile}"
+    :width="mobile ? '100%' : '440px'"
     height="160px"
   >
     <v-row
@@ -185,10 +185,20 @@
 </template>
 
 <script setup>
+import { computed, watch } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useTools } from '../composables/useTools';
 import { usePanelControl } from '../composables/usePanelControl';
 
-const { panels } = usePanelControl();
+const { width, height } = useDisplay();
+const { panels, closeOthers } = usePanelControl();
+
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.tools) {
+    panels.value.tools = false;
+  }
+});
 
 const {
   draw, clearDraw, measure, clearMeasure, importJson, exportJson,
@@ -200,11 +210,25 @@ const {
   .layerSwitcherButton {
     position: absolute;
     left: 10px;
-    bottom: 110px;
+    bottom: 100px;
   }
 
   .layerSwitcherButton.baseShow {
-    bottom: 220px;
+    bottom: 170px;
+  }
+
+  .layerSwitcherButton.baseShow.mobile, .layerSwitcherButton.mobile  {
+    position: absolute;
+    left: auto;
+    bottom: auto;
+    right: 104px;
+    top: 6px;
+    z-index: 5000;
+  }
+
+  .layerSwitcherButton.baseShow.mobilepanel, .layerSwitcherButton.mobilepanel  {
+    left: 0px;
+    top: 50px;
   }
 
   .boxHeader .v-col {

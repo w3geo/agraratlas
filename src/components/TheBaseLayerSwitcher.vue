@@ -1,12 +1,13 @@
 <template>
   <v-btn
-    v-if="!panels.baselayer"
+    v-if="!panels.baselayer || mobile"
     class="layerSwitcherButton pa-2"
-    size="30"
-    @click="panels.baselayer = !panels.baselayer"
+    :class="{mobile : mobile}"
+    size="mobile ? 20 : 30"
+    @click="panels.baselayer = !panels.baselayer, closeOthers('baselayer', mobile)"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-layers
@@ -14,8 +15,9 @@
   </v-btn>
   <v-card
     v-if="panels.baselayer"
-    class="layerSwitcherButton"
-    width="260px"
+    class="layerSwitcherButton lower"
+    :class="{mobilepanel : mobile}"
+    :width="mobile ? '100%' : '260px'"
     height="155px"
   >
     <v-row
@@ -81,14 +83,23 @@
 </template>
 
 <script setup>
+import { computed, watch } from 'vue';
+import { useDisplay } from 'vuetify';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useLayers } from '../composables/useLayers';
 
 const { baseLayer } = useLayers();
+const { width, height } = useDisplay();
+const { panels, closeOthers } = usePanelControl();
 
-const { panels } = usePanelControl();
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.baselayer) {
+    panels.value.baselayer = false;
+  }
+});
 
 function switchMode(newMode) {
   baseLayer.value = newMode;
@@ -100,6 +111,24 @@ function switchMode(newMode) {
     position: absolute;
     left: 10px;
     bottom: 50px;
+  }
+
+  .layerSwitcherButton.lower {
+    bottom: 10px;
+  }
+
+  .layerSwitcherButton.lower.mobile, .layerSwitcherButton.mobile  {
+    position: absolute;
+    left: auto;
+    bottom: auto;
+    right: 62px;
+    top: 6px;
+    z-index: 5000;
+  }
+
+  .layerSwitcherButton.lower.mobilepanel, .layerSwitcherButton.mobilepanel  {
+    left: 0px;
+    top: 50px;
   }
 
   .boxHeader .v-col {

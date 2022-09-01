@@ -1,12 +1,13 @@
 <template>
   <v-btn
-    v-if="!panels.schlag"
+    v-if="!panels.schlag || mobile"
     class="layerSwitcherButton pa-2"
-    size="30"
-    @click="panels.schlag = !panels.schlag"
+    :class="{mobile : mobile}"
+    size="mobile ? 20 : 30"
+    @click="panels.schlag = !panels.schlag, manually = true, closeOthers('schlag', mobile)"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-information
@@ -14,9 +15,10 @@
   </v-btn>
 
   <v-card
-    v-if="panels.schlag"
+    v-if="panels.schlag && !tooLow && manually"
     class="layerSwitcherButton"
-    width="440px"
+    :class="{mobilepanel : mobile}"
+    :width="mobile ? '100%' : '440px'"
     height="105px"
   >
     <v-row
@@ -91,13 +93,16 @@
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { watch, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
 import { usePanelControl } from '../composables/usePanelControl';
 
-const { panels } = usePanelControl();
+const { panels, closeOthers } = usePanelControl();
+
+const { width, height } = useDisplay();
 const { schlagInfo } = useSchlag();
 const { map, mapView } = useMap();
 const route = useRoute();
@@ -105,6 +110,26 @@ const router = useRouter();
 
 const emit = defineEmits(['schlag']);
 
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+const manually = ref(!mobile.value);
+
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.schlag) {
+    panels.value.schlag = false;
+  }
+});
+const lowVertical = computed(() => (height.value < 740));
+
+const tooLow = computed(() => {
+  let retVal = false;
+  if (lowVertical.value) {
+    if (panels.value.baselayer || panels.value.tools) {
+      retVal = true;
+    }
+  }
+
+  return retVal;
+});
 function setSchlagId(id) {
   if (Number(id) !== schlagInfo.value?.id) {
     schlagInfo.value = id ? {
@@ -157,6 +182,18 @@ setSchlagId(route.params.schlagId);
     position: absolute;
     left: 10px;
     top: 60px;
+  }
+
+  .layerSwitcherButton.mobile {
+    left: auto;
+    right: 197px;
+    top: 6px;
+    z-index: 5000;
+  }
+
+  .layerSwitcherButton.mobilepanel {
+    left: 0px;
+    top: 50px;
   }
 
   .boxHeader .v-col {

@@ -77,4 +77,9 @@ watch(panel, (value) => {
     left: inherit;
     right: 0.5em;
   }
+
+  .ol-viewport.ol-touch div.ol-gps {
+    top: 5em;
+  }
+
 </style>

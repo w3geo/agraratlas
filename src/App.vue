@@ -8,33 +8,66 @@
         @click.stop="drawer = !drawer"
       />
       <v-app-bar-title
-        class="font-weight-black text-grey-darken-2"
+        v-if="!tooSmall"
+        class="font-weight-black text-grey-darken-2 pageTitle"
+        :class="{smaller : titleSmall}"
       >
-        INSPIRE AGRAR ATLAS
+        INSPIRE <br v-if="titleSmall">AGRAR ATLAS
       </v-app-bar-title>
-      <v-spacer />
-      <v-col
-        cols="12"
-        sm="8"
-        md="4"
-      >
-        <place-search
-          class="placesearch"
-          @search="onSearch"
-        />
-      </v-col>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer">
-      <v-list>
-        <v-list-item
-          v-for="item in items"
-          :key="item.text"
-          :to="item.to"
+    <v-navigation-drawer
+      v-model="drawer"
+      disable-resize-watcher
+      temporary
+    >
+      <v-row no-gutters>
+        <v-col
+          v-if="tooSmall"
+          cols="12"
+          class="pa-3 font-weight-black"
+          background-color="grey"
         >
-          <v-list-item-title>{{ item.text }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
+          INSPIRE AGRAR ATLAS
+        </v-col>
+      </v-row>
     </v-navigation-drawer>
+    <v-btn
+      v-if="mobile"
+      class="searchButton pa-2"
+      size="mobile ? 20 : 30"
+      @click="panels.search = !panels.search, closeOthers('search', mobile)"
+    >
+      <v-icon
+        :size="mobile ? 18 : 24"
+        color="grey-darken-2"
+      >
+        mdi-magnify
+      </v-icon>
+    </v-btn>
+
+    <div
+      v-if="mobile"
+      class="separator first"
+    />
+    <div
+      v-if="mobile"
+      class="separator second"
+    />
+    <div
+      v-if="mobile"
+      class="separator third"
+    />
+
+    <div
+      v-if="!mobile || panels.search"
+      class="searchField"
+      :class="{'mobile' : mobile}"
+    >
+      <place-search
+        class="placesearch"
+        @search="onSearch"
+      />
+    </div>
     <v-main>
       <router-view />
     </v-main>
@@ -42,18 +75,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import GeoJSON from 'ol/format/GeoJSON';
 import PlaceSearch from './components/PlaceSearch.vue';
 import { useMap } from './composables/useMap';
 import router from './plugins/router';
+import { usePanelControl } from './composables/usePanelControl';
+
+const { panels, closeOthers } = usePanelControl();
+
+const { width, height } = useDisplay();
+
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+const titleSmall = computed(() => (width.value < 600));
+const tooSmall = computed(() => (width.value < 400));
 
 const { map } = useMap();
 const drawer = ref(false);
-const items = [
-  { text: 'Karte', to: '/' },
-  { text: 'Über AgrarGIS', to: '/about' },
-];
 
 const geojson = new GeoJSON();
 
@@ -70,7 +109,58 @@ const onSearch = (value) => {
 </script>
 
 <style scoped>
+  .separator {
+    height: 48px;
+    width: 1px;
+    background-color: #eee;
+    position: absolute;
+    top: 0px;
+    z-index: 5000;
+  }
+
+  .separator.first {
+    right: 52px;
+  }
+  .separator.second {
+    right: 146px;
+  }
+  .separator.third {
+    right: 242px;
+  }
+  .searchButton {
+    position:absolute;
+    right: 10px;
+    top: 6px;
+    z-index: 5000;
+  }
+
 .placesearch {
   white-space: nowrap;
 }
+
+.searchField {
+  z-index: 2000;
+  position: absolute;
+  right: 10px;
+  top: 4px;
+  width: 50%;
+  max-width: 340px;
+}
+
+.searchField.mobile {
+  right: 0px;
+  position: absolute;
+  top: 50px;
+  width: 100vw;
+  max-width: 100vw;
+  background-color: white;;
+}
+.pageTitle {
+  font-size: 20px!important;
+}
+.pageTitle.smaller {
+  font-size: 14px!important;
+  line-height: 15px!important;
+}
+
 </style>

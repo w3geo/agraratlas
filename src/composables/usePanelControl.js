@@ -6,11 +6,22 @@ import { ref } from 'vue';
  * @property {tools} boolean
  * @property {themen} boolean
  * @property {schlag} boolean
+ * @property {search} boolean
 */
 
 const panels = ref({
-  baselayer: false, tools: false, themen: true, schlag: true,
+  baselayer: false, tools: false, themen: true, schlag: true, search: false,
 });
+
+function closeOthers(except, ismobile) {
+  if (ismobile) {
+    Object.keys(panels.value).forEach((key) => {
+      if (key !== except) {
+        panels.value[key] = false;
+      }
+    });
+  }
+}
 
 /**
  * @returns {{
@@ -18,5 +29,5 @@ const panels = ref({
  * }}
  */
 export function usePanelControl() {
-  return { panels };
+  return { panels, closeOthers };
 }

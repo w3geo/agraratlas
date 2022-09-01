@@ -1,13 +1,13 @@
 <template>
   <v-btn
-    v-if="!panels.themen"
+    v-if="!panels.themen || mobile"
     class="layerSwitcherButton pa-2"
-    :class="{noSchlag : !panels.schlag}"
-    size="30"
-    @click="panels.themen = !panels.themen"
+    :class="{noSchlag : !panels.schlag, mobile : mobile}"
+    size="mobile ? 20 : 30"
+    @click="panels.themen = !panels.themen, manually = true, closeOthers('themen', mobile)"
   >
     <v-icon
-      size="24"
+      :size="mobile ? 18 : 24"
       color="grey-darken-2"
     >
       mdi-view-list
@@ -15,10 +15,10 @@
   </v-btn>
 
   <v-card
-    v-if="panels.themen"
+    v-if="panels.themen && !tooLow && manually"
     class="layerSwitcherButton"
-    :class="{noSchlag : !panels.schlag}"
-    width="440px"
+    :class="{noSchlag : !panels.schlag, mobilepanel : mobile}"
+    :width="mobile ? '100%' : '440px'"
     :height="topicVcard"
   >
     <v-row
@@ -206,6 +206,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
@@ -213,7 +214,7 @@ import { usePanelControl } from '../composables/usePanelControl';
 import { useAspect } from '../composables/useAspect';
 import { mapView } from '../composables/useMap';
 
-const { panels } = usePanelControl();
+const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();
 const { opacity, showOverview } = useLayers();
 const { schlagInfo } = useSchlag();
@@ -225,51 +226,85 @@ const selectedTopic = ref('any');
 const onlyTopicsInExtent = ref(false);
 
 const tab = ref();
+const { width, height } = useDisplay();
 
 const filterSwitchLabel = computed(() => (schlagInfo.value
   ? 'Nur für den gewählten Schlag mögliche Themen'
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+const manually = ref(!mobile.value);
+watch(mobile, (newvalue, oldvalue) => {
+  if (!oldvalue && newvalue && panels.value.themen) {
+    panels.value.themen = false;
+  }
+});
+const lowVertical = computed(() => (height.value < 740));
+
+const tooLow = computed(() => {
+  let retVal = false;
+  if (lowVertical.value) {
+    if (panels.value.baselayer || panels.value.tools) {
+      retVal = true;
+    }
+  }
+
+  return retVal;
+});
+
 const topicVcard = computed(() => {
-  let minusPix = 350;
+  let minusPix = 320;
   if (!panels.value.schlag) {
     minusPix -= 60;
   }
   if (panels.value.baselayer) {
-    minusPix += 110;
+    minusPix += 70;
   }
   if (panels.value.tools) {
     minusPix += 115;
   }
 
+  if (mobile.value) {
+    minusPix = 50;
+  }
   return `calc(100vh - ${minusPix}px)`;
 });
 
 const scrollDivCalc = computed(() => {
-  let minusPix = 505;
+  let minusPix = 475;
   if (!panels.value.schlag) {
     minusPix -= 60;
   }
   if (panels.value.baselayer) {
-    minusPix += 110;
+    minusPix += 70;
   }
   if (panels.value.tools) {
     minusPix += 115;
   }
+
+  if (mobile.value) {
+    minusPix = 211;
+  }
+
   return `height: calc(100vh - ${minusPix}px);`;
 });
 
 const scrollDivLargerCalc = computed(() => {
-  let minusPix = 505 - 41;
+  let minusPix = 475 - 41;
   if (!panels.value.schlag) {
     minusPix -= 60;
   }
   if (panels.value.baselayer) {
-    minusPix += 110;
+    minusPix += 70;
   }
   if (panels.value.tools) {
     minusPix += 115;
   }
+
+  if (mobile.value) {
+    minusPix = 170;
+  }
+
   return `height: calc(100vh - ${minusPix}px);`;
 });
 
@@ -286,11 +321,25 @@ watch(selectedTopic, (value) => {
   .layerSwitcherButton {
     position: absolute;
     left: 10px;
-    top: 180px;
+    top: 170px;
+  }
+
+  .layerSwitcherButton.mobile,
+  .layerSwitcherButton.noSchlag.mobile {
+    left: auto;
+    right: 155px;
+    top: 6px;
+    z-index: 5000;
+  }
+
+  .layerSwitcherButton.mobilepanel,
+  .layerSwitcherButton.noSchlag.mobilepanel {
+    left: 0px;
+    top: 50px;
   }
 
   .layerSwitcherButton.noSchlag {
-    top: 120px;
+    top: 110px;
   }
 
   .boxHeader .v-col {
