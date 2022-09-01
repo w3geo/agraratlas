@@ -33,6 +33,7 @@ export const map = new Map({
   view: new View({
     maxResolution: 78271.51696402048,
     extent: initialExtent,
+    showFullExtent: true,
     center: getCenter(initialExtent),
     zoom: 0,
   }),
