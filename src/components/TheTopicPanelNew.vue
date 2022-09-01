@@ -4,7 +4,7 @@
     class="layerSwitcherButton pa-2"
     :class="{noSchlag : !panels.schlag, mobile : mobile}"
     size="mobile ? 20 : 30"
-    @click="panels.themen = !panels.themen, manually = true, closeOthers('themen', mobile)"
+    @click="panels.themen = !panels.themen, closeOthers('themen', mobile)"
   >
     <v-icon
       :size="mobile ? 18 : 24"
@@ -15,7 +15,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.themen && !tooLow && manually"
+    v-if="panels.themen && !tooLow"
     class="layerSwitcherButton"
     :class="{noSchlag : !panels.schlag, mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
@@ -233,7 +233,8 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
-const manually = ref(!mobile.value);
+panels.value.themen = !mobile.value;
+
 watch(mobile, (newvalue, oldvalue) => {
   if (!oldvalue && newvalue && panels.value.themen) {
     panels.value.themen = false;

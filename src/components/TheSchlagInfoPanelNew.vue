@@ -4,7 +4,7 @@
     class="layerSwitcherButton pa-2"
     :class="{mobile : mobile}"
     size="mobile ? 20 : 30"
-    @click="panels.schlag = !panels.schlag, manually = true, closeOthers('schlag', mobile)"
+    @click="panels.schlag = !panels.schlag, closeOthers('schlag', mobile)"
   >
     <v-icon
       :size="mobile ? 18 : 24"
@@ -15,7 +15,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.schlag && !tooLow && manually"
+    v-if="panels.schlag && !tooLow"
     class="layerSwitcherButton"
     :class="{mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { watch, computed, ref } from 'vue';
+import { watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useSchlag } from '../composables/useSchlag';
@@ -111,7 +111,7 @@ const router = useRouter();
 const emit = defineEmits(['schlag']);
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
-const manually = ref(!mobile.value);
+panels.value.schlag = !mobile.value;
 
 watch(mobile, (newvalue, oldvalue) => {
   if (!oldvalue && newvalue && panels.value.schlag) {
