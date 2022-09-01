@@ -35,7 +35,7 @@
       v-if="mobile"
       class="searchButton pa-2"
       size="mobile ? 20 : 30"
-      @click="panels.search = !panels.search"
+      @click="panels.search = !panels.search, closeOthers('search', mobile)"
     >
       <v-icon
         :size="mobile ? 18 : 24"
@@ -83,7 +83,7 @@ import { useMap } from './composables/useMap';
 import router from './plugins/router';
 import { usePanelControl } from './composables/usePanelControl';
 
-const { panels } = usePanelControl();
+const { panels, closeOthers } = usePanelControl();
 
 const { width, height } = useDisplay();
 
@@ -93,10 +93,6 @@ const tooSmall = computed(() => (width.value < 400));
 
 const { map } = useMap();
 const drawer = ref(false);
-const items = [
-  { text: 'Karte', to: '/' },
-  { text: 'Über AgrarGIS', to: '/about' },
-];
 
 const geojson = new GeoJSON();
 
@@ -152,6 +148,7 @@ const onSearch = (value) => {
 }
 
 .searchField.mobile {
+  right: 0px;
   position: absolute;
   top: 50px;
   width: 100vw;
