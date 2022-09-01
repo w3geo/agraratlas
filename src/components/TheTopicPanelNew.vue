@@ -113,6 +113,7 @@
                 <img
                   :src="schraffur"
                   class="colorBox"
+                  :style="'opacity: ' + opacity + ';'"
                 >
               </v-col>
             </v-row>
@@ -139,7 +140,7 @@
                 >
                   <div
                     class="colorBox"
-                    :style="'background-color: ' + topic.color +';'"
+                    :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
                   />
                 </v-col>
               </v-row>
@@ -217,7 +218,7 @@
             >
               <div
                 class="colorBox"
-                :style="'background-color: ' + value.color +';'"
+                :style="'background-color: ' + value.color +'; opacity: ' + opacity + ';'"
               />
             </v-col>
             <v-col
