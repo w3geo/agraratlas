@@ -4,7 +4,7 @@
     class="layerSwitcherButton pa-2"
     :class="{mobile : mobile}"
     size="mobile ? 20 : 30"
-    @click="panels.schlag = !panels.schlag, manually = true, closeOthers('schlag', mobile)"
+    @click="panels.schlag = !panels.schlag, closeOthers('schlag', mobile)"
   >
     <v-icon
       :size="mobile ? 18 : 24"
@@ -15,7 +15,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.schlag && !tooLow && manually"
+    v-if="panels.schlag && !tooLow"
     class="layerSwitcherButton"
     :class="{mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
@@ -58,9 +58,31 @@
       </v-col>
       <v-col
         class="pa-2 pb-1"
-        cols="9"
+        cols="7"
       >
         {{ schlagInfo.snar_bezeichnung }}
+      </v-col>
+      <v-col
+        cols="2"
+        class="pa-1"
+        align="right"
+      >
+        <v-btn
+          v-if="canCenter"
+          width="30"
+          height="30"
+          icon
+          flat
+          rounded
+          color="grey-lighten-3"
+          title="Auf Schlag zoomen"
+          @click.stop="center"
+        >
+          <v-icon
+            size="20"
+            icon="mdi-crosshairs"
+          />
+        </v-btn>
       </v-col>
       <v-col
         class="px-2"
@@ -70,10 +92,11 @@
       </v-col>
       <v-col
         class="px-2"
-        cols="9"
+        cols="7"
       >
         {{ schlagInfo.sl_flaeche_brutto_ha.toLocaleString('de-AT', {maximumFractionDigits: 2}) }} ha
       </v-col>
+      <v-col cols="2" />
     </v-row>
     <v-row
       v-else-if="mapView.zoom < 12"
@@ -93,8 +116,10 @@
 </template>
 
 <script setup>
-import { watch, computed, ref } from 'vue';
+import { watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { getCenter } from 'ol/extent';
+import { equals } from 'ol/coordinate';
 import { useDisplay } from 'vuetify';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
@@ -111,7 +136,7 @@ const router = useRouter();
 const emit = defineEmits(['schlag']);
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
-const manually = ref(!mobile.value);
+panels.value.schlag = !mobile.value;
 
 watch(mobile, (newvalue, oldvalue) => {
   if (!oldvalue && newvalue && panels.value.schlag) {
@@ -130,6 +155,15 @@ const tooLow = computed(() => {
 
   return retVal;
 });
+
+function center() {
+  map.getView().fit(schlagInfo.value.extent, {
+    maxZoom: 17,
+    duration: 500,
+    padding: [50, 50, 50, 50],
+  });
+}
+
 function setSchlagId(id) {
   if (Number(id) !== schlagInfo.value?.id) {
     schlagInfo.value = id ? {
@@ -138,6 +172,11 @@ function setSchlagId(id) {
     } : null;
   }
 }
+
+const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
+  getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
+  mapView.value.center.map((v) => v.toFixed(4)),
+) || mapView.value.zoom < 12));
 
 /**
  * @param {import("ol/MapBrowserEvent.js").default} event

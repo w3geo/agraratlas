@@ -4,7 +4,7 @@
     class="layerSwitcherButton pa-2"
     :class="{noSchlag : !panels.schlag, mobile : mobile}"
     size="mobile ? 20 : 30"
-    @click="panels.themen = !panels.themen, manually = true, closeOthers('themen', mobile)"
+    @click="panels.themen = !panels.themen, closeOthers('themen', mobile)"
   >
     <v-icon
       :size="mobile ? 18 : 24"
@@ -15,7 +15,7 @@
   </v-btn>
 
   <v-card
-    v-if="panels.themen && !tooLow && manually"
+    v-if="panels.themen && !tooLow"
     class="layerSwitcherButton"
     :class="{noSchlag : !panels.schlag, mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
@@ -77,31 +77,73 @@
         >
           <v-radio-group
             v-model="selectedTopic"
+            class="width100"
           >
-            <v-radio
-              key="-2"
-              label="Nur Hintergrundkarte"
-              value="none"
-              density="compact"
-            />
-            <v-radio
-              key="-1"
-              label="Übersicht aller Themen"
-              value="any"
-              density="compact"
-              class="lineBelow"
-            />
-            <template v-for="(topic, index) in topics">
-              <v-radio
+            <v-row no-gutters>
+              <v-col cols="10">
+                <v-radio
+                  key="-2"
+                  label="Nur Hintergrundkarte"
+                  value="none"
+                  density="compact"
+                />
+              </v-col><v-col
+                cols="2"
+                class="pa-1"
+              >
+                <div
+                  class="colorBox"
+                  :style="'background-color: white;'"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters>
+              <v-col cols="10">
+                <v-radio
+                  key="-1"
+                  label="Übersicht aller Themen"
+                  value="any"
+                  density="compact"
+                />
+              </v-col><v-col
+                cols="2"
+                class="pa-1"
+              >
+                <img
+                  :src="schraffur"
+                  class="colorBox"
+                  :style="'opacity: ' + opacity + ';'"
+                >
+              </v-col>
+            </v-row>
+            <template
+              v-for="(topic, index) in topics"
+              :key="index"
+            >
+              <v-row
                 v-if="!onlyTopicsInExtent ||
                   (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
-                :key="index"
-                :label="topic.label"
-                :value="topic.label"
-                hide-details
-                density="compact"
-                :class="{fat : schlagInfo && topic.inSchlagExtent}"
-              />
+                no-gutters
+              >
+                <v-col cols="10">
+                  <v-radio
+                    :label="topic.label"
+                    :value="topic.label"
+                    hide-details
+                    density="compact"
+                    :class="{fat : schlagInfo && topic.inSchlagExtent}"
+                  />
+                </v-col><v-col
+                  cols="2"
+                  class="pa-1"
+                >
+                  <div
+                    class="colorBox"
+                    :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
+                  />
+                </v-col>
+              </v-row>
             </template>
           </v-radio-group>
         </div>
@@ -161,7 +203,7 @@
             </v-col>
             <v-col
               style="cursor: pointer"
-              cols="6"
+              cols="4"
               class="pa-1 pt-2 text-body-2 aspectLabel"
               :class="{'selected' : schlagInfo && value.inSchlag,
                        'active' : value.visible,
@@ -169,6 +211,15 @@
               @click="value.visible = !value.visible"
             >
               {{ value.label }}
+            </v-col>
+            <v-col
+              cols="2"
+              class="pa-2"
+            >
+              <div
+                class="colorBox"
+                :style="'background-color: ' + value.color +'; opacity: ' + opacity + ';'"
+              />
             </v-col>
             <v-col
               cols="4"
@@ -213,6 +264,7 @@ import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useAspect } from '../composables/useAspect';
 import { mapView } from '../composables/useMap';
+import schraffur from '../assets/schraffur.png';
 
 const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();
@@ -223,7 +275,7 @@ const { aspects } = useAspect();
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('any');
 /** @type {import("vue").Ref<boolean>} */
-const onlyTopicsInExtent = ref(false);
+const onlyTopicsInExtent = ref(true);
 
 const tab = ref();
 const { width, height } = useDisplay();
@@ -233,7 +285,8 @@ const filterSwitchLabel = computed(() => (schlagInfo.value
   : 'Nur im Kartenausschnitt sichtbare Themen'));
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
-const manually = ref(!mobile.value);
+panels.value.themen = !mobile.value;
+
 watch(mobile, (newvalue, oldvalue) => {
   if (!oldvalue && newvalue && panels.value.themen) {
     panels.value.themen = false;
@@ -393,6 +446,11 @@ watch(selectedTopic, (value) => {
   opacity: .5;
 }
 
+.colorBox {
+  border: 1px solid #666;
+  width: 18px;
+  height: 18px;
+}
 </style>
 
 <style>
@@ -404,6 +462,10 @@ watch(selectedTopic, (value) => {
 
   .scrollDiv {
     overflow: auto;
+  }
+
+  div.width100 .v-selection-control-group {
+    width: 100%;
   }
 
   .layerSwitcherButton.noSchlag .scrollDiv {
