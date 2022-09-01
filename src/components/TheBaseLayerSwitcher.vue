@@ -1,10 +1,10 @@
 <template>
   <v-btn
-    v-if="!panels.baselayer"
+    v-if="!panels.baselayer || mobile"
     class="layerSwitcherButton pa-2"
     :class="{mobile : mobile}"
     size="mobile ? 20 : 30"
-    @click="panels.baselayer = !panels.baselayer"
+    @click="panels.baselayer = !panels.baselayer, closeOthers('baselayer', mobile)"
   >
     <v-icon
       :size="mobile ? 18 : 24"
@@ -16,7 +16,8 @@
   <v-card
     v-if="panels.baselayer"
     class="layerSwitcherButton lower"
-    width="260px"
+    :class="{mobilepanel : mobile}"
+    :width="mobile ? '100%' : '260px'"
     height="155px"
   >
     <v-row
@@ -91,7 +92,7 @@ import { useLayers } from '../composables/useLayers';
 
 const { baseLayer } = useLayers();
 const { width, height } = useDisplay();
-const { panels } = usePanelControl();
+const { panels, closeOthers } = usePanelControl();
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 watch(mobile, (newvalue, oldvalue) => {
@@ -123,6 +124,11 @@ function switchMode(newMode) {
     right: 62px;
     top: 6px;
     z-index: 5000;
+  }
+
+  .layerSwitcherButton.lower.mobilepanel, .layerSwitcherButton.mobilepanel  {
+    left: 0px;
+    top: 50px;
   }
 
   .boxHeader .v-col {

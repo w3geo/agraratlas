@@ -16,17 +16,22 @@
     placeholder="Adresse, Ort, Riedname, ..."
     return-object
     class="roundedStyle"
+    :class="{mobile : mobile}"
   />
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
+import { useDisplay } from 'vuetify';
 
 const model = ref(null);
 const items = ref();
 const isLoading = ref(false);
 const search = ref('');
 const emit = defineEmits(['search']);
+
+const { width, height } = useDisplay();
+const mobile = computed(() => (width.value < 800 || height.value < 520));
 
 const getPlaces = async (value) => {
   if (!isLoading.value && value.length > 3) {
@@ -67,6 +72,7 @@ watch(model, (value) => {
  * TODO Report Vuetify bug
  */
 .v-list {
+  max-width: 340px;
   max-height: 80vh;
 }
 
