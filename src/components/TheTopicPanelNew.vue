@@ -202,7 +202,7 @@
             </v-col>
             <v-col
               style="cursor: pointer"
-              cols="6"
+              cols="4"
               class="pa-1 pt-2 text-body-2 aspectLabel"
               :class="{'selected' : schlagInfo && value.inSchlag,
                        'active' : value.visible,
@@ -210,6 +210,15 @@
               @click="value.visible = !value.visible"
             >
               {{ value.label }}
+            </v-col>
+            <v-col
+              cols="2"
+              class="pa-2"
+            >
+              <div
+                class="colorBox"
+                :style="'background-color: ' + value.color +';'"
+              />
             </v-col>
             <v-col
               cols="4"

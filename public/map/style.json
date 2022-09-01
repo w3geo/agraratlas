@@ -136,7 +136,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 0 - <10%"
+      "label": "0 - <10%"
     }
   }, {
     "id": "neigungsklassen_2",
@@ -146,7 +146,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 10 - <18%"
+      "label": "10 - <18%"
     }
   }, {
     "id": "neigungsklassen_3",
@@ -156,7 +156,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 18 - <25%"
+      "label": "18 - <25%"
     }
   }, {
     "id": "neigungsklassen_4",
@@ -166,7 +166,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 25 - <35%"
+      "label": "25 - <35%"
     }
   }, {
     "id": "neigungsklassen_5",
@@ -176,7 +176,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung 35 - <50%"
+      "label": "35 - <50%"
     }
   }, {
     "id": "neigungsklassen_6",
@@ -186,7 +186,7 @@
     "layout": { "visibility": "none" },
     "metadata": {
       "group": "one",
-      "label": "Neigung >=50%"
+      "label": ">=50%"
     }
   }, {
     "id": "bdfl_l40_gab8-any",
