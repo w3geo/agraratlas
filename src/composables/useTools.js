@@ -377,11 +377,9 @@ function formatLength(line) {
   const length = getLength(line, { projection: 'EPSG:4326' });
   let output;
   if (length > 1000) {
-    output = `${Math.round((length / 1000) * 100) / 100
-    } km`;
+    output = `${(Math.round((length / 1000) * 100) / 100).toLocaleString('de-AT')} km`;
   } else {
-    output = `${Math.round(length * 100) / 100
-    } m`;
+    output = `${(Math.round(length * 100) / 100).toLocaleString('de-AT')} m`;
   }
   return output;
 }
@@ -395,11 +393,11 @@ function formatArea(polygon) {
   const area = getArea(polygon, { projection: 'EPSG:4326' });
   let output;
   if (area > 100000) {
-    output = `${Math.round((area / 1000000) * 100) / 100
-    } km${String.fromCharCode(178)}`;
+    output = `${(Math.round((area / 1000000) * 100) / 100).toLocaleString('de-AT')} km²`;
+  } else if (area > 1000) {
+    output = `${(area / 10000).toLocaleString('de-AT', { maximumFractionDigits: 2 })} ha`;
   } else {
-    output = `${Math.round(area * 100) / 100
-    } m${String.fromCharCode(178)}`;
+    output = `${(Math.round(area * 100) / 100).toLocaleString('de-AT')} m²`;
   }
   return output;
 }
