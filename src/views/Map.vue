@@ -32,6 +32,7 @@ function switchSchlag(expaneded) {
     panel.value = null;
   }
 }
+
 onMounted(() => {
   unbind = bind(mapContainer.value, () => map.updateSize());
   map.setTarget(mapContainer.value);
@@ -64,28 +65,33 @@ watch(panel, (value) => {
 </style>
 <style>
   div.ol-zoom {
+    bottom: 2em;
+    top: inherit;
     left: inherit;
     right: 0.5em;
   }
 
   div.ol-gps {
-    top: 4em;
+    bottom: 5.5em;
+    top: inherit;
     left: inherit;
     right: 0.5em;
   }
 
   .ol-viewport.ol-touch div.ol-gps {
-    top: 5em;
+    bottom: 6.5em;
+    top: inherit;
   }
 
   div.ol-rotate {
-    top: 6em;
+    bottom: 7.5em;
+    top: inherit;
     left: inherit;
     right: 0.5em;
   }
 
   .ol-viewport.ol-touch div.ol-rotate {
-    top: 7.5em;
+    bottom: 9em;
   }
 
 </style>

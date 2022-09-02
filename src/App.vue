@@ -134,33 +134,40 @@ const onSearch = (value) => {
     z-index: 5000;
   }
 
-.placesearch {
-  white-space: nowrap;
-}
+  .placesearch {
+    white-space: nowrap;
+  }
 
-.searchField {
-  z-index: 2000;
-  position: absolute;
-  right: 10px;
-  top: 4px;
-  width: 50%;
-  max-width: 340px;
-}
+  .searchField {
+    z-index: 2000;
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    width: 50%;
+    max-width: 340px;
+  }
 
-.searchField.mobile {
-  right: 0px;
-  position: absolute;
-  top: 50px;
-  width: 100vw;
-  max-width: 100vw;
-  background-color: white;;
-}
-.pageTitle {
-  font-size: 20px!important;
-}
-.pageTitle.smaller {
-  font-size: 14px!important;
-  line-height: 15px!important;
-}
+  .searchField.mobile {
+    right: 0px;
+    position: absolute;
+    top: 50px;
+    width: 100vw;
+    max-width: 100vw;
+    background-color: white;;
+  }
+  .pageTitle {
+    font-size: 20px!important;
+  }
+  .pageTitle.smaller {
+    font-size: 14px!important;
+    line-height: 15px!important;
+  }
 
+</style>
+<style>
+  @supports (-webkit-touch-callout: none) {
+    body, #app, .v-application .v-application__wrap {
+      min-height: -webkit-fill-available;
+    }
+  }
 </style>
