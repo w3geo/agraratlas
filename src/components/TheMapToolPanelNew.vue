@@ -29,7 +29,7 @@
         <v-icon class="mx-1">
           mdi-hammer-wrench
         </v-icon>
-        Werkzeuge:
+        Werkzeuge
       </v-col>
       <v-col
         cols="2"

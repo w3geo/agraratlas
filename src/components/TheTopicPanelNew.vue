@@ -29,7 +29,7 @@
         <v-icon class="mx-1">
           mdi-view-list
         </v-icon>
-        Themen / Hangneigungen:
+        Themen / Hangneigungen
       </v-col>
       <v-col
         cols="2"
@@ -110,11 +110,11 @@
                 cols="2"
                 class="pa-1"
               >
-                <img
-                  :src="schraffur"
+                <div
+                  style="background-image: url(map/icons/hatch-any.svg); background-repeat: repeat;"
                   class="colorBox"
                   :style="'opacity: ' + opacity + ';'"
-                >
+                />
               </v-col>
             </v-row>
             <template
@@ -265,7 +265,6 @@ import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useGradient } from '../composables/useGradient';
 import { mapView } from '../composables/useMap';
-import schraffur from '../assets/schraffur.png';
 
 const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();

@@ -29,7 +29,7 @@
         <v-icon class="mx-1">
           mdi-information
         </v-icon>
-        Schlag-Informationen:
+        Schlag-Informationen
       </v-col>
       <v-col
         cols="2"
