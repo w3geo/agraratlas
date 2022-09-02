@@ -79,7 +79,7 @@ map.on('click', (event) => {
   setSchlagInfo(selectedRenderFeature);
 });
 map.on('pointermove', (event) => {
-  if (measure.value || draw.value) { return; }
+  if (event.dragging || measure.value || draw.value) { return; }
   map.getTargetElement().style.cursor = getSchlagAtPixel(event.pixel) ? 'pointer' : '';
 });
 

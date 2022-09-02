@@ -74,6 +74,7 @@ export const mapReady = apply(map, './map/style.json').then(() => {
       getSource(map, source).interpolate_ = false; // eslint-disable-line
     }
   });
+  getSource(map, 'agrargis').overlaps_ = false; // eslint-disable-line
 });
 
 /**
