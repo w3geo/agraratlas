@@ -15,9 +15,9 @@ import {
 } from 'vue';
 import { bind } from 'size-sensor';
 import { useMap } from '../composables/useMap';
-import TheSchlagInfoPanelNew from '../components/TheSchlagInfoPanelNew.vue';
-import TheMapToolPanelNew from '../components/TheMapToolPanelNew.vue';
-import TheTopicPanelNew from '../components/TheTopicPanelNew.vue';
+import TheSchlagInfoPanelNew from '../components/TheSchlagInfoPanel.vue';
+import TheMapToolPanelNew from '../components/TheMapToolPanel.vue';
+import TheTopicPanelNew from '../components/TheTopicPanel.vue';
 import TheBaseLayerSwitcher from '../components/TheBaseLayerSwitcher.vue';
 
 const { map } = useMap();
