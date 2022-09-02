@@ -111,7 +111,7 @@
                 class="pa-1"
               >
                 <div
-                  style="background-image: url(map/icons/hatch-any.svg); background-repeat: repeat;"
+                  style="background: rgba(188, 143, 143, 0.3);"
                   class="colorBox"
                   :style="'opacity: ' + opacity + ';'"
                 />
