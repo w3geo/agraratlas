@@ -13,7 +13,7 @@ import { schlagInfo } from './useSchlag';
 import { map, mapReady } from './useMap';
 import { SCHLAEGE_LAYER } from '../constants';
 
-const aspectClassesByRGB = {
+const gradientClassesByRGB = {
   '255,255,191': '0 - <10%',
   '254,228,160': '10 - <18%',
   '254,201,128': '18 - <25%',
@@ -23,7 +23,7 @@ const aspectClassesByRGB = {
 };
 
 /**
- * @typedef Aspect
+ * @typedef Gradient
  * @property {string} label
  * @property {string} color
  * @property {boolean} inSchlag
@@ -35,16 +35,16 @@ const aspectClassesByRGB = {
 let calculationMap;
 
 /** @type {Array<Topic>} */
-export const aspects = reactive([]);
+export const gradients = reactive([]);
 mapReady.then(() => {
   const { layers } = map.get('mapbox-style');
-  aspects.push(...Object.values(layers
+  gradients.push(...Object.values(layers
     .filter((l) => l.metadata?.group === 'one' && l.type === 'raster')
     .map((l) => l.metadata?.label).reduce((acc, cur) => {
       if (!(cur in acc)) {
         acc[cur] = ({
           label: cur,
-          color: `rgb(${Object.keys(aspectClassesByRGB)[Object.values(aspectClassesByRGB).indexOf(cur)]})`,
+          color: `rgb(${Object.keys(gradientClassesByRGB)[Object.values(gradientClassesByRGB).indexOf(cur)]})`,
           fraction: 0,
           inSchlag: false,
           visible: false,
@@ -66,25 +66,25 @@ mapReady.then(() => {
     }),
     style: (feature) => (feature.getId() === schlagInfo.value?.id ? style : undefined),
   });
-  const aspectSource = getSource(map, 'neigungsklassen');
-  const aspectLayer = new TileLayer({
+  const gradientSource = getSource(map, 'neigungsklassen');
+  const gradientLayer = new TileLayer({
     source: new XYZSource({
       crossOrigin: 'anonymous',
       interpolate: false,
       transition: 0,
-      tileUrlFunction: aspectSource.getTileUrlFunction(),
-      tileGrid: aspectSource.getTileGrid(),
+      tileUrlFunction: gradientSource.getTileUrlFunction(),
+      tileGrid: gradientSource.getTileGrid(),
     }),
   });
-  aspectLayer.on('prerender', (event) => {
+  gradientLayer.on('prerender', (event) => {
     event.context.globalCompositeOperation = 'source-atop';
   });
-  aspectLayer.on('postrender', (event) => {
+  gradientLayer.on('postrender', (event) => {
     event.context.globalCompositeOperation = 'source-over';
   });
   calculationMap = new Map({
     target: document.createElement('div'),
-    layers: [calculationLayer, aspectLayer],
+    layers: [calculationLayer, gradientLayer],
     controls: [],
     interactions: [],
     pixelRatio: 1,
@@ -98,7 +98,7 @@ mapReady.then(() => {
 /** @type {() => void} */
 let onRenderComplete;
 
-function calculateAspectClasses() {
+function calculateGradientClasses() {
   if (!schlagInfo.value || schlagInfo.value.loading) {
     return;
   }
@@ -122,20 +122,20 @@ function calculateAspectClasses() {
     const buckets = {};
     for (let i = 0, ii = imageData.data.length; i < ii; i += 4) {
       const key = imageData.data.slice(i, i + 3).join(',');
-      if (key in aspectClassesByRGB) {
+      if (key in gradientClassesByRGB) {
         buckets[key] = (buckets[key] || 0) + 1;
       }
     }
     const total = Object.values(buckets).reduce((a, b) => a + b, 0);
-    const aspectClasses = Object.keys(aspectClassesByRGB).reduce((acc, cur) => {
+    const gradientClasses = Object.keys(gradientClassesByRGB).reduce((acc, cur) => {
       if (buckets[cur]) {
         const fraction = total ? (buckets[cur] / total) : 0;
-        acc[aspectClassesByRGB[cur]] = fraction;
+        acc[gradientClassesByRGB[cur]] = fraction;
       }
       return acc;
     }, {});
-    aspects.forEach((a) => {
-      const fraction = aspectClasses[a.label];
+    gradients.forEach((a) => {
+      const fraction = gradientClasses[a.label];
       a.inSchlag = fraction !== undefined;
       a.fraction = fraction === undefined ? 0 : fraction;
     });
@@ -152,8 +152,8 @@ function calculateAspectClasses() {
   calculationMap.getLayers().item(0).changed(); // update style
 }
 
-watch(schlagInfo, calculateAspectClasses);
+watch(schlagInfo, calculateGradientClasses);
 
-export function useAspect() {
-  return { aspects };
+export function useGradient() {
+  return { gradients };
 }

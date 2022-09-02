@@ -1,6 +1,6 @@
 import { getLayer } from 'ol-mapbox-style';
 import { computed, ref, watch } from 'vue';
-import { aspects } from './useAspect';
+import { gradients } from './useGradient';
 import { map, mapReady, mapView } from './useMap';
 import { topics } from './useTopics';
 
@@ -83,7 +83,7 @@ watch(topics, (value) => {
   });
 });
 
-watch(aspects, (value) => {
+watch(gradients, (value) => {
   // updateAnyTopicVisibility();
   const { layers } = map.get('mapbox-style');
   const one = layers.filter((layer) => layer.metadata?.group === 'one' && layer.type === 'raster');
