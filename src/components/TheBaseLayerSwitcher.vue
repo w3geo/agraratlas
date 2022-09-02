@@ -28,7 +28,7 @@
         <v-icon class="mx-1">
           mdi-layers
         </v-icon>
-        BASISKARTE WÄHLEN:
+        BASISKARTE WÄHLEN
       </v-col>
       <v-col
         cols="2"

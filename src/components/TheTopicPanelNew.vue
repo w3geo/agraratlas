@@ -29,7 +29,7 @@
         <v-icon class="mx-1">
           mdi-view-list
         </v-icon>
-        Themen / Hangneigungen:
+        Themen / Hangneigungen
       </v-col>
       <v-col
         cols="2"
@@ -110,41 +110,43 @@
                 cols="2"
                 class="pa-1"
               >
-                <img
-                  :src="schraffur"
+                <div
+                  style="background-image: url(map/icons/hatch-any.svg); background-repeat: repeat;"
                   class="colorBox"
                   :style="'opacity: ' + opacity + ';'"
-                >
+                />
               </v-col>
             </v-row>
-            <template
-              v-for="(topic, index) in topics"
-              :key="index"
-            >
-              <v-row
-                v-if="!onlyTopicsInExtent ||
-                  (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
-                no-gutters
+            <div class="lineFirst">
+              <template
+                v-for="(topic, index) in topics"
+                :key="index"
               >
-                <v-col cols="10">
-                  <v-radio
-                    :label="topic.label"
-                    :value="topic.label"
-                    hide-details
-                    density="compact"
-                    :class="{fat : schlagInfo && topic.inSchlagExtent}"
-                  />
-                </v-col><v-col
-                  cols="2"
-                  class="pa-1"
+                <v-row
+                  v-if="!onlyTopicsInExtent ||
+                    (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
+                  no-gutters
                 >
-                  <div
-                    class="colorBox"
-                    :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
-                  />
-                </v-col>
-              </v-row>
-            </template>
+                  <v-col cols="10">
+                    <v-radio
+                      :label="topic.label"
+                      :value="topic.label"
+                      hide-details
+                      density="compact"
+                      :class="{fat : schlagInfo && topic.inSchlagExtent}"
+                    />
+                  </v-col><v-col
+                    cols="2"
+                    class="pa-1"
+                  >
+                    <div
+                      class="colorBox"
+                      :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
+                    />
+                  </v-col>
+                </v-row>
+              </template>
+            </div>
           </v-radio-group>
         </div>
         <div
@@ -265,7 +267,6 @@ import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useGradient } from '../composables/useGradient';
 import { mapView } from '../composables/useMap';
-import schraffur from '../assets/schraffur.png';
 
 const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();
@@ -424,8 +425,9 @@ watch(selectedTopic, (value) => {
   border-top-left-radius: 8px!important;
 }
 
-.lineBelow {
-  border-bottom: 1px solid #ddd;
+div.lineFirst div.v-row:nth-child(1) {
+  padding-top: 3px;;
+  border-top: 1px solid #ddd;
 }
 .lineAbove {
   border-top: 1px solid #ddd;
