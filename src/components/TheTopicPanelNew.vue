@@ -117,34 +117,36 @@
                 />
               </v-col>
             </v-row>
-            <template
-              v-for="(topic, index) in topics"
-              :key="index"
-            >
-              <v-row
-                v-if="!onlyTopicsInExtent ||
-                  (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
-                no-gutters
+            <div class="lineFirst">
+              <template
+                v-for="(topic, index) in topics"
+                :key="index"
               >
-                <v-col cols="10">
-                  <v-radio
-                    :label="topic.label"
-                    :value="topic.label"
-                    hide-details
-                    density="compact"
-                    :class="{fat : schlagInfo && topic.inSchlagExtent}"
-                  />
-                </v-col><v-col
-                  cols="2"
-                  class="pa-1"
+                <v-row
+                  v-if="!onlyTopicsInExtent ||
+                    (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
+                  no-gutters
                 >
-                  <div
-                    class="colorBox"
-                    :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
-                  />
-                </v-col>
-              </v-row>
-            </template>
+                  <v-col cols="10">
+                    <v-radio
+                      :label="topic.label"
+                      :value="topic.label"
+                      hide-details
+                      density="compact"
+                      :class="{fat : schlagInfo && topic.inSchlagExtent}"
+                    />
+                  </v-col><v-col
+                    cols="2"
+                    class="pa-1"
+                  >
+                    <div
+                      class="colorBox"
+                      :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
+                    />
+                  </v-col>
+                </v-row>
+              </template>
+            </div>
           </v-radio-group>
         </div>
         <div
@@ -423,8 +425,9 @@ watch(selectedTopic, (value) => {
   border-top-left-radius: 8px!important;
 }
 
-.lineBelow {
-  border-bottom: 1px solid #ddd;
+div.lineFirst div.v-row:nth-child(1) {
+  padding-top: 3px;;
+  border-top: 1px solid #ddd;
 }
 .lineAbove {
   border-top: 1px solid #ddd;
