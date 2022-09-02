@@ -20,7 +20,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 /**
  * @type {import('vue').ShallowRef<MapView>}
  */
-export const mapView = shallowRef({ zoom: 0, center: [0, 0] });
+export const mapView = shallowRef({});
 
 renderTransparent(true);
 
