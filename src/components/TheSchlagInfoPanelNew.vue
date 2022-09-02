@@ -136,13 +136,6 @@ const router = useRouter();
 const emit = defineEmits(['schlag']);
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
-panels.value.schlag = !mobile.value;
-
-watch(mobile, (newvalue, oldvalue) => {
-  if (!oldvalue && newvalue && panels.value.schlag) {
-    panels.value.schlag = false;
-  }
-});
 const lowVertical = computed(() => (height.value < 740));
 
 const tooLow = computed(() => {
