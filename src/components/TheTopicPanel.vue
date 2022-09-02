@@ -322,7 +322,7 @@ const topicVcard = computed(() => {
   if (mobile.value) {
     minusPix = 50;
   }
-  return `calc(100vh - ${minusPix}px)`;
+  return `${window.innerHeight - minusPix}px`;
 });
 
 const scrollDivCalc = computed(() => {
@@ -341,7 +341,7 @@ const scrollDivCalc = computed(() => {
     minusPix = 211;
   }
 
-  return `height: calc(100vh - ${minusPix}px);`;
+  return `height: ${window.innerHeight - minusPix}px;`;
 });
 
 const scrollDivLargerCalc = computed(() => {
@@ -360,7 +360,7 @@ const scrollDivLargerCalc = computed(() => {
     minusPix = 170;
   }
 
-  return `height: calc(100vh - ${minusPix}px);`;
+  return `height: ${window.innerHeight - minusPix}px;`;
 });
 
 watch(selectedTopic, (value) => {
