@@ -155,6 +155,7 @@
             density="compact"
             hide-details
             :label="filterSwitchLabel"
+            :disabled="mapView.zoom < 12"
           />
         </div>
       </v-window-item>
