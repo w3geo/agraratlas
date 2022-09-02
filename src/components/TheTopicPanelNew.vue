@@ -186,7 +186,7 @@
             </v-col>
           </v-row>
           <v-row
-            v-for="(value, key) in aspects"
+            v-for="(value, key) in gradients"
             :key="key"
             no-gutters
           >
@@ -205,7 +205,7 @@
             <v-col
               style="cursor: pointer"
               cols="4"
-              class="pa-1 pt-2 text-body-2 aspectLabel"
+              class="pa-1 pt-2 text-body-2 gradientLabel"
               :class="{'selected' : schlagInfo && value.inSchlag,
                        'active' : value.visible,
                        'disabled': mapView.zoom < 9}"
@@ -263,7 +263,7 @@ import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
-import { useAspect } from '../composables/useAspect';
+import { useGradient } from '../composables/useGradient';
 import { mapView } from '../composables/useMap';
 import schraffur from '../assets/schraffur.png';
 
@@ -271,7 +271,7 @@ const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();
 const { opacity, showOverview } = useLayers();
 const { schlagInfo } = useSchlag();
-const { aspects } = useAspect();
+const { gradients } = useGradient();
 
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('any');
@@ -432,18 +432,18 @@ watch(selectedTopic, (value) => {
   background-color: #f6f6f6;
 }
 
-.aspectLabel {
+.gradientLabel {
   color: #000;
   opacity: .7;
 }
-.aspectLabel.active {
+.gradientLabel.active {
   opacity: .9;
 }
-.aspectLabel.selected {
+.gradientLabel.selected {
   font-weight: bold;
   opacity: 1;
 }
-.aspectLabel.disabled {
+.gradientLabel.disabled {
   opacity: .5;
 }
 
