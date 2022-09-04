@@ -606,7 +606,7 @@
         "case",
         ["boolean", ["feature-state", "selected"], false],
         "rgba(0, 0, 0, 0)",
-        "rgba(0, 0, 0, 0.3)"
+        "rgba(0, 0, 0, 0.1)"
       ]
     }
   }, {
@@ -618,15 +618,24 @@
       "line-color": [
         "case",
         ["boolean", ["feature-state", "selected"], false],
-        "#FF9900",
+        "rgba(0, 0, 0, 0)",
         "rgb(238, 90, 78)"
       ],
-      "line-width": [
+      "line-width": 2
+    }
+  }, {
+    "id": "invekos_schlaege_2022_polygon-line-selected",
+    "type": "line",
+    "source": "agrargis",
+    "source-layer": "invekos_schlaege_2022_polygon",
+    "paint": {
+      "line-color": [
         "case",
         ["boolean", ["feature-state", "selected"], false],
-        5,
-        2
-      ]
+        "#FF9900",
+        "rgba(0, 0, 0, 0)"
+      ],
+      "line-width": 5
     }
   }]
 }
