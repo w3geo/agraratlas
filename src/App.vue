@@ -30,6 +30,41 @@
           INSPIRE AGRAR ATLAS
         </v-col>
       </v-row>
+      <v-row
+        no-gutters
+        :class="{'mt-4' : !tooSmall}"
+      >
+        <v-col
+          cols="12"
+          class="pa-3 pt-1"
+        >
+          <a
+            class="drawerLink"
+            href="https://geoportal.inspire.gv.at/"
+            target="_blank"
+          >Link zu Inhalt</a>
+        </v-col>
+        <v-col
+          cols="12"
+          class="pa-3 pt-1"
+        >
+          <a
+            class="drawerLink"
+            href="https://geoportal.inspire.gv.at/"
+            target="_blank"
+          >Link zu Inhalt</a>
+        </v-col>
+        <v-col
+          cols="12"
+          class="pa-3 pt-1"
+        >
+          <a
+            class="drawerLink"
+            href="https://geoportal.inspire.gv.at/"
+            target="_blank"
+          >Link zu Inhalt</a>
+        </v-col>
+      </v-row>
     </v-navigation-drawer>
     <v-btn
       v-if="mobile"
@@ -161,6 +196,12 @@ const onSearch = (value) => {
   .pageTitle.smaller {
     font-size: 14px!important;
     line-height: 15px!important;
+  }
+
+  .drawerLink {
+    color: #666;
+    text-decoration: none;
+    font-size: 18px;
   }
 
 </style>
