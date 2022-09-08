@@ -1,5 +1,35 @@
 <template>
   <v-app>
+    <v-dialog
+      v-model="disclaimer"
+      persistent
+    >
+      <v-card>
+        <v-card-title>Disclaimer</v-card-title>
+        <v-card-text>
+          <p>
+            Alle Inhalte (Karten / Daten) auf dieser Seite werden ohne
+            Gewähr verfügbar gemacht. Der Betreiber der Seite haftet
+            nicht für Schäden jedweglicher Art durch Fehler
+            in / falsche Darstellung von Daten.
+          </p>
+          <p>
+            Durch Klick auf "Verstanden" bestätigen Sie,
+            diesen Disclaimer verstanden und mit
+            den Nutzungsbedingungen einverstanden zu sein.
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="#666"
+            block
+            @click="disclaimer = false"
+          >
+            Verstanden
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-app-bar
       density="compact"
     >
@@ -28,6 +58,41 @@
           background-color="grey"
         >
           INSPIRE AGRAR ATLAS
+        </v-col>
+      </v-row>
+      <v-row
+        no-gutters
+        :class="{'mt-4' : !tooSmall}"
+      >
+        <v-col
+          cols="12"
+          class="pa-3 pt-1"
+        >
+          <a
+            class="drawerLink"
+            href="https://geoportal.inspire.gv.at/"
+            target="_blank"
+          >Link zu Inhalt</a>
+        </v-col>
+        <v-col
+          cols="12"
+          class="pa-3 pt-1"
+        >
+          <a
+            class="drawerLink"
+            href="https://geoportal.inspire.gv.at/"
+            target="_blank"
+          >Link zu Inhalt</a>
+        </v-col>
+        <v-col
+          cols="12"
+          class="pa-3 pt-1"
+        >
+          <a
+            class="drawerLink"
+            href="https://geoportal.inspire.gv.at/"
+            target="_blank"
+          >Link zu Inhalt</a>
         </v-col>
       </v-row>
     </v-navigation-drawer>
@@ -93,6 +158,7 @@ const tooSmall = computed(() => (width.value < 400));
 
 const { map } = useMap();
 const drawer = ref(false);
+const disclaimer = ref(true);
 
 const geojson = new GeoJSON();
 
@@ -161,6 +227,12 @@ const onSearch = (value) => {
   .pageTitle.smaller {
     font-size: 14px!important;
     line-height: 15px!important;
+  }
+
+  .drawerLink {
+    color: #666;
+    text-decoration: none;
+    font-size: 18px;
   }
 
 </style>
