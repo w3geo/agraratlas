@@ -1,5 +1,26 @@
 <template>
   <v-app>
+    <v-dialog
+      v-model="disclaimer"
+      persistent
+    >
+      <v-card>
+        <v-card-title>Disclaimer</v-card-title>
+        <v-card-text>
+          <p>Alle Inhalte (Karten / Daten) auf dieser Seite werden ohne Gewähr verfügbar gemacht. Der Betreiber der Seite haftet nicht für Schäden jedweglicher Art durch Fehler in / falsche Darstellung von Daten.</p>
+          <p>Durch Klick auf "Verstanden" bestätigen Sie, diesen Disclaimer verstanden und mit den Nutzungsbedingungen einverstanden zu sein.</p>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="#666"
+            block
+            @click="disclaimer = false"
+          >
+            Verstanden
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-app-bar
       density="compact"
     >
@@ -128,6 +149,7 @@ const tooSmall = computed(() => (width.value < 400));
 
 const { map } = useMap();
 const drawer = ref(false);
+const disclaimer = ref(true);
 
 const geojson = new GeoJSON();
 
