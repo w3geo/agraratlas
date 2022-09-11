@@ -83,9 +83,7 @@ export const mapReady = apply(map, './map/style.json').then(() => {
 export const filterStyle = mapReady.then(async () => {
   const style = JSON.parse(JSON.stringify(map.get('mapbox-style')));
   style.layers.forEach((l) => {
-    if (l.metadata?.group === 'any') {
-      l.layout = { ...l.layout, visibility: 'none' };
-    } else if (l.metadata?.group === 'one') {
+    if (l.metadata?.group === 'one') {
       l.layout = { ...l.layout, visibility: 'visible' };
     } else {
       l.layout = { ...l.layout, visibility: 'none' };

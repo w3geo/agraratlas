@@ -98,25 +98,6 @@
               </v-col>
             </v-row>
 
-            <v-row no-gutters>
-              <v-col cols="10">
-                <v-radio
-                  key="-1"
-                  label="Übersicht aller Themen"
-                  value="any"
-                  density="compact"
-                />
-              </v-col><v-col
-                cols="2"
-                class="pa-1"
-              >
-                <div
-                  style="background-color: rgba(188, 143, 143, 0.3);"
-                  class="colorBox"
-                  :style="'opacity: ' + opacity + ';'"
-                />
-              </v-col>
-            </v-row>
             <div class="lineFirst">
               <template
                 v-for="(topic, index) in topics"
@@ -270,12 +251,12 @@ import { mapView } from '../composables/useMap';
 
 const { panels, closeOthers } = usePanelControl();
 const { topics } = useTopics();
-const { opacity, showOverview } = useLayers();
+const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
 const { gradients } = useGradient();
 
 /** @type {import("vue").Ref<string>} */
-const selectedTopic = ref('any');
+const selectedTopic = ref('none');
 /** @type {import("vue").Ref<boolean>} */
 const onlyTopicsInExtent = ref(true);
 
@@ -364,7 +345,6 @@ const scrollDivLargerCalc = computed(() => {
 });
 
 watch(selectedTopic, (value) => {
-  showOverview.value = value === 'any';
   topics.forEach((topic) => {
     topic.visible = topic.label === value;
   });

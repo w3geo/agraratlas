@@ -13,9 +13,6 @@ const baseLayer = ref();
 /** @type {import('vue').Ref<number>} */
 const opacity = ref(0.7);
 
-/** @type {import('vue').Ref<boolean>} */
-const showOverview = ref(true);
-
 /** @type {import('vue').ComputedRef<0|1>} */
 const autoBaseLayerIndex = computed(() => (mapView.value.zoom > 14 ? 1 : 0));
 
@@ -31,16 +28,6 @@ function setLayerOpacity(mapboxLayer) {
     }
     getLayer(map, mapboxLayer.id).setOpacity(opacity.value);
   }
-}
-
-function updateAnyTopicVisibility() {
-  const { layers } = map.get('mapbox-style');
-  const any = layers.filter((l) => l.metadata?.group === 'any');
-  const visibility = showOverview.value ? 'visible' : 'none';
-  any.forEach((layer) => {
-    layer.layout = { ...layer.layout, visibility };
-    getLayer(map, layer.id).changed();
-  });
 }
 
 mapReady.then(() => {
@@ -73,7 +60,6 @@ watch(autoBaseLayerIndex, () => {
 });
 
 watch(topics, (value) => {
-  updateAnyTopicVisibility();
   const { layers } = map.get('mapbox-style');
   const one = layers.filter((layer) => layer.metadata?.group === 'one' && layer.type !== 'raster');
   one.forEach((layer) => {
@@ -94,10 +80,8 @@ watch(gradients, (value) => {
   });
 });
 
-watch(showOverview, updateAnyTopicVisibility);
-
 export function useLayers() {
   return {
-    baseLayers, baseLayer, opacity, showOverview,
+    baseLayers, baseLayer, opacity,
   };
 }
