@@ -76,7 +76,9 @@ function setSchlagInfo(feature) {
 map.on('click', (event) => {
   if (measure.value || draw.value) { return; }
   const selectedRenderFeature = getSchlagAtPixel(event.pixel);
-  setSchlagInfo(selectedRenderFeature);
+  setSchlagInfo(schlagInfo.value?.id !== selectedRenderFeature?.getId()
+    ? selectedRenderFeature
+    : null);
 });
 map.on('pointermove', (event) => {
   if (event.dragging || measure.value || draw.value) { return; }
