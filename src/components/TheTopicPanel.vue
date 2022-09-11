@@ -104,8 +104,9 @@
                 :key="index"
               >
                 <v-row
-                  v-if="!onlyTopicsInExtent ||
-                    (schlagInfo ? topic.inSchlagExtent : topic.inExtent) || topic.visible"
+                  v-if="
+                    schlagInfo && onlyTopicsInSchlagExtent ? topic.inSchlagExtent : topic.inExtent
+                      || topic.visible"
                   no-gutters
                 >
                   <v-col cols="10">
@@ -134,11 +135,11 @@
           class="topicFilter px-2"
         >
           <v-checkbox
-            v-model="onlyTopicsInExtent"
+            v-model="onlyTopicsInSchlagExtent"
             density="compact"
             hide-details
-            :label="filterSwitchLabel"
-            :disabled="mapView.zoom < 12"
+            label="Nur für den gewählten Schlag mögliche Themen"
+            :disabled="!schlagInfo"
           />
         </div>
       </v-window-item>
@@ -258,14 +259,10 @@ const { gradients } = useGradient();
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('none');
 /** @type {import("vue").Ref<boolean>} */
-const onlyTopicsInExtent = ref(true);
+const onlyTopicsInSchlagExtent = ref(true);
 
 const tab = ref();
 const { width, height } = useDisplay();
-
-const filterSwitchLabel = computed(() => (schlagInfo.value
-  ? 'Nur für den gewählten Schlag mögliche Themen'
-  : 'Nur im Kartenausschnitt sichtbare Themen'));
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 panels.value.themen = !mobile.value;
