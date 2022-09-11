@@ -83,6 +83,22 @@
             icon="mdi-crosshairs"
           />
         </v-btn>
+        <v-btn
+          v-if="schlagInfo"
+          width="30"
+          height="30"
+          icon
+          flat
+          rounded
+          color="grey-lighten-3"
+          title="Schlag abwählen"
+          @click.stop="schlagInfo = null"
+        >
+          <v-icon
+            size="20"
+            icon="mdi-trash-can-outline"
+          />
+        </v-btn>
       </v-col>
       <v-col
         class="px-2"
