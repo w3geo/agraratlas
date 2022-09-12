@@ -49,6 +49,7 @@
       v-model="drawer"
       disable-resize-watcher
       temporary
+      @click="drawer = false"
     >
       <v-row no-gutters>
         <v-col
@@ -70,9 +71,9 @@
         >
           <a
             class="drawerLink"
-            href="https://geoportal.inspire.gv.at/"
+            href="https://www.inspire.gv.at/INSPIRE-Oesterreich/Agraratlas-und-Agrarportal"
             target="_blank"
-          >Link zu Inhalt</a>
+          >Über Agraratlas</a>
         </v-col>
         <v-col
           cols="12"
@@ -80,19 +81,9 @@
         >
           <a
             class="drawerLink"
-            href="https://geoportal.inspire.gv.at/"
+            href="https://info.bml.gv.at/impressum.html"
             target="_blank"
-          >Link zu Inhalt</a>
-        </v-col>
-        <v-col
-          cols="12"
-          class="pa-3 pt-1"
-        >
-          <a
-            class="drawerLink"
-            href="https://geoportal.inspire.gv.at/"
-            target="_blank"
-          >Link zu Inhalt</a>
+          >Impressum</a>
         </v-col>
       </v-row>
     </v-navigation-drawer>
