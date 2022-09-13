@@ -248,9 +248,10 @@ import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useGradient } from '../composables/useGradient';
-import { mapView } from '../composables/useMap';
+import { useMap } from '../composables/useMap';
 
 const { panels, closeOthers } = usePanelControl();
+const { mapView } = useMap();
 const { topics } = useTopics();
 const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
@@ -259,7 +260,7 @@ const { gradients } = useGradient();
 /** @type {import("vue").Ref<string>} */
 const selectedTopic = ref('none');
 /** @type {import("vue").Ref<boolean>} */
-const onlyTopicsInSchlagExtent = ref(true);
+const onlyTopicsInSchlagExtent = ref(false);
 
 const tab = ref();
 const { width, height } = useDisplay();
