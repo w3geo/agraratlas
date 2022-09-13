@@ -203,21 +203,6 @@
       "group": "one"
     }
   }, {
-    "id": "bdfl_l34_feucht_torfgebiete-one",
-    "type": "fill",
-    "source": "agrargis",
-    "source-layer": "bdfl_l34_feucht_torfgebiete",
-    "paint": {
-      "fill-color": "rgb(116, 216, 249)"
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "Feuchtgebiete und Torfflächen",
-      "group": "one"
-    }
-  }, {
     "id": "bdfl_l32_belastete_gewaesser_polygon-one",
     "type": "fill",
     "source": "agrargis",
