@@ -203,37 +203,6 @@
       "group": "one"
     }
   }, {
-    "id": "bdfl_l32_belastete_gewaesser_polygon-one",
-    "type": "fill",
-    "source": "agrargis",
-    "source-layer": "bdfl_l32_belastete_gewaesser_polygon",
-    "paint": {
-      "fill-color": "rgb(50, 37, 229)"
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "Belastete Gewässer (NGWP)",
-      "group": "one"
-    }
-  }, {
-    "id": "bdfl_l32_belastete_gewaesser_line-one",
-    "type": "line",
-    "source": "agrargis",
-    "source-layer": "bdfl_l32_belastete_gewaesser_line",
-    "paint": {
-      "line-color": "rgb(50, 37, 229)",
-      "line-width": 4
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "Belastete Gewässer (NGWP)",
-      "group": "one"
-    }
-  }, {
     "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
     "type": "fill",
     "source": "agrargis",
@@ -245,7 +214,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Belastete Gewässer (NGWP)",
+      "label": "Pufferstreifen belasteter Gewässer",
       "group": "one"
     }
   }, {
