@@ -66,10 +66,7 @@
             im Impressum angegebenen Kontakt.
           </p>
           <p>
-            <b>Ich habe die obigen Bestimmungen gelesen und nehme diese rechtsverbindlich an. Ich
-              nehme weiters zur Kenntnis, dass die Abfrage des Eigentümerverzeichnisses durch die
-              Dienststellen des Bundes nur zulässig ist, soweit dies zur Erfüllung der ihnen
-              übertragenen Aufgaben notwendig ist.</b>
+            <b>Ich habe die obigen Bestimmungen gelesen und nehme diese rechtsverbindlich an.</b>
           </p>
         </v-card-text>
         <v-card-actions>
