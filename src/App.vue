@@ -5,18 +5,71 @@
       persistent
     >
       <v-card>
-        <v-card-title>Disclaimer</v-card-title>
-        <v-card-text>
+        <v-card-title>Haftungsausschluss</v-card-title>
+        <v-card-text class="longtext scroll">
           <p>
-            Alle Inhalte (Karten / Daten) auf dieser Seite werden ohne
-            Gewähr verfügbar gemacht. Der Betreiber der Seite haftet
-            nicht für Schäden jedweglicher Art durch Fehler
-            in / falsche Darstellung von Daten.
+            Sehr geehrte Benutzerin, sehr geehrter Benutzer,
           </p>
           <p>
-            Durch Klick auf "Verstanden" bestätigen Sie,
-            diesen Disclaimer verstanden und mit
-            den Nutzungsbedingungen einverstanden zu sein.
+            herzlichen Dank, dass Sie den INSPIRE Agraratlas des BML verwenden.
+          </p>
+          <p>
+            Aus den Karteninhalten (Darstellungen) und den dazugehörenden Texten können
+            Rechtsansprüche weder begründet noch abgeleitet werden. Das Bundesministerium für Land-
+            und Forstwirtschaft, Regionen und Wasserwirtschaft (BML) übernimmt keine Haftung für
+            Richtigkeit, Vollständigkeit, Aktualität oder dauernde Verfügbarkeit dieses
+            Webkartendienstes. Die Karten und Texte sind keine amtliche Auskunft oder
+            rechtsverbindliche Aussage. Amtliche Auskünfte zu einem bestimmten Gebiet oder einer
+            bestimmten Frage erteilt auf Anfrage die zuständige Behörde. Die Angabe der zuständigen
+            Behörde können Sie in der Metadatensuche des INSPIRE Agrarportal finden.
+          </p>
+          <p>
+            Dargestellt werden Kartenlayer mit Gebietsabgrenzungen, unter anderem im Kontext zum
+            Mehrfachantrag der neuen Förderperiode für die Gemeinsame Agrarpolitik (GAP) ab 2023,
+            Gewässernetz, Höhe und Schutzgebiete. Der INSPIRE Agraratlas stellt Verhältnisse auf
+            Schlagebene dar, zeigt die Gebietsabgrenzungen auf und soll vorausschauende Planung
+            unterstützen, sodass die Informationen bestmöglich genutzt werden können. Die
+            dargestellten Kartenlayer haben ausschließlich Informationscharakter. Der Inhalt dieser
+            Internetseite kann sich, insbesondere aufgrund unterschiedlicher Aktualität, von der
+            Publikation des e-AMA unterscheiden. Die Förderungsantragsstellung ist ausschließlich
+            über das e-AMA System der Agrarmarkt Austria (AMA) durchzuführen.
+          </p>
+          <p>
+            Alle Angaben (Berechnungsergebnisse) sind trotz sorgfältigster Bearbeitung/Verarbeitung
+            ohne Gewähr und nicht rechtsverbindlich. Eine Haftung des BML für Nachteile, die
+            aufgrund der auf INSPIRE.Agraratlas.gv.at angezeigten und abgefragten Inhalte entstanden
+            sind, wird ausgeschlossen. Das BML behält sich ausdrücklich vor, Inhalte des INSPIRE
+            Agraratlases jederzeit ohne Ankündigung ganz oder teilweise zu ändern, zu ergänzen, zu
+            löschen oder zeitweise nicht zu veröffentlichen.
+          </p>
+          <p>
+            Dieser Webkartendienst wird vom Unternehmen <a href="https://w3geo.at/">W3Geo GmbH</a>
+            betrieben. W3Geo übernimmt keinerlei Haftung für Schäden oder Mangelfolgeschäden,
+            welche durch die Verwendung dieses Webdienstes und all seiner Inhalte entstehen. Die
+            Nutzung der Inhalte dieses Webdienstes erfolgt ausschließlich auf Risiko der Benutzerin
+            bzw. des Benutzers.
+          </p>
+          <p>
+            Anmerkung zur Barrierefreiheit: Diese Webseite ist mit dem Bundesgesetz über den
+            barrierefreien Zugang zu Websites und mobilen Anwendungen des Bundes
+            (Web-Zugänglichkeits-Gesetz – WZG), BGBl. I Nr. 59/2019 vereinbar.
+          </p>
+          <p>
+            Gemäß § 2 Abs. 3 lit. d muss die Webseite nicht den, in dem oben angeführten
+            Bundesgesetz normierten Anforderungen an die Barrierefreiheit genügen,
+            da Online-Karten und Kartendienste, die nicht der Navigation dienen, vom
+            Regelungsumfang ausgenommen sind.
+          </p>
+          <p>Es handelt sich bei agraratlas.inspire.gv.at um einen reinen Darstellungsdienst.</p>
+          <p>
+            Bei Fragen zur barrierefreien Lesbarkeit des Kartenteiles wenden Sie sich bitte an den
+            im Impressum angegebenen Kontakt.
+          </p>
+          <p>
+            <b>Ich habe die obigen Bestimmungen gelesen und nehme diese rechtsverbindlich an. Ich
+              nehme weiters zur Kenntnis, dass die Abfrage des Eigentümerverzeichnisses durch die
+              Dienststellen des Bundes nur zulässig ist, soweit dies zur Erfüllung der ihnen
+              übertragenen Aufgaben notwendig ist.</b>
           </p>
         </v-card-text>
         <v-card-actions>
@@ -25,7 +78,7 @@
             block
             @click="disclaimer = false"
           >
-            Verstanden
+            Akzeptieren
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -224,6 +277,18 @@ const onSearch = (value) => {
     color: #666;
     text-decoration: none;
     font-size: 18px;
+  }
+
+  .longtext p {
+    padding-bottom: 0.5em;
+  }
+  .longtext a {
+    text-decoration: inherit;
+    color: inherit;
+  }
+
+  .scroll {
+    overflow-y: auto;
   }
 
 </style>
