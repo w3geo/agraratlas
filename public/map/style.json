@@ -99,7 +99,7 @@
       "tiles": [
         "./tiles/{z}/{x}/{y}.pbf"
       ],
-      "attribution": "&copy; <a href=\"https://www.agrargis.org/\">AgrarGIS</a>",
+      "attribution": "&copy; <a href=\"https://www.bml.gv.at/\">BML</a>",
       "maxzoom": 15,
       "bounds": [8.782379, 46.358770, 17.5, 49.037872]
     }

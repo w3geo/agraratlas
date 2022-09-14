@@ -71,7 +71,7 @@
         >
           <a
             class="drawerLink"
-            href="https://www.inspire.gv.at/INSPIRE-Oesterreich/Agraratlas-und-Agrarportal"
+            href="https://agrar.inspire.gv.at"
             target="_blank"
           >Über Agraratlas</a>
         </v-col>
