@@ -24,10 +24,10 @@
             Behörde können Sie in der Metadatensuche des INSPIRE Agrarportal finden.
           </p>
           <p>
-            Dargestellt werden Kartenlayer mit Gebietsabgrenzungen, unter anderem im Kontext zum
-            Mehrfachantrag der neuen Förderperiode für die Gemeinsame Agrarpolitik (GAP) ab 2023,
-            Gewässernetz, Höhe und Schutzgebiete. Der INSPIRE Agraratlas stellt Verhältnisse auf
-            Schlagebene dar, zeigt die Gebietsabgrenzungen auf und soll vorausschauende Planung
+            Dargestellt werden Kartenlayer mit Bewirtschaftungsgebieten, unter anderem im Kontext
+            zum Mehrfachantrag der neuen Förderperiode für die Gemeinsame Agrarpolitik (GAP) ab
+            2023, Gewässernetz, Höhe und Schutzgebiete. Der INSPIRE Agraratlas stellt Verhältnisse
+            auf Schlagebene dar, zeigt die Gebietsabgrenzungen auf und soll vorausschauende Planung
             unterstützen, sodass die Informationen bestmöglich genutzt werden können. Die
             dargestellten Kartenlayer haben ausschließlich Informationscharakter. Der Inhalt dieser
             Internetseite kann sich, insbesondere aufgrund unterschiedlicher Aktualität, von der
@@ -39,12 +39,12 @@
             ohne Gewähr und nicht rechtsverbindlich. Eine Haftung des BML für Nachteile, die
             aufgrund der auf INSPIRE.Agraratlas.gv.at angezeigten und abgefragten Inhalte entstanden
             sind, wird ausgeschlossen. Das BML behält sich ausdrücklich vor, Inhalte des INSPIRE
-            Agraratlases jederzeit ohne Ankündigung ganz oder teilweise zu ändern, zu ergänzen, zu
+            Agraratlas jederzeit ohne Ankündigung ganz oder teilweise zu ändern, zu ergänzen, zu
             löschen oder zeitweise nicht zu veröffentlichen.
           </p>
           <p>
             Dieser Webkartendienst wird vom Unternehmen <a href="https://w3geo.at/">W3Geo GmbH</a>
-            betrieben. W3Geo übernimmt keinerlei Haftung für Schäden oder Mangelfolgeschäden,
+            betrieben. W3Geo übernimmt keinerlei Haftung für Schäden oder Mängelfolgeschäden,
             welche durch die Verwendung dieses Webdienstes und all seiner Inhalte entstehen. Die
             Nutzung der Inhalte dieses Webdienstes erfolgt ausschließlich auf Risiko der Benutzerin
             bzw. des Benutzers.
