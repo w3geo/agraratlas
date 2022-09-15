@@ -64,17 +64,11 @@ async function findRenderedTopics(extent) {
 
 /** @returns {Promise<void>} */
 async function updateTopicsInExtent() {
-  const { extent, zoom } = mapView.value;
-  if (zoom < 12) {
-    topics.forEach((topic) => {
-      topic.inExtent = true;
-    });
-  } else {
-    const renderedTopics = await findRenderedTopics(transformExtent(extent, 'EPSG:4326', 'EPSG:3857'));
-    topics.forEach((topic) => {
-      topic.inExtent = renderedTopics.includes(topic.label);
-    });
-  }
+  const { extent } = mapView.value;
+  const renderedTopics = await findRenderedTopics(transformExtent(extent, 'EPSG:4326', 'EPSG:3857'));
+  topics.forEach((topic) => {
+    topic.inExtent = renderedTopics.includes(topic.label);
+  });
 }
 
 /** @returns {Promise<void>|undefined} */
