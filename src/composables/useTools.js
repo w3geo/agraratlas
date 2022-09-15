@@ -392,9 +392,7 @@ function formatLength(line) {
 function formatArea(polygon) {
   const area = getArea(polygon, { projection: 'EPSG:4326' });
   let output;
-  if (area > 100000) {
-    output = `${(Math.round((area / 1000000) * 100) / 100).toLocaleString('de-AT')} km²`;
-  } else if (area > 1000) {
+  if (area > 1000) {
     output = `${(area / 10000).toLocaleString('de-AT', { maximumFractionDigits: 2 })} ha`;
   } else {
     output = `${(Math.round(area * 100) / 100).toLocaleString('de-AT')} m²`;
