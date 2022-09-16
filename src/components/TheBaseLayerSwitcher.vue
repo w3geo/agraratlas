@@ -48,8 +48,8 @@
         cols="6"
         align="center"
         class="mapMode pa-2"
-        :class="{selected : baseLayer=='Übersichtskarte'}"
-        @click="switchMode('Übersichtskarte')"
+        :class="{selected : baseLayer=='basemap.at'}"
+        @click="switchMode('basemap.at')"
       >
         <v-img
           :src="topo"
@@ -58,7 +58,7 @@
           height="90"
           class="mb-1"
         /><div class="text-caption">
-          <span>Übersichtskarte</span>
+          <span>basemap.at</span>
         </div>
       </v-col>
       <v-col

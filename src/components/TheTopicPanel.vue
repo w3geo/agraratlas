@@ -83,7 +83,7 @@
               <v-col cols="10">
                 <v-radio
                   key="-2"
-                  label="Nur Hintergrundkarte"
+                  label="Nur Basiskarte"
                   value="none"
                   density="compact"
                 />
