@@ -43,9 +43,10 @@ mapReady.then(() => {
  * @returns {Promise<Array<string>>}
  */
 async function findRenderedTopics(extent) {
-  let features = getSource(map, 'agrargis')
-    .getFeaturesInExtent(extent);
-  features = features.map((renderFeature) => toFeature(renderFeature))
+  const features = getSource(map, 'agrargis')
+    .getFeaturesInExtent(extent)
+    .filter((feature) => feature.get('layer') !== SCHLAEGE_LAYER)
+    .map((renderFeature) => toFeature(renderFeature))
     .filter((feature) => feature.getGeometry().intersectsExtent(extent));
   const style = await filterStyle;
   recordStyleLayer(true);
@@ -53,7 +54,7 @@ async function findRenderedTopics(extent) {
     cur.set('mapbox-layer', undefined);
     style(cur, map.getView().getResolution());
     const layer = cur.get('mapbox-layer')?.metadata?.label;
-    if (layer && layer !== SCHLAEGE_LAYER) {
+    if (layer) {
       acc[layer] = true;
     }
     return acc;
