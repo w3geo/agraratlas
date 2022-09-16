@@ -51,7 +51,7 @@ map.addControl(new Control({
   element: gps,
 }));
 map.addControl(new ScaleLine());
-map.addInteraction(new Link());
+map.addInteraction(new Link({ params: ['x', 'y', 'z', 'r'] }));
 map.on('moveend', () => {
   const view = map.getView();
   mapView.value = {
