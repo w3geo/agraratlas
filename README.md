@@ -16,7 +16,13 @@ This project requires vector tiles and styles for its maps. Vector tiles are cre
 2. Unzip the content of the zip to the `data/` Folder
 3. Run
 
-       npm run data
+       npm run tiles:vector
+    
+   If you want to download a cache of the raster tiles used by this application, also run
+
+       npm run tiles:raster
+
+   The application requires both to run.
 
 ## Run the development server
 

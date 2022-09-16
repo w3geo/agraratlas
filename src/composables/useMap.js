@@ -10,6 +10,7 @@ import {
 import { getCenter } from 'ol/extent';
 import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import { INITIAL_EXTENT } from '../constants';
 
 /**
  * @typedef {Object} MapView
@@ -24,17 +25,15 @@ export const mapView = shallowRef({});
 
 renderTransparent(true);
 
-const initialExtent = [9.33583, 46.08870, 17.42424, 49.36705];
-
 useGeographic();
 
 export const map = new Map({
   controls: defaults({ attributionOptions: { collapsible: false } }),
   view: new View({
     maxResolution: 78271.51696402048,
-    extent: initialExtent,
+    extent: INITIAL_EXTENT,
     showFullExtent: true,
-    center: getCenter(initialExtent),
+    center: getCenter(INITIAL_EXTENT),
     zoom: 0,
   }),
 });

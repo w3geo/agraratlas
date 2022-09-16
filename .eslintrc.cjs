@@ -15,6 +15,7 @@ module.exports = {
     'vue',
   ],
   rules: {
+    'no-continue': 'off',
     'no-param-reassign': 'off',
     'vue/multi-word-component-names': 'off',
     'import/prefer-default-export': 'off',

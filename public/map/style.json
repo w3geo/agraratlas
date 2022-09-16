@@ -35,7 +35,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -44,7 +44,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_1&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen_1.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -53,7 +53,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_2&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen_2.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -62,7 +62,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_3&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen_3.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -71,7 +71,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_4&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen_4.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -80,7 +80,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_5&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen_5.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -89,7 +89,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_neigungsklassen_6&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+        "./tiles/{z}/{x}/{y}-neigungsklassen_6.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -101,7 +101,7 @@
       ],
       "attribution": "&copy; <a href=\"https://www.bml.gv.at/\">BML</a>",
       "maxzoom": 15,
-      "bounds": [8.782379, 46.358770, 17.5, 49.037872]
+      "bounds": [9.532874, 46.367811, 17.160773, 49.001157]
     }
   },
   "layers": [{
