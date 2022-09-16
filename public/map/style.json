@@ -250,11 +250,11 @@
       "group": "one"
     }
   }, {
-    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch",
+    "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch_1",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen",
-    "filter": ["==", "el", "EL hoch"],
+    "filter": ["==", "el", "EL hoch 1"],
     "paint": {
       "fill-color": "rgb(253, 241, 45)"
     },
@@ -262,7 +262,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL hoch",
+      "label": "Wasserrahmenrichtlinie EL hoch 1",
       "group": "one"
     }
   }, {
