@@ -243,6 +243,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
+import { useRoute, useRouter } from 'vue-router';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
@@ -250,8 +251,10 @@ import { usePanelControl } from '../composables/usePanelControl';
 import { useGradient } from '../composables/useGradient';
 import { useMap } from '../composables/useMap';
 
+const route = useRoute();
+const router = useRouter();
 const { panels, closeOthers } = usePanelControl();
-const { mapView } = useMap();
+const { mapView, mapReady } = useMap();
 const { topics } = useTopics();
 const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
@@ -261,6 +264,20 @@ const { gradients } = useGradient();
 const selectedTopic = ref('none');
 /** @type {import("vue").Ref<boolean>} */
 const onlyTopicsInSchlagExtent = ref(false);
+
+function setVisible(value) {
+  if (!value) {
+    return;
+  }
+  const visible = value.split(',');
+  selectedTopic.value = visible.shift();
+  gradients.forEach((gradient, i) => {
+    gradient.visible = visible.includes(i);
+  });
+  visible.forEach((i) => {
+    gradients[i].visible = true;
+  });
+}
 
 const tab = ref();
 const { width, height } = useDisplay();
@@ -347,6 +364,15 @@ watch(selectedTopic, (value) => {
     topic.visible = topic.label === value;
   });
 });
+
+watch([selectedTopic, gradients], ([t, g]) => {
+  const visible = [t, ...g.filter((gradient) => gradient.visible).map((gradient) => gradients.indexOf(gradient))].join(',');
+  if (visible !== route.params.visible) {
+    router.push({ params: { ...route.params, visible } });
+  }
+});
+watch(() => route.params.visible, setVisible);
+mapReady.then(() => setVisible(route.params.visible));
 
 </script>
 

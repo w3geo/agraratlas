@@ -186,7 +186,6 @@ import { useDisplay } from 'vuetify';
 import GeoJSON from 'ol/format/GeoJSON';
 import PlaceSearch from './components/PlaceSearch.vue';
 import { useMap } from './composables/useMap';
-import router from './plugins/router';
 import { usePanelControl } from './composables/usePanelControl';
 
 const { panels, closeOthers } = usePanelControl();
@@ -210,7 +209,6 @@ const onSearch = (value) => {
       maxZoom: 19,
       duration: 500,
     });
-    router.push('/');
   }
 };
 </script>

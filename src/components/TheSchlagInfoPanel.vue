@@ -200,7 +200,7 @@ function zoomTo12(event) {
 
 watch(schlagInfo, (value) => {
   if (value?.id !== Number(route.params.schlagId)) {
-    router.push({ params: { schlagId: value?.id } });
+    router.push({ params: { ...route.params, schlagId: value?.id } });
   }
   if (value && !value.loading) {
     emit('schlag', true);

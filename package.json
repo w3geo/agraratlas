@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "ol": "^7.1.0",
+    "ol": "^7.1.1-dev.1663363305046",
     "ol-mapbox-style": "^9.1.0",
     "roboto-fontface": "*",
     "size-sensor": "^1.0.1",
