@@ -187,17 +187,6 @@ const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
   mapView.value.center.map((v) => v.toFixed(4)),
 ) || mapView.value.zoom < 12));
 
-/**
- * @param {import("ol/MapBrowserEvent.js").default} event
- */
-function zoomTo12(event) {
-  map.getView().animate({
-    zoom: 12,
-    center: event.coordinate,
-    duration: 500,
-  });
-}
-
 watch(schlagInfo, (value) => {
   if (value?.id !== Number(route.params.schlagId)) {
     router.push({ params: { ...route.params, schlagId: value?.id } });
@@ -209,7 +198,11 @@ watch(schlagInfo, (value) => {
 
 map.on('singleclick', (event) => {
   if (map.getView().getZoom() < 12) {
-    zoomTo12(event);
+    map.getView().animate({
+      zoom: 12,
+      center: event.coordinate,
+      duration: 500,
+    });
   }
 });
 
