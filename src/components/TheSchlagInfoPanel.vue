@@ -207,14 +207,9 @@ watch(schlagInfo, (value) => {
   }
 });
 
-let zoomOnClick = false;
-watch(mapView, (value) => {
-  if (!zoomOnClick && value.zoom < 12) {
-    zoomOnClick = true;
-    map.once('click', zoomTo12);
-  } else {
-    zoomOnClick = false;
-    map.un('click', zoomTo12);
+map.on('singleclick', () => {
+  if (map.getView().getZoom() < 12) {
+    zoomTo12();
   }
 });
 
