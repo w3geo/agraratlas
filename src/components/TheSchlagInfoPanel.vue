@@ -209,7 +209,7 @@ watch(schlagInfo, (value) => {
 
 map.on('singleclick', () => {
   if (map.getView().getZoom() < 12) {
-    zoomTo12();
+    zoomTo12(event);
   }
 });
 
