@@ -36,6 +36,7 @@ export const map = new Map({
     center: getCenter(INITIAL_EXTENT),
     zoom: 0,
   }),
+  moveTolerance: 3,
 });
 const gps = document.createElement('div');
 gps.title = 'Auf meinen Standort zentrieren';
