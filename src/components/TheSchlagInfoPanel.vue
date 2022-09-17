@@ -207,7 +207,7 @@ watch(schlagInfo, (value) => {
   }
 });
 
-map.on('singleclick', () => {
+map.on('singleclick', (event) => {
   if (map.getView().getZoom() < 12) {
     zoomTo12(event);
   }
