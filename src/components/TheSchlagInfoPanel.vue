@@ -48,29 +48,50 @@
     <v-row
       v-if="schlagInfo && !schlagInfo.loading"
       no-gutters
-      class="text-body-2"
     >
-      <v-col
-        class="pa-2 pb-1"
-        cols="3"
-      >
-        Nutzung:
+      <v-col cols="11">
+        <v-row
+          no-gutters
+          class="text-body-2"
+        >
+          <v-col
+            class="pa-2 pb-1"
+            cols="3"
+          >
+            Nutzung:
+          </v-col>
+          <v-col
+            class="pa-2 pb-1"
+            cols="7"
+          >
+            {{ schlagInfo.snar_bezeichnung }}
+          </v-col>
+          <v-col
+            class="px-2"
+            cols="3"
+          >
+            Fläche:
+          </v-col>
+          <v-col
+            class="px-2"
+            cols="7"
+          >
+            {{ schlagInfo.sl_flaeche_brutto_ha.toLocaleString('de-AT',
+                                                              {maximumFractionDigits: 2}) }} ha
+          </v-col>
+          <v-col cols="2" />
+        </v-row>
       </v-col>
       <v-col
-        class="pa-2 pb-1"
-        cols="7"
-      >
-        {{ schlagInfo.snar_bezeichnung }}
-      </v-col>
-      <v-col
-        cols="2"
-        class="pa-1"
+        cols="1"
+        class="pa-1 schlagTools"
         align="right"
       >
         <v-btn
           v-if="canCenter"
-          width="30"
-          height="30"
+          class="mt-1"
+          width="26"
+          height="26"
           icon
           flat
           rounded
@@ -85,8 +106,9 @@
         </v-btn>
         <v-btn
           v-if="schlagInfo"
-          width="30"
-          height="30"
+          class="mt-2"
+          width="26"
+          height="26"
           icon
           flat
           rounded
@@ -100,19 +122,6 @@
           />
         </v-btn>
       </v-col>
-      <v-col
-        class="px-2"
-        cols="3"
-      >
-        Fläche:
-      </v-col>
-      <v-col
-        class="px-2"
-        cols="7"
-      >
-        {{ schlagInfo.sl_flaeche_brutto_ha.toLocaleString('de-AT', {maximumFractionDigits: 2}) }} ha
-      </v-col>
-      <v-col cols="2" />
     </v-row>
     <v-row
       v-else-if="mapView.zoom < 12"
@@ -238,4 +247,7 @@ setSchlagId(route.params.schlagId);
     background-color: #777;
   }
 
+.schlagTools button {
+  display: block;
+}
 </style>
