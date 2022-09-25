@@ -4,12 +4,13 @@ import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { transformExtent } from 'ol/proj.js';
 import { INITIAL_EXTENT } from '../src/constants.js';
 
-const urlTemplate = 'https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=bdfl_6_{layer}&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}';
+const urlTemplate = 'https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={layer}&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}';
 const layers = ['neigungsklassen', 'neigungsklassen_1', 'neigungsklassen_2', 'neigungsklassen_3', 'neigungsklassen_4', 'neigungsklassen_5', 'neigungsklassen_6'];
+const wmsLayers = ['Neigungsklassen', 'Neigungsklasse 1', 'Neigungsklasse 2', 'Neigungsklasse 3', 'Neigungsklasse 4', 'Neigungsklasse 5', 'Neigungsklasse 6'];
 const extent = transformExtent(INITIAL_EXTENT, 'EPSG:4326', 'EPSG:3857');
 
 (async () => {
-  const urlTemplates = layers.map((key) => urlTemplate.replace('{layer}', key));
+  const urlTemplates = wmsLayers.map((key) => urlTemplate.replace('{layer}', key));
 
   const tilegrid = createXYZ({ tileSize: 512 });
   for (let z = 9; z <= 14; z += 1) {
