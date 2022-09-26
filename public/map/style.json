@@ -200,6 +200,7 @@
     },
     "metadata": {
       "label": "Pufferstreifen belasteter Gewässer",
+      "urlSort": 1,
       "group": "one"
     }
   }, {
@@ -215,6 +216,7 @@
     },
     "metadata": {
       "label": "Begrünte Abflusswege",
+      "urlSort": 2,
       "group": "one"
     }
   }, {
@@ -231,6 +233,7 @@
     },
     "metadata": {
       "label": "Wasserrahmenrichtlinie EL hoch 3",
+      "urlSort": 3,
       "group": "one"
     }
   }, {
@@ -247,6 +250,7 @@
     },
     "metadata": {
       "label": "Wasserrahmenrichtlinie EL hoch 2",
+      "urlSort": 4,
       "group": "one"
     }
   }, {
@@ -263,6 +267,7 @@
     },
     "metadata": {
       "label": "Wasserrahmenrichtlinie EL hoch 1",
+      "urlSort": 5,
       "group": "one"
     }
   }, {
@@ -279,6 +284,7 @@
     },
     "metadata": {
       "label": "Wasserrahmenrichtlinie EL mittel",
+      "urlSort": 6,
       "group": "one"
     }
   }, {
@@ -295,6 +301,7 @@
     },
     "metadata": {
       "label": "Wasserrahmenrichtlinie EL mittel -10%",
+      "urlSort": 7,
       "group": "one"
     }
   }, {
@@ -311,6 +318,7 @@
     },
     "metadata": {
       "label": "Wasserrahmenrichtlinie EL niedrig",
+      "urlSort": 8,
       "group": "one"
     }
   }, {
@@ -326,6 +334,7 @@
     },
     "metadata": {
       "label": "Grundwasserschutz Acker",
+      "urlSort": 9,
       "group": "one"
     }
   }, {
@@ -341,6 +350,7 @@
     },
     "metadata": {
       "label": "Besondere Lebensraumtypen",
+      "urlSort": 10,
       "group": "one"
     }
   }, {
@@ -356,6 +366,7 @@
     },
     "metadata": {
       "label": "Seehöhe über 1200m",
+      "urlSort": 11,
       "group": "one"
     }
   }, {
@@ -371,6 +382,7 @@
     },
     "metadata": {
       "label": "Gewässer",
+      "urlSort": 12,
       "group": "one"
     }
   }, {
@@ -387,6 +399,7 @@
     },
     "metadata": {
       "label": "Gewässer",
+      "urlSort": 13,
       "group": "one"
     }
   }, {
