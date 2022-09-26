@@ -75,17 +75,24 @@
           class="pa-2 scrollDiv"
           :style="scrollDivCalc"
         >
-          <v-radio-group
-            v-model="selectedTopic"
-            class="width100"
+          <template
+            v-for="(topic, index) in topics"
+            :key="index"
           >
-            <v-row no-gutters>
+            <v-row
+              v-if="
+                schlagInfo && onlyTopicsInSchlagExtent ? topic.inSchlagExtent : topic.inExtent
+                  || topic.visible"
+              no-gutters
+            >
               <v-col cols="10">
-                <v-radio
-                  key="-2"
-                  label="Nur Basiskarte"
-                  value="none"
+                <v-checkbox
+                  v-model="topic.visible"
+                  :label="topic.label"
+                  hide-details
+                  class="denseBox"
                   density="compact"
+                  :class="{fat : schlagInfo && topic.inSchlagExtent}"
                 />
               </v-col><v-col
                 cols="2"
@@ -93,43 +100,11 @@
               >
                 <div
                   class="colorBox"
-                  :style="'background-color: white;'"
+                  :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
                 />
               </v-col>
             </v-row>
-
-            <div class="lineFirst">
-              <template
-                v-for="(topic, index) in topics"
-                :key="index"
-              >
-                <v-row
-                  v-if="
-                    schlagInfo && onlyTopicsInSchlagExtent ? topic.inSchlagExtent : topic.inExtent
-                      || topic.visible"
-                  no-gutters
-                >
-                  <v-col cols="10">
-                    <v-radio
-                      :label="topic.label"
-                      :value="topic.label"
-                      hide-details
-                      density="compact"
-                      :class="{fat : schlagInfo && topic.inSchlagExtent}"
-                    />
-                  </v-col><v-col
-                    cols="2"
-                    class="pa-1"
-                  >
-                    <div
-                      class="colorBox"
-                      :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
-                    />
-                  </v-col>
-                </v-row>
-              </template>
-            </div>
-          </v-radio-group>
+          </template>
         </div>
         <div
           class="topicFilter px-2"
@@ -170,7 +145,7 @@
             </v-col>
           </v-row>
           <v-row
-            v-for="(value, key) in gradients"
+            v-for="(gradient, key) in gradients"
             :key="key"
             no-gutters
           >
@@ -179,7 +154,7 @@
               class="px-2 pt-1"
             >
               <v-checkbox
-                v-model="value.visible"
+                v-model="gradient.visible"
                 class="denseBox"
                 :disabled="mapView.zoom < 9"
                 density="compact"
@@ -190,12 +165,12 @@
               style="cursor: pointer"
               cols="4"
               class="pa-1 pt-2 text-body-2 gradientLabel"
-              :class="{'selected' : schlagInfo && value.inSchlag,
-                       'active' : value.visible,
+              :class="{'selected' : schlagInfo && gradient.inSchlag,
+                       'active' : gradient.visible,
                        'disabled': mapView.zoom < 9}"
-              @click="value.visible = !value.visible"
+              @click="gradient.visible = !gradient.visible"
             >
-              {{ value.label }}
+              {{ gradient.label }}
             </v-col>
             <v-col
               cols="2"
@@ -203,7 +178,7 @@
             >
               <div
                 class="colorBox"
-                :style="'background-color: ' + value.color +'; opacity: ' + opacity + ';'"
+                :style="'background-color: ' + gradient.color +'; opacity: ' + opacity + ';'"
               />
             </v-col>
             <v-col
@@ -211,8 +186,8 @@
               class="pa-1 pt-2 text-body-2"
             >
               <span v-if="schlagInfo && !schlagInfo.loading">
-                {{ value.inSchlag
-                  ? value.fraction < 0.005 ? '< 0,5%' : Math.round(value.fraction * 100) + '%'
+                {{ gradient.inSchlag
+                  ? gradient.fraction < 0.005 ? '< 0,5%' : Math.round(gradient.fraction * 100) + '%'
                   : '-' }}</span>
             </v-col>
           </v-row>
@@ -221,7 +196,7 @@
     </v-window>
     <v-row
       no-gutters
-      class="pa-2 lineAbove"
+      class="pa-2"
     >
       <v-slider
         v-model="opacity"
@@ -260,22 +235,20 @@ const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
 const { gradients } = useGradient();
 
-/** @type {import("vue").Ref<string>} */
-const selectedTopic = ref('none');
+function urlSort(a, b) {
+  return a.urlSort - b.urlSort;
+}
+
 /** @type {import("vue").Ref<boolean>} */
 const onlyTopicsInSchlagExtent = ref(false);
 
 function setVisible(value) {
-  if (!value) {
-    return;
-  }
-  const visible = value.split(',');
-  selectedTopic.value = visible.shift();
-  gradients.forEach((gradient, i) => {
-    gradient.visible = visible.includes(i);
+  const [topicsVisible, gradientsVisible] = value.split(',');
+  topics.slice(0).sort(urlSort).forEach((topic, i) => {
+    topic.visible = topicsVisible.charAt(i) === '1';
   });
-  visible.forEach((i) => {
-    gradients[i].visible = true;
+  gradients.forEach((gradient, i) => {
+    gradient.visible = gradientsVisible.charAt(i) === '1';
   });
 }
 
@@ -359,14 +332,12 @@ const scrollDivLargerCalc = computed(() => {
   return `height: ${window.innerHeight - minusPix}px;`;
 });
 
-watch(selectedTopic, (value) => {
-  topics.forEach((topic) => {
-    topic.visible = topic.label === value;
-  });
-});
-
-watch([selectedTopic, gradients], ([t, g]) => {
-  const visible = [t, ...g.filter((gradient) => gradient.visible).map((gradient) => gradients.indexOf(gradient))].join(',');
+watch([topics, gradients], ([t, g]) => {
+  const visible = [
+    ...t.slice(0).sort(urlSort).map((topic) => (topic.visible ? '1' : '0')),
+    ',',
+    ...g.map((gradient) => (gradient.visible ? '1' : '0')),
+  ].join('');
   if (visible !== route.params.visible) {
     router.push({ params: { ...route.params, visible } });
   }
@@ -427,15 +398,6 @@ mapReady.then(() => setVisible(route.params.visible));
 .tabActive.right {
   border-left: 1px solid #666;
   border-top-left-radius: 8px!important;
-}
-
-div.lineFirst div.v-row:nth-child(1) {
-  padding-top: 3px;;
-  border-top: 1px solid #ddd;
-}
-.lineAbove {
-  border-top: 1px solid #ddd;
-  background-color: #f6f6f6;
 }
 
 .gradientLabel {
