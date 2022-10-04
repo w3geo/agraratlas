@@ -2,7 +2,7 @@ import { getSource, recordStyleLayer } from 'ol-mapbox-style';
 import { getCenter, buffer as bufferExtent } from 'ol/extent';
 import { getPointResolution, transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
-import { nextTick, reactive, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { SCHLAEGE_LAYER } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,

@@ -370,6 +370,38 @@
       "group": "one"
     }
   }, {
+    "id": "bdfl_l34_feucht_torfgebiete-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l34_feucht_torfgebiete",
+    "paint": {
+      "fill-color": "rgb(116, 216, 249)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Feuchtgebiete und Torfflächen",
+      "urlSort": 14,
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l40_gab8-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l40_gab8",
+    "paint": {
+      "fill-color": "rgb(191, 191, 191)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+       "label": "PSM-Schutzgebiete (WRRL)",
+       "urlSort": 15,
+       "group": "one"
+     }
+   }, {
     "id": "stehende_gewaesser-one",
     "type": "fill",
     "source": "agrargis",
