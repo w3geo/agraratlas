@@ -35,7 +35,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -44,7 +44,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_1.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_1.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -53,7 +53,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_2.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_2.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -62,7 +62,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_3.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_3.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -71,7 +71,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_4.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_4.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -80,7 +80,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_5.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_5.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -89,7 +89,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_6.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_6.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
