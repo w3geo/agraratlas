@@ -98,15 +98,8 @@ function updateTopicsInSchlagExtent() {
   }
 }
 
-let loading = true;
-map.on('loadstart', () => { loading = true; });
-map.on('loadend', () => { loading = false; });
 watch(mapView, () => {
-  if (loading) {
-    map.once('loadend', updateTopicsInExtent);
-  } else {
-    updateTopicsInExtent();
-  }
+  map.once('rendercomplete', updateTopicsInExtent);
 });
 
 watch(schlagInfo, updateTopicsInSchlagExtent);

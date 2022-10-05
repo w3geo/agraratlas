@@ -35,7 +35,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -44,7 +44,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_1.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_1.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -53,7 +53,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_2.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_2.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -62,7 +62,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_3.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_3.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -71,7 +71,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_4.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_4.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -80,7 +80,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_5.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_5.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -89,7 +89,7 @@
       "type": "raster",
       "tileSize": 512,
       "tiles": [
-        "./tiles/{z}/{x}/{y}-neigungsklassen_6.png"
+        "./raster/{z}/{x}/{y}-neigungsklassen_6.png"
       ],
       "minzoom": 9,
       "maxzoom": 14
@@ -370,6 +370,38 @@
       "group": "one"
     }
   }, {
+    "id": "bdfl_l34_feucht_torfgebiete-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l34_feucht_torfgebiete",
+    "paint": {
+      "fill-color": "rgb(116, 216, 249)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Feuchtgebiete und Torfflächen",
+      "urlSort": 14,
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l40_gab8-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l40_gab8",
+    "paint": {
+      "fill-color": "rgb(191, 191, 191)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+       "label": "PSM-Schutzgebiete (WRRL)",
+       "urlSort": 15,
+       "group": "one"
+     }
+   }, {
     "id": "stehende_gewaesser-one",
     "type": "fill",
     "source": "agrargis",
