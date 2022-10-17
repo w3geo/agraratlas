@@ -6,7 +6,7 @@ import { INITIAL_EXTENT } from '../src/constants.js';
 
 const urlTemplate = 'https://inspire.lfrz.gv.at/000504/ows?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={layer}&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}';
 const layers = ['neigungsklassen', 'neigungsklassen_1', 'neigungsklassen_2', 'neigungsklassen_3', 'neigungsklassen_4', 'neigungsklassen_5', 'neigungsklassen_6'];
-const wmsLayers = ['Neigungsklassen', 'Neigungsklasse 1', 'Neigungsklasse 2', 'Neigungsklasse 3', 'Neigungsklasse 4', 'Neigungsklasse 5', 'Neigungsklasse 6'];
+const wmsLayers = ['neigungsklassen', 'neigungsklasse_1', 'neigungsklasse_2', 'neigungsklasse_3', 'neigungsklasse_4', 'neigungsklasse_5', 'neigungsklasse_6'];
 const extent = transformExtent(INITIAL_EXTENT, 'EPSG:4326', 'EPSG:3857');
 
 (async () => {
