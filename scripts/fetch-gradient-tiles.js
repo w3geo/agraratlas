@@ -16,7 +16,7 @@ const extent = transformExtent(INITIAL_EXTENT, 'EPSG:4326', 'EPSG:3857');
   for (let z = 9; z <= 14; z += 1) {
     const range = tilegrid.getTileRangeForExtentAndZ(extent, z);
     for (let x = range.minX; x <= range.maxX; x += 1) {
-      const dirname = `./public/map/tiles/${z}/${x}/`;
+      const dirname = `./public/map/raster/${z}/${x}/`;
       for (let y = range.minY; y <= range.maxY; y += 1) {
         if (!existsSync(dirname)) {
           mkdirSync(dirname, { recursive: true });
