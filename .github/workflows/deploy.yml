@@ -28,5 +28,5 @@ jobs:
         space_name: 'w3geo'
         space_region: 'fra1'
         source: 'dist'
-        out_dir: 'agrargis'
+        out_dir: ${{ secrets.S3_BUCKET_DEV }}
 
