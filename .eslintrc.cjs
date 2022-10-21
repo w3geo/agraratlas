@@ -20,5 +20,6 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true, optionalDependencies: false, peerDependencies: false }],
+    'no-underscore-dangle': 'off',
   },
 };
