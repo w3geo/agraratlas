@@ -64,7 +64,7 @@
             class="pa-2 pb-1"
             cols="7"
           >
-            {{ schlagInfo.snar_bezeichnung }}
+            <b v-if="schlagInfo.kz_bio_oepul_jn === 'J'">BIO </b>{{ schlagInfo.snar_bezeichnung }}
           </v-col>
           <v-col
             class="px-2"

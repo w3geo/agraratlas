@@ -93,6 +93,11 @@
                   class="denseBox"
                   density="compact"
                   :class="{fat : schlagInfo && topic.inSchlagExtent}"
+                /><v-label
+                  v-if="topic.visible && topic.label === 'ÖPUL Bio-Schläge'"
+                  class="pl-7 pb-1 bio-warning"
+                  text="Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist daher
+bei der Ausbringung von Betriebsmitteln besondere Sorgfalt walten zu lassen."
                 />
               </v-col><v-col
                 cols="2"
@@ -113,7 +118,7 @@
             v-model="onlyTopicsInSchlagExtent"
             density="compact"
             hide-details
-            label="Nur für den gewählten Schlag mögliche Themen"
+            label="Nur für den gewählten Schlag interessante Themen"
             :disabled="!schlagInfo"
           />
         </div>
@@ -243,6 +248,9 @@ function urlSort(a, b) {
 const onlyTopicsInSchlagExtent = ref(false);
 
 function setVisible(value) {
+  if (!value) {
+    return;
+  }
   const [topicsVisible, gradientsVisible] = value.split(',');
   topics.slice(0).sort(urlSort).forEach((topic, i) => {
     topic.visible = topicsVisible.charAt(i) === '1';
@@ -467,6 +475,13 @@ mapReady.then(() => setVisible(route.params.visible));
   .v-radio.v-selection-control.v-selection-control--dirty .v-label {
     color: #000;
     opacity: .9;
+  }
+  .bio-warning {
+    color: red;
+    font-weight: bold;
+    opacity: 1;
+    white-space: normal;
+    cursor: inherit;
   }
 
 </style>
