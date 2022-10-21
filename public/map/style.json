@@ -338,38 +338,6 @@
       "group": "one"
     }
   }, {
-    "id": "bdfl_l31_begruente_abflusswege-one",
-    "type": "fill",
-    "source": "agrargis",
-    "source-layer": "bdfl_l31_begruente_abflusswege",
-    "paint": {
-      "fill-color": "rgb(108, 143, 235)"
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "Begrünte Abflusswege",
-      "urlSort": 2,
-      "group": "one"
-    }
-  }, {
-    "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
-    "type": "fill",
-    "source": "agrargis",
-    "source-layer": "bdfl_l33_pufferstreifen_belastete_gewaesser",
-    "paint": {
-      "fill-color": "rgb(147, 248, 104)"
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "Pufferstreifen belasteter Gewässer",
-      "urlSort": 1,
-      "group": "one"
-    }
-  }, {
     "id": "bdfl_l34_feucht_torfgebiete-one",
     "type": "fill",
     "source": "agrargis",
@@ -402,6 +370,38 @@
        "group": "one"
      }
    }, {
+    "id": "bdfl_l31_begruente_abflusswege-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l31_begruente_abflusswege",
+    "paint": {
+      "fill-color": "rgb(108, 143, 235)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Begrünte Abflusswege",
+      "urlSort": 2,
+      "group": "one"
+    }
+  }, {
+    "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l33_pufferstreifen_belastete_gewaesser",
+    "paint": {
+      "fill-color": "rgb(147, 248, 104)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Pufferstreifen belasteter Gewässer",
+      "urlSort": 1,
+      "group": "one"
+    }
+  }, {
     "id": "stehende_gewaesser-one",
     "type": "fill",
     "source": "agrargis",
@@ -460,6 +460,25 @@
         "rgb(238, 90, 78)"
       ],
       "line-width": 2
+    }
+  }, {
+    "id": "invekos_schlaege_2022_polygon-bio",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "invekos_schlaege_2022_polygon",
+    "filter": ["==", "kz_bio_oepul_jn", "J"],
+    "paint": {
+      "fill-color": "red",
+      "fill-outline-color": "rgb(139, 0, 0)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "ÖPUL Bio-Schläge",
+      "urlSort": 16,
+      "displaySort": 1,
+      "group": "one"
     }
   }, {
     "id": "invekos_schlaege_2022_polygon-line-selected",

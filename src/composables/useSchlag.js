@@ -1,10 +1,16 @@
 import { getSource, setFeatureState } from 'ol-mapbox-style';
-import { buffer as bufferExtent, extend } from 'ol/extent';
+import {
+  buffer as bufferExtent, createEmpty, extend,
+} from 'ol/extent';
 import { transformExtent } from 'ol/proj';
-import { ref, watch } from 'vue';
+import { toGeometry } from 'ol/render/Feature';
+import { shallowRef, watch } from 'vue';
+import { GeoJSON } from 'ol/format';
 import { SCHLAEGE_LAYER } from '../constants';
 import { map, mapReady } from './useMap';
 import { draw, measure } from './useTools';
+
+/** @typedef {Array<{x: number, y: number}>>} Vectors */
 
 /**
  * @typedef SchlagInfo
@@ -15,11 +21,15 @@ import { draw, measure } from './useTools';
  * @property {number} [sl_flaeche_brutto_ha]
  * @property {string} [snar_bezeichnung]
  * @property {string} [snar_code]
+ * @property {string} [kz_bio_oepul_jn]
  * @property {import("ol/extent").Extent} [extent]
+ * @property {Array<import('ol/format/GeoJSON').GeoJSONGeometry>} [parts]
  */
 
+const geojson = new GeoJSON();
+
 /** @type {import('vue').Ref<SchlagInfo>} */
-export const schlagInfo = ref();
+export const schlagInfo = shallowRef();
 
 /**
  * @param {import("ol/pixel").Pixel} pixel
@@ -33,19 +43,16 @@ function getSchlagAtPixel(pixel) {
 }
 
 /**
- * Gets all parts of a schlag feature (if crossing tile borders) and
- * calculates the total extent of the schlag.
+ * Get all parts of a schlag feature, from all involved tiles.
  * @param {import("ol/render/Feature").default} feature
- * @returns {import("ol/extent").Extent}
+ * @returns {Array<import("ol/render/Feature").default>}
  */
-function getSchlagExtent(feature) {
+function getSchlagParts(feature) {
   const id = feature.getId();
   const extent = feature.getGeometry().getExtent();
-  getSource(map, 'agrargis')
-    .getFeaturesInExtent(bufferExtent(extent, 10))
-    .filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === SCHLAEGE_LAYER)
-    .forEach((renderFeature) => extend(extent, renderFeature.getGeometry().getExtent()));
-  return transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+  return /** @type {import("ol/source/Vector").default} */ (getSource(map, 'agrargis'))
+    .getFeaturesInExtent(bufferExtent(extent, 512 * map.getView().getResolution()))
+    .filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === SCHLAEGE_LAYER);
 }
 
 function findSchlag(schlagId) {
@@ -65,12 +72,20 @@ function findSchlag(schlagId) {
 }
 
 function setSchlagInfo(feature) {
-  schlagInfo.value = feature ? {
+  if (!feature) {
+    schlagInfo.value = null;
+    return;
+  }
+  const features = getSchlagParts(feature);
+  const extent = createEmpty();
+  features.forEach((polygon) => extend(extent, polygon.getExtent()));
+  schlagInfo.value = {
     ...feature.getProperties(),
     loading: false,
     id: feature.getId(),
-    extent: getSchlagExtent(feature),
-  } : null;
+    extent: transformExtent(extent, 'EPSG:3857', 'EPSG:4326'),
+    parts: features.map((f) => geojson.writeGeometryObject(toGeometry(f), { featureProjection: 'EPSG:3857' })),
+  };
 }
 
 map.on('click', (event) => {

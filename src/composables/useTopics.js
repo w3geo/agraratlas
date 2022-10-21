@@ -1,8 +1,11 @@
 import { getSource, recordStyleLayer } from 'ol-mapbox-style';
-import { getCenter, buffer as bufferExtent } from 'ol/extent';
-import { getPointResolution, transformExtent } from 'ol/proj';
+import { buffer as bufferExtent } from 'ol/extent';
+import { transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
+import { GeoJSON } from 'ol/format';
 import { reactive, watch } from 'vue';
+import booleanIntersects from '@turf/boolean-intersects';
+import bufferGeometry from '@turf/buffer';
 import { SCHLAEGE_LAYER } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,
@@ -16,8 +19,11 @@ import { schlagInfo } from './useSchlag';
  * @property {boolean} inExtent
  * @property {boolean} inSchlagExtent
  * @property {number} urlSort
+ * @property {number} displaySort
  * @property {boolean} visible
  */
+
+const geojson = new GeoJSON();
 
 /** @type {Array<Topic>} */
 export const topics = reactive([]);
@@ -29,7 +35,10 @@ mapReady.then(() => {
       label: l.metadata?.label,
       color: l.paint?.['fill-color'],
       urlSort: l.metadata?.urlSort,
-    })).reduce((acc, { label, color, urlSort }) => {
+      displaySort: l.metadata?.displaySort || Number.MAX_SAFE_INTEGER,
+    })).reduce((acc, {
+      label, color, urlSort, displaySort,
+    }) => {
       if (!(label in acc)) {
         acc[label] = ({
           label,
@@ -37,6 +46,7 @@ mapReady.then(() => {
           inExtent: false,
           inSchlagExtent: false,
           urlSort,
+          displaySort,
           visible: false,
         });
       }
@@ -44,53 +54,60 @@ mapReady.then(() => {
     }, {})));
 });
 
+function intersects(feature, candidates) {
+  return candidates.some((candidate) => booleanIntersects(feature, candidate));
+}
+
 /**
  * @param {import("ol/extent.js").Extent} extent
+ * @param {boolean} [precise] Use geometry intersection instead of extent intersection
  * @returns {Promise<Array<string>>}
  */
-async function findRenderedTopics(extent) {
+async function findTopics(extent, precise = false) {
   const features = getSource(map, 'agrargis')
     .getFeaturesInExtent(extent)
-    .filter((feature) => feature.get('layer') !== SCHLAEGE_LAYER)
-    .map((renderFeature) => toFeature(renderFeature))
-    .filter((feature) => feature.getGeometry().intersectsExtent(extent));
+    .filter((feature) => feature.get('layer') !== SCHLAEGE_LAYER || feature.get('kz_bio_oepul_jn') === 'J')
+    .map((renderFeature) => toFeature(renderFeature));
   const style = await filterStyle;
+  const resolution = map.getView().getResolution();
   recordStyleLayer(true);
-  const layers = Object.keys(features.reduce((acc, cur) => {
+  const topicsOfInterest = Object.keys(features.reduce((acc, cur) => {
     cur.set('mapbox-layer', undefined);
-    style(cur, map.getView().getResolution());
-    const layer = cur.get('mapbox-layer')?.metadata?.label;
-    if (layer) {
-      acc[layer] = true;
+    style(cur, resolution);
+    const topic = cur.get('mapbox-layer')?.metadata?.label;
+    if (topic) {
+      let ofInterest;
+      if (precise) {
+        const distance = cur.get('kz_bio_oepul_jn') === 'J' ? 100 : 10;
+        const buffered = bufferGeometry(geojson.writeGeometryObject(cur.getGeometry(), { featureProjection: 'EPSG:3857' }), distance, { units: 'meters' });
+        ofInterest = intersects(buffered, schlagInfo.value.parts);
+      } else {
+        ofInterest = cur.getGeometry().intersectsExtent(extent);
+      }
+      if (ofInterest) {
+        acc[topic] = true;
+      }
     }
     return acc;
   }, {}));
   recordStyleLayer(false);
-  return layers;
+  return topicsOfInterest;
 }
 
-/** @returns {Promise<void>} */
 async function updateTopicsInExtent() {
   const { extent } = mapView.value;
-  const renderedTopics = await findRenderedTopics(transformExtent(extent, 'EPSG:4326', 'EPSG:3857'));
+  const renderedTopics = await findTopics(transformExtent(extent, 'EPSG:4326', 'EPSG:3857'));
   topics.forEach((topic) => {
     topic.inExtent = renderedTopics.includes(topic.label);
   });
+  topics.sort((a, b) => a.displaySort - b.displaySort);
 }
 
-/** @returns {Promise<void>|undefined} */
 function updateTopicsInSchlagExtent() {
   if (schlagInfo.value?.extent) {
     const schlagExtent = transformExtent(schlagInfo.value.extent, 'EPSG:4326', 'EPSG:3857');
-    const resolution = map.getView().getResolution();
-    const buffer = getPointResolution(
-      map.getView().getProjection(),
-      resolution,
-      getCenter(schlagExtent),
-      'm',
-    ) * (10 / resolution);
-    const bufferedExtent = bufferExtent(schlagExtent, buffer); // small buffer (10m)
-    findRenderedTopics(bufferedExtent).then((availableTopics) => {
+    const bufferedExtent = bufferExtent(schlagExtent, 100);
+    findTopics(bufferedExtent, true).then((availableTopics) => {
       topics.forEach((topic) => {
         topic.inSchlagExtent = availableTopics.includes(topic.label);
       });
