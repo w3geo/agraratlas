@@ -25,6 +25,10 @@ import { schlagInfo } from './useSchlag';
 
 const geojson = new GeoJSON();
 
+let mapLoading = true;
+map.on('loadstart', () => { mapLoading = true; });
+map.on('loadend', () => { mapLoading = false; });
+
 /** @type {Array<Topic>} */
 export const topics = reactive([]);
 mapReady.then(() => {
@@ -116,7 +120,11 @@ function updateTopicsInSchlagExtent() {
 }
 
 watch(mapView, () => {
-  map.once('rendercomplete', updateTopicsInExtent);
+  if (mapLoading) {
+    map.once('loadend', updateTopicsInExtent);
+  } else {
+    updateTopicsInExtent();
+  }
 });
 
 watch(schlagInfo, updateTopicsInSchlagExtent);
