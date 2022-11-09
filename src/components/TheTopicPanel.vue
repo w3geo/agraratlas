@@ -140,7 +140,7 @@ bei der Ausbringung von Betriebsmitteln besondere Sorgfalt walten zu lassen."
               cols="6"
               class="pa-2"
             >
-              Hangneigung
+              Hangneigungsklasse
             </v-col>
             <v-col
               cols="4"
