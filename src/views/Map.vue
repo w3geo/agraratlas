@@ -13,7 +13,6 @@
 import {
   ref, onMounted, onBeforeUnmount, watch,
 } from 'vue';
-import { bind } from 'size-sensor';
 import { useMap } from '../composables/useMap';
 import TheSchlagInfoPanelNew from '../components/TheSchlagInfoPanel.vue';
 import TheMapToolPanelNew from '../components/TheMapToolPanel.vue';
@@ -23,7 +22,6 @@ import TheBaseLayerSwitcher from '../components/TheBaseLayerSwitcher.vue';
 const { map } = useMap();
 const mapContainer = ref();
 const panel = ref('schlag');
-let unbind;
 
 function switchSchlag(expaneded) {
   if (expaneded) {
@@ -34,12 +32,10 @@ function switchSchlag(expaneded) {
 }
 
 onMounted(() => {
-  unbind = bind(mapContainer.value, () => map.updateSize());
   map.setTarget(mapContainer.value);
 });
 
 onBeforeUnmount(() => {
-  unbind();
   map.setTarget(null);
 });
 

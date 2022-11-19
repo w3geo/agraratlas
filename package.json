@@ -23,10 +23,9 @@
     "@mdi/font": "5.9.55",
     "@turf/boolean-intersects": "^6.5.0",
     "@turf/buffer": "^6.5.0",
-    "ol": "^7.1.1-dev.1663363305046",
-    "ol-mapbox-style": "^9.1.0",
+    "ol": "^7.1.1-dev.1668897187040",
+    "ol-mapbox-style": "^9.2.1",
     "roboto-fontface": "*",
-    "size-sensor": "^1.0.1",
     "vue": "^3.2.25",
     "vue-router": "^4.1.2",
     "vuetify": "^3.0.0-beta.10"
