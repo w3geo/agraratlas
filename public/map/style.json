@@ -545,7 +545,7 @@
       "line-color": [
         "case",
         ["boolean", ["feature-state", "selected"], false],
-        "#FF9900",
+        "#65000B",
         "rgba(0, 0, 0, 0)"
       ],
       "line-width": 5
