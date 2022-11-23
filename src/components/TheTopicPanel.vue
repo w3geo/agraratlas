@@ -173,7 +173,7 @@ bei der Ausbringung von Betriebsmitteln besondere Sorgfalt walten zu lassen."
               :class="{'selected' : schlagInfo && gradient.inSchlag,
                        'active' : gradient.visible,
                        'disabled': mapView.zoom < 9}"
-              @click="gradient.visible = !gradient.visible"
+              @click="gradient.visible = mapView.zoom < 9 ? gradient.visible : !gradient.visible"
             >
               {{ gradient.label }}
             </v-col>
