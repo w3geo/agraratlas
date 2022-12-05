@@ -96,8 +96,9 @@
                 /><v-label
                   v-if="topic.visible && topic.label === 'ÖPUL Bio-Schläge'"
                   class="pl-7 pb-1 bio-warning"
-                  text="Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist daher
-bei der Ausbringung von Betriebsmitteln besondere Sorgfalt walten zu lassen."
+                  text="Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist
+                  daher bei der Ausbringung von Betriebsmitteln auf Nachbarfeldstücken besondere
+                  Sorgfalt walten zu lassen."
                 />
               </v-col><v-col
                 cols="2"
