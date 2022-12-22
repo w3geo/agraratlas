@@ -21,5 +21,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true, optionalDependencies: false, peerDependencies: false }],
     'no-underscore-dangle': 'off',
+    'no-nested-ternary': 'off',
   },
 };

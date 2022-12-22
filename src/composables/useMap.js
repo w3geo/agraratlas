@@ -10,6 +10,7 @@ import {
 import { getCenter } from 'ol/extent';
 import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import { MapboxVector } from 'ol/layer';
 import { INITIAL_EXTENT } from '../constants';
 
 /**
@@ -61,6 +62,13 @@ map.on('moveend', () => {
     extent: view.calculateExtent(),
   };
 });
+
+map.addLayer(new MapboxVector({
+  declutter: true,
+  visible: false,
+  minZoom: 14,
+  styleUrl: 'https://kataster.bev.gv.at/styles/kataster/style_basic.json',
+}));
 
 export const mapReady = apply(map, './map/style.json').then(() => {
   const { layers, sources } = map.get('mapbox-style');
