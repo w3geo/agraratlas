@@ -17,7 +17,7 @@
     v-if="panels.baselayer"
     class="layerSwitcherButton lower"
     :class="{mobilepanel : mobile}"
-    :width="mobile ? '100%' : '260px'"
+    :width="mobile ? '100%' : '360px'"
     height="155px"
   >
     <v-row
@@ -45,7 +45,7 @@
     </v-row>
     <v-row no-gutters>
       <v-col
-        cols="6"
+        cols="4"
         align="center"
         class="mapMode pa-2"
         :class="{selected : baseLayer=='basemap.at'}"
@@ -62,7 +62,7 @@
         </div>
       </v-col>
       <v-col
-        cols="6"
+        cols="4"
         align="center"
         class="mapMode pa-2"
         :class="{selected : baseLayer=='Orthofoto'}"
@@ -78,6 +78,23 @@
           <span>Orthofoto</span>
         </div>
       </v-col>
+      <v-col
+        cols="4"
+        align="center"
+        class="mapMode pa-2"
+        :class="{selected : baseLayer=='Kataster', disabled : mapView.zoom <= 14}"
+        @click="mapView.zoom > 14 && switchMode('Kataster')"
+      >
+        <v-img
+          :src="kataster"
+          contain
+          width="90"
+          height="90"
+          class="mb-1"
+        /><div class="text-caption">
+          <span>Kataster</span>
+        </div>
+      </v-col>
     </v-row>
   </v-card>
 </template>
@@ -87,10 +104,13 @@ import { computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
+import kataster from '../assets/kataster.png';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useLayers } from '../composables/useLayers';
+import { useMap } from '../composables/useMap';
 
 const { baseLayer } = useLayers();
+const { mapView } = useMap();
 const { width, height } = useDisplay();
 const { panels, closeOthers } = usePanelControl();
 
@@ -152,6 +172,11 @@ function switchMode(newMode) {
 
   .mapMode.selected span {
     font-weight: bold;
+  }
+
+  .mapMode.disabled .v-img {
+    opacity: 0.2;
+    cursor: not-allowed;
   }
 
 </style>

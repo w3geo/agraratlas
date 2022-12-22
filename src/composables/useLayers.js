@@ -32,13 +32,14 @@ function setLayerOpacity(mapboxLayer) {
 
 mapReady.then(() => {
   const { layers } = map.get('mapbox-style');
-  baseLayers.value = layers.filter((l) => l.metadata?.group === 'base').map((l) => l.id);
+  baseLayers.value = [...layers.filter((l) => l.metadata?.group === 'base').map((l) => l.id), 'Kataster'];
   baseLayer.value = baseLayers.value[autoBaseLayerIndex.value];
   layers.forEach(setLayerOpacity);
 });
 
 let userModified = false;
 watch(baseLayer, (value) => {
+  map.getLayers().item(0).setVisible(value === 'Kataster');
   const { layers } = map.get('mapbox-style');
   layers.forEach((layer) => {
     if (layer.metadata?.group === 'base') {
@@ -46,6 +47,12 @@ watch(baseLayer, (value) => {
     }
   });
   userModified = baseLayers.value.indexOf(value) !== autoBaseLayerIndex.value;
+});
+
+watch(() => mapView.value.zoom, (zoom) => {
+  if (zoom <= 14 && baseLayer.value === 'Kataster') {
+    baseLayer.value = baseLayers.value[autoBaseLayerIndex.value];
+  }
 });
 
 watch(opacity, () => {
