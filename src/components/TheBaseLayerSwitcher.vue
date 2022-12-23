@@ -104,7 +104,7 @@ import { computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import topo from '../assets/topo.jpg';
 import ortho from '../assets/ortho.jpg';
-import kataster from '../assets/kataster.png';
+import kataster from '../assets/kataster.jpg';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useLayers } from '../composables/useLayers';
 import { useMap } from '../composables/useMap';
