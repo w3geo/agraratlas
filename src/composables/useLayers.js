@@ -77,14 +77,16 @@ watch(topics, (value) => {
 });
 
 watch(gradients, (value) => {
-  // updateAnyTopicVisibility();
-  const { layers } = map.get('mapbox-style');
-  const one = layers.filter((layer) => layer.metadata?.group === 'one' && layer.type === 'raster');
-  one.forEach((layer) => {
-    const { visible } = value.find((v) => v.label === layer.metadata?.label);
-    layer.layout = { ...layer.layout, visibility: visible ? 'visible' : 'none' };
-    getLayer(map, layer.id).setVisible(layer.layout.visibility === 'visible');
-  });
+  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id.startsWith('neigungsklassen'));
+  const style = {
+    color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
+      acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], value[i].visible ? cur.color : [0, 0, 0, 0]);
+      return acc;
+    }, ['case', [0, 0, 0, 0]]),
+  };
+  const layer = getLayer(map, mapboxLayer.id);
+  layer.setStyle(style);
+  layer.setVisible(value.some((v) => v.visible));
 });
 
 export function useLayers() {

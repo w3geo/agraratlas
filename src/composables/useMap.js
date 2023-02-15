@@ -5,7 +5,7 @@ import ScaleLine from 'ol/control/ScaleLine';
 import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
 import {
-  apply, applyStyle, getSource, renderTransparent,
+  apply, applyStyle, getLayer, getSource, renderTransparent,
 } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
 import { shallowRef } from 'vue';
@@ -33,21 +33,6 @@ renderTransparent(true);
 useGeographic();
 proj4.defs('EPSG:31287', '+proj=lcc +lat_0=47.5 +lon_0=13.3333333333333 +lat_1=49 +lat_2=46 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs +type=crs');
 register(proj4);
-
-const gradientColors = [
-  [255, 255, 154],
-  [12, 156, 205],
-  [255, 190, 255],
-  [0, 51, 255],
-  [255, 0, 0],
-  [164, 164, 164],
-];
-
-function getCase(index) {
-  return [
-    ['==', ['band', 1], index], gradientColors[index - 1],
-  ];
-}
 
 export const map = new Map({
   controls: defaults({ attributionOptions: { collapsible: false } }),
@@ -105,34 +90,30 @@ export const mapReady = apply(map, './map/style.json').then(() => {
     if (layer.metadata?.group === 'base') {
       getSource(map, layer.source).tileOptions.transition = undefined;
     }
-    if (layer.id.startsWith('neigungsklassen_')) {
-      const index = Number(layer.id.replace('neigungsklassen_', ''));
-      const originalLayer = map.getLayers().getArray().find((l) => l.get('mapbox-layers')?.[0] === layer.id);
-      if (originalLayer) {
-        const gradientLayer = new WebGLTileLayer({
-          properties: {
-            'mapbox-source': originalLayer.get('mapbox-source'),
-            'mapbox-layers': originalLayer.get('mapbox-layers'),
-          },
-          source: geotiff,
-          visible: originalLayer.getVisible(),
-          opacity: originalLayer.getOpacity(),
-          minResolution: originalLayer.getMinResolution(),
-          maxResolution: originalLayer.getMaxResolution(),
-          style: {
-            color: [
-              'case',
-              ...getCase(index),
-              [0, 0, 0, 0],
-            ],
-          },
-        });
-        const layerIndex = map.getLayers().getArray().indexOf(originalLayer);
-        map.getLayers().removeAt(layerIndex);
-        map.getLayers().insertAt(layerIndex, gradientLayer);
-      }
-    }
   });
+  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id.startsWith('neigungsklassen'));
+  const originalLayer = getLayer(map, mapboxLayer.id);
+  const gradientLayer = new WebGLTileLayer({
+    properties: {
+      'mapbox-source': originalLayer.get('mapbox-source'),
+      'mapbox-layers': originalLayer.get('mapbox-layers'),
+    },
+    source: geotiff,
+    visible: originalLayer.getVisible(),
+    opacity: originalLayer.getOpacity(),
+    minResolution: originalLayer.getMinResolution(),
+    maxResolution: originalLayer.getMaxResolution(),
+    style: {
+      color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
+        acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], cur.color);
+        return acc;
+      }, ['case', [0, 0, 0, 0]]),
+    },
+  });
+  const layerIndex = map.getLayers().getArray().indexOf(originalLayer);
+  map.getLayers().removeAt(layerIndex);
+  map.getLayers().insertAt(layerIndex, gradientLayer);
+
   getSource(map, 'agrargis').overlaps_ = false; // eslint-disable-line
 });
 

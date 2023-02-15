@@ -25,14 +25,7 @@ import { SCHLAEGE_LAYER } from '../constants';
  * @property {boolean} visible
  */
 
-const gradientClassesByRGB = {
-  '255,255,154': '0 - <10%',
-  '12,156,205': '10 - <18%',
-  '255,190,255': '18 - <25%',
-  '0,51,255': '25 - <35%',
-  '255,0,0': '35 - <50%',
-  '164,164,164': '>=50%',
-};
+let gradientClassesByRGB;
 
 export const calculationCanvas = document.createElement('canvas');
 calculationCanvas.width = 1;
@@ -51,21 +44,18 @@ let schlagLayer;
 /** @type {Array<Topic>} */
 export const gradients = reactive([]);
 mapReady.then(() => {
-  const { layers } = map.get('mapbox-style');
-  gradients.push(...Object.values(layers
-    .filter((l) => l.metadata?.group === 'one' && l.type === 'raster')
-    .map((l) => l.metadata?.label).reduce((acc, cur) => {
-      if (!(cur in acc)) {
-        acc[cur] = ({
-          label: cur,
-          color: `rgb(${Object.keys(gradientClassesByRGB)[Object.values(gradientClassesByRGB).indexOf(cur)]})`,
-          fraction: 0,
-          inSchlag: false,
-          visible: false,
-        });
-      }
-      return acc;
-    }, {})));
+  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id.startsWith('neigungsklassen'));
+  gradientClassesByRGB = mapboxLayer.metadata.classes.reduce((acc, cur) => {
+    acc[cur.color.join(',')] = cur.label;
+    return acc;
+  }, {});
+  gradients.push(...mapboxLayer.metadata.classes.map((c) => ({
+    label: c.label,
+    color: `rgb(${c.color.join(',')})`,
+    fraction: 0,
+    inSchlag: false,
+    visible: false,
+  })));
 
   const source = getSource(map, 'agrargis');
   getSchlagTileUrl = source.getTileUrlFunction();
@@ -84,16 +74,10 @@ mapReady.then(() => {
       interpolate: false,
     }),
     style: {
-      color: [
-        'case',
-        ['==', ['band', 1], 1], [255, 255, 154],
-        ['==', ['band', 1], 2], [12, 156, 205],
-        ['==', ['band', 1], 3], [255, 190, 255],
-        ['==', ['band', 1], 4], [0, 51, 255],
-        ['==', ['band', 1], 5], [255, 0, 0],
-        ['==', ['band', 1], 6], [164, 164, 164],
-        [0, 0, 0, 0],
-      ],
+      color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
+        acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], cur.color);
+        return acc;
+      }, ['case', [0, 0, 0, 0]]),
     },
   });
 
