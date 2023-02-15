@@ -117,6 +117,8 @@ export const mapReady = apply(map, './map/style.json').then(() => {
           source: geotiff,
           visible: originalLayer.getVisible(),
           opacity: originalLayer.getOpacity(),
+          minResolution: originalLayer.getMinResolution(),
+          maxResolution: originalLayer.getMaxResolution(),
           style: {
             color: [
               'case',
