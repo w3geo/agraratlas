@@ -91,7 +91,7 @@ export const mapReady = apply(map, './map/style.json').then(() => {
       getSource(map, layer.source).tileOptions.transition = undefined;
     }
   });
-  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id.startsWith('neigungsklassen'));
+  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
   const originalLayer = getLayer(map, mapboxLayer.id);
   const gradientLayer = new WebGLTileLayer({
     properties: {
