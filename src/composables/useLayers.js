@@ -1,4 +1,4 @@
-import { getLayer } from 'ol-mapbox-style';
+import { getLayer, updateMapboxLayer } from 'ol-mapbox-style';
 import { computed, ref, watch } from 'vue';
 import { gradients } from './useGradient';
 import { map, mapReady, mapView } from './useMap';
@@ -20,11 +20,7 @@ function setLayerOpacity(mapboxLayer) {
   if (mapboxLayer.metadata?.group !== 'base') {
     if (mapboxLayer.type === 'raster') {
       mapboxLayer.paint = { ...mapboxLayer.paint, 'raster-opacity': opacity.value };
-      // Set new layer id to bypass ol-mapbox-style's function cache
-      const id = `${mapboxLayer.id.split('|')[0]}|${opacity.value}`;
-      const mapboxLayers = getLayer(map, mapboxLayer.id).get('mapbox-layers');
-      mapboxLayers[0] = id;
-      mapboxLayer.id = id;
+      updateMapboxLayer(map, mapboxLayer);
     }
     getLayer(map, mapboxLayer.id).setOpacity(opacity.value);
   }
@@ -72,12 +68,12 @@ watch(topics, (value) => {
   one.forEach((layer) => {
     const { visible } = value.find((v) => v.label === layer.metadata?.label);
     layer.layout = { ...layer.layout, visibility: visible ? 'visible' : 'none' };
-    getLayer(map, layer.id).changed();
+    updateMapboxLayer(map, layer);
   });
 });
 
 watch(gradients, (value) => {
-  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id.startsWith('neigungsklassen'));
+  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
   const style = {
     color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
       acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], value[i].visible ? cur.color : [0, 0, 0, 0]);

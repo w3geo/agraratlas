@@ -44,7 +44,7 @@ let schlagLayer;
 /** @type {Array<Topic>} */
 export const gradients = reactive([]);
 mapReady.then(() => {
-  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id.startsWith('neigungsklassen'));
+  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
   gradientClassesByRGB = mapboxLayer.metadata.classes.reduce((acc, cur) => {
     acc[cur.color.join(',')] = cur.label;
     return acc;
