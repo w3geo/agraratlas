@@ -1,15 +1,15 @@
-import { Feature, Map, View } from 'ol';
 import { getSource } from 'ol-mapbox-style';
-import { getCenter, getHeight, getWidth } from 'ol/extent';
-import WebGLTileLayer from 'ol/layer/WebGLTile';
+import {
+  getBottomLeft, getHeight, getTopRight, getWidth,
+} from 'ol/extent';
 import { Style, Fill } from 'ol/style';
 import { reactive, watch } from 'vue';
 import { transformExtent } from 'ol/proj';
-import { GeoTIFF } from 'ol/source';
-import VectorLayer from 'ol/layer/Vector';
 import { toGeometry } from 'ol/render/Feature';
-import VectorSource from 'ol/source/Vector';
 import { MVT } from 'ol/format';
+import { fromUrl } from 'geotiff';
+import { compose, create } from 'ol/transform';
+import CanvasImmediateRenderer from 'ol/render/canvas/Immediate';
 import {
   map, mapReady,
 } from './useMap';
@@ -25,28 +25,21 @@ import { SCHLAEGE_LAYER } from '../constants';
  * @property {boolean} visible
  */
 
-let gradientClassesByRGB;
-
-export const calculationCanvas = document.createElement('canvas');
-calculationCanvas.width = 1;
-calculationCanvas.height = 1;
-export const calculationContext = calculationCanvas.getContext('2d');
-
-/** @type {Map} */
-let calculationMap;
+let gradientClassesByValue;
 /** @type {import("ol/Tile").UrlFunction} */
 let getSchlagTileUrl;
 /** @type {import("ol/tilegrid/TileGrid").default} */
 let schlagTileGrid;
-/** @type {VectorLayer} */
-let schlagLayer;
+const schlagStyle = new Style({
+  fill: new Fill({ color: 'black' }),
+});
 
 /** @type {Array<Topic>} */
 export const gradients = reactive([]);
 mapReady.then(() => {
   const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
-  gradientClassesByRGB = mapboxLayer.metadata.classes.reduce((acc, cur) => {
-    acc[cur.color.join(',')] = cur.label;
+  gradientClassesByValue = mapboxLayer.metadata.classes.reduce((acc, cur) => {
+    acc[cur.value] = cur.label;
     return acc;
   }, {});
   gradients.push(...mapboxLayer.metadata.classes.map((c) => ({
@@ -60,111 +53,40 @@ mapReady.then(() => {
   const source = getSource(map, 'agrargis');
   getSchlagTileUrl = source.getTileUrlFunction();
   schlagTileGrid = source.getTileGrid();
-  schlagLayer = new VectorLayer({
-    style: new Style({
-      fill: new Fill({ color: 'black' }),
-    }),
-  });
-  const gradientLayer = new WebGLTileLayer({
-    source: new GeoTIFF({
-      sources: [{
-        url: './map/raster/ALS_DNM_AT_COG_reclassified_220820.tif',
-      }],
-      normalize: false,
-      interpolate: false,
-    }),
-    style: {
-      color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
-        acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], cur.color);
-        return acc;
-      }, ['case', [0, 0, 0, 0]]),
-    },
-  });
-
-  calculationMap = new Map({
-    target: document.createElement('div'),
-    layers: [
-      schlagLayer,
-      gradientLayer,
-    ],
-    controls: [],
-    interactions: [],
-    pixelRatio: 1,
-    view: new View({
-      projection: 'EPSG:31287',
-      minResolution: 5,
-      maxResolution: 5,
-      resolution: 5,
-    }),
-  });
 });
 
 const format = new MVT({ layers: [SCHLAEGE_LAYER] });
 const filter = (feature) => feature.getId() === schlagInfo.value?.id;
+const schlagCanvas = document.createElement('canvas');
+// document.body.appendChild(schlagCanvas); // for debugging
+const schlagContext = schlagCanvas.getContext('2d');
+/** @type {import("geotiff").GeoTIFF} */
+let geotiff;
 
-/** @type {() => void} */
-let onRenderComplete;
-
-function calculateGradientClasses() {
+async function calculateGradientClasses() {
   if (!schlagInfo.value || schlagInfo.value.loading) {
     return;
   }
-  if (onRenderComplete) {
-    calculationMap.un('rendercomplete', onRenderComplete);
+  if (!geotiff) {
+    geotiff = await fromUrl('./map/raster/ALS_DNM_AT_COG_reclassified_220820.tif');
   }
 
   const schlag = schlagInfo.value;
-
-  onRenderComplete = () => {
-    const canvas = calculationMap.getTargetElement().querySelectorAll('canvas');
-    if (!canvas || canvas.length < 2) {
-      return;
-    }
-    calculationCanvas.width = canvas[1].width;
-    calculationCanvas.height = canvas[1].height;
-    calculationContext.globalCompositeOperation = 'source-over';
-    calculationContext.drawImage(canvas[0], 0, 0);
-    calculationContext.globalCompositeOperation = 'source-atop';
-    calculationContext.drawImage(canvas[1], 0, 0);
-    const imageData = calculationContext.getImageData(
-      0,
-      0,
-      calculationCanvas.width,
-      calculationCanvas.height,
-    );
-    /*
-    const debugCanvas = document.createElement('canvas');
-    debugCanvas.width = calculationCanvas.width;
-    debugCanvas.height = calculationCanvas.height;
-    const debugContext = debugCanvas.getContext('2d');
-    debugContext.putImageData(imageData, 0, 0);
-    document.body.appendChild(debugCanvas);
-    */
-    const buckets = {};
-    for (let i = 0, ii = imageData.data.length; i < ii; i += 4) {
-      const key = imageData.data.slice(i, i + 3).join(',');
-      if (key in gradientClassesByRGB) {
-        buckets[key] = (buckets[key] || 0) + 1;
-      }
-    }
-    const total = Object.values(buckets).reduce((a, b) => a + b, 0);
-    const gradientClasses = Object.keys(gradientClassesByRGB).reduce((acc, cur) => {
-      if (buckets[cur]) {
-        const fraction = total ? (buckets[cur] / total) : 0;
-        acc[gradientClassesByRGB[cur]] = fraction;
-      }
-      return acc;
-    }, {});
-    gradients.forEach((a) => {
-      const fraction = gradientClasses[a.label];
-      a.inSchlag = fraction !== undefined;
-      a.fraction = fraction === undefined ? 0 : fraction;
-    });
-    onRenderComplete = undefined;
-  };
-
   const resolution = 5;
-  const extent31287 = transformExtent(schlag.extent, 'EPSG:4326', 'EPSG:31287');
+  let extent31287 = transformExtent(schlag.extent, 'EPSG:4326', 'EPSG:31287');
+  extent31287 = [
+    ...getBottomLeft(extent31287).map((x) => Math.floor(x / resolution) * resolution),
+    ...getTopRight(extent31287).map((y) => Math.ceil(y / resolution) * resolution),
+  ];
+  const width = getWidth(extent31287) / resolution;
+  const height = getHeight(extent31287) / resolution;
+
+  const gradientData = (await geotiff.readRasters({
+    width,
+    height,
+    bbox: extent31287,
+  }))[0];
+
   const extent3857 = transformExtent(schlag.extent, 'EPSG:4326', 'EPSG:3857');
   const tileZoom = schlagTileGrid.getZForResolution(resolution);
   const tileFetchPromises = [];
@@ -174,22 +96,52 @@ function calculateGradientClasses() {
     tileFetchPromises.push(fetch(url).then((response) => response.arrayBuffer()));
     tileExtents.push(schlagTileGrid.getTileCoordExtent(tileCoord));
   });
-  Promise.all(tileFetchPromises).then((tileBuffers) => {
-    const features = [];
-    tileBuffers.forEach((tileBuffer, i) => {
-      const tileFeatures = format.readFeatures(tileBuffer, { extent: tileExtents[i] })
-        .filter(filter)
-        .map((f) => new Feature(toGeometry(f).transform('EPSG:3857', 'EPSG:4326')));
-      features.push(...tileFeatures);
-    });
-    schlagLayer.setSource(new VectorSource({ features }));
 
-    const width = Math.ceil(getWidth(extent31287) / resolution);
-    const height = Math.ceil(getHeight(extent31287) / resolution);
-    calculationMap.setSize([width, height]);
-    calculationMap.getView().setCenter(getCenter(schlag.extent));
-    calculationMap.once('rendercomplete', onRenderComplete);
-  }).catch((e) => console.error(e)); // eslint-disable-line no-console
+  const tileBuffers = await Promise.all(tileFetchPromises);
+  schlagCanvas.width = width;
+  schlagCanvas.height = height;
+  const vectorContext = new CanvasImmediateRenderer(schlagContext, 1, extent31287, compose(
+    create(),
+    0,
+    height,
+    1 / resolution,
+    -1 / resolution,
+    0,
+    -extent31287[0],
+    -extent31287[1],
+  ), 0);
+  vectorContext.setStyle(schlagStyle);
+  tileBuffers.forEach((tileBuffer, i) => {
+    format.readFeatures(tileBuffer, { extent: tileExtents[i] })
+      .filter(filter).forEach((g) => {
+        const geometry = toGeometry(g);
+        geometry.transform('EPSG:3857', 'EPSG:31287');
+        vectorContext.drawGeometry(geometry);
+      });
+  });
+  const schlagData = schlagContext.getImageData(0, 0, width, height).data;
+
+  const buckets = {};
+  for (let i = 0, ii = schlagData.length; i < ii; i += 4) {
+    const schlagAlpha = schlagData[i + 3];
+    if (schlagAlpha > 0) {
+      const key = gradientData[i / 4];
+      buckets[key] = (buckets[key] || 0) + resolution * resolution * (schlagAlpha / 255);
+    }
+  }
+  const total = Object.values(buckets).reduce((a, b) => a + b, 0);
+  const gradientClasses = Object.keys(gradientClassesByValue).reduce((acc, cur) => {
+    if (buckets[cur]) {
+      const fraction = total ? (buckets[cur] / total) : 0;
+      acc[gradientClassesByValue[cur]] = fraction;
+    }
+    return acc;
+  }, {});
+  gradients.forEach((a) => {
+    const fraction = gradientClasses[a.label];
+    a.inSchlag = fraction !== undefined;
+    a.fraction = fraction === undefined ? 0 : fraction;
+  });
 }
 
 watch(schlagInfo, calculateGradientClasses);
