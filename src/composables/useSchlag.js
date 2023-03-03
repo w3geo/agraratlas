@@ -1,7 +1,5 @@
 import { getSource, setFeatureState } from 'ol-mapbox-style';
-import {
-  buffer as bufferExtent, createEmpty, extend,
-} from 'ol/extent';
+import { createEmpty, extend } from 'ol/extent';
 import { transformExtent } from 'ol/proj';
 import { toGeometry } from 'ol/render/Feature';
 import { shallowRef, watch } from 'vue';
@@ -45,14 +43,40 @@ function getSchlagAtPixel(pixel) {
 /**
  * Get all parts of a schlag feature, from all involved tiles.
  * @param {import("ol/render/Feature").default} feature
- * @returns {Array<import("ol/render/Feature").default>}
+ * @returns {Promise<Array<import("ol/render/Feature").default>>}
  */
-function getSchlagParts(feature) {
+async function getSchlagParts(feature) {
   const id = feature.getId();
   const extent = feature.getGeometry().getExtent();
-  return /** @type {import("ol/source/Vector").default} */ (getSource(map, 'agrargis'))
-    .getFeaturesInExtent(bufferExtent(extent, 512 * map.getView().getResolution()))
-    .filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === SCHLAEGE_LAYER);
+  const source = /** @type {import("ol/source.js").VectorTile} */ (getSource(map, 'agrargis'));
+  const tilePromises = [];
+  source.getTileGrid().forEachTileCoord(extent, 12, (tileCoord) => {
+    tilePromises.push(new Promise((resolve, reject) => {
+      const tile = source.getTile(...tileCoord, 1, source.getProjection());
+      if (tile.getState() < 2) {
+        const onchange = () => {
+          if (tile.getState() === 2 || tile.getState() === 4) {
+            tile.removeEventListener('change', onchange);
+            resolve(tile);
+          } else if (tile.getState() === 3) {
+            tile.removeEventListener('change', onchange);
+            reject();
+          }
+        };
+        tile.addEventListener('change', onchange);
+        tile.load();
+      } else {
+        resolve(tile);
+      }
+    }));
+  });
+  const tiles = await Promise.all(tilePromises);
+  return tiles.reduce((acc, tile) => {
+    tile.getSourceTiles().forEach((sourceTile) => {
+      acc.push(...sourceTile.getFeatures().filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === SCHLAEGE_LAYER));
+    });
+    return acc;
+  }, []);
 }
 
 function findSchlag(schlagId) {
@@ -71,12 +95,12 @@ function findSchlag(schlagId) {
   });
 }
 
-function setSchlagInfo(feature) {
+async function setSchlagInfo(feature) {
   if (!feature) {
     schlagInfo.value = null;
     return;
   }
-  const features = getSchlagParts(feature);
+  const features = await getSchlagParts(feature);
   const extent = createEmpty();
   features.forEach((polygon) => extend(extent, polygon.getExtent()));
   schlagInfo.value = {
