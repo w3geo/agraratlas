@@ -13,8 +13,6 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import { MapboxVector } from 'ol/layer';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
-import WebGLTileLayer from 'ol/layer/WebGLTile';
-import { GeoTIFF } from 'ol/source';
 import { INITIAL_EXTENT } from '../constants';
 
 /**
@@ -77,43 +75,11 @@ map.addLayer(new MapboxVector({
 }));
 
 export const mapReady = apply(map, './map/style.json').then(() => {
-  const geotiff = new GeoTIFF({
-    sources: [{
-      url: './map/raster/ALS_DNM_AT_COG_reclassified_220820.tif',
-    }],
-    normalize: false,
-    interpolate: false,
-    transition: 0,
-  });
   const { layers } = map.get('mapbox-style');
   layers.forEach((layer) => {
-    if (layer.metadata?.group === 'base') {
-      getSource(map, layer.source).tileOptions.transition = undefined;
-    }
+    getSource(map, layer.source).tileOptions.transition = undefined;
   });
-  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
-  const originalLayer = getLayer(map, mapboxLayer.id);
-  const gradientLayer = new WebGLTileLayer({
-    properties: {
-      'mapbox-source': originalLayer.get('mapbox-source'),
-      'mapbox-layers': originalLayer.get('mapbox-layers'),
-    },
-    source: geotiff,
-    visible: originalLayer.getVisible(),
-    opacity: originalLayer.getOpacity(),
-    minResolution: originalLayer.getMinResolution(),
-    maxResolution: originalLayer.getMaxResolution(),
-    style: {
-      color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
-        acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], cur.color);
-        return acc;
-      }, ['case', [0, 0, 0, 0]]),
-    },
-  });
-  const layerIndex = map.getLayers().getArray().indexOf(originalLayer);
-  map.getLayers().removeAt(layerIndex);
-  map.getLayers().insertAt(layerIndex, gradientLayer);
-
+  getLayer(map, 'neigungsklassen').setSource(null);
   getSource(map, 'agrargis').overlaps_ = false; // eslint-disable-line
 });
 

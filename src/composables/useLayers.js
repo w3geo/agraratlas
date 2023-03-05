@@ -1,6 +1,5 @@
 import { getLayer, updateMapboxLayer } from 'ol-mapbox-style';
 import { computed, ref, watch } from 'vue';
-import { gradients } from './useGradient';
 import { map, mapReady, mapView } from './useMap';
 import { topics } from './useTopics';
 
@@ -70,19 +69,6 @@ watch(topics, (value) => {
     layer.layout = { ...layer.layout, visibility: visible ? 'visible' : 'none' };
     updateMapboxLayer(map, layer);
   });
-});
-
-watch(gradients, (value) => {
-  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
-  const style = {
-    color: mapboxLayer.metadata.classes.reduce((acc, cur, i) => {
-      acc.splice(acc.length - 1, 0, ['==', ['band', 1], i + 1], value[i].visible ? cur.color : [0, 0, 0, 0]);
-      return acc;
-    }, ['case', [0, 0, 0, 0]]),
-  };
-  const layer = getLayer(map, mapboxLayer.id);
-  layer.setStyle(style);
-  layer.setVisible(value.some((v) => v.visible));
 });
 
 export function useLayers() {
