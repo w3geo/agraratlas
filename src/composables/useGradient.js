@@ -1,4 +1,4 @@
-import { getSource } from 'ol-mapbox-style';
+import { getLayer, getMapboxLayer, getSource } from 'ol-mapbox-style';
 import {
   getBottomLeft, getHeight, getTopRight, getWidth,
 } from 'ol/extent';
@@ -7,12 +7,12 @@ import { reactive, watch } from 'vue';
 import { transformExtent } from 'ol/proj';
 import { toGeometry } from 'ol/render/Feature';
 import { MVT } from 'ol/format';
-import { fromUrl } from 'geotiff';
 import { compose, create } from 'ol/transform';
 import CanvasImmediateRenderer from 'ol/render/canvas/Immediate';
-import {
-  map, mapReady,
-} from './useMap';
+import { fromUrl } from 'geotiff';
+import TileGrid from 'ol/tilegrid/TileGrid';
+import { TileImage as TileImageSource } from 'ol/source';
+import { map, mapReady } from './useMap';
 import { schlagInfo } from './useSchlag';
 import { SCHLAEGE_LAYER } from '../constants';
 
@@ -25,6 +25,9 @@ import { SCHLAEGE_LAYER } from '../constants';
  * @property {boolean} visible
  */
 
+/** @type {Promise<import("geotiff").GeoTIFF>} */
+const geotiff = fromUrl('./map/raster/ALS_DNM_AT_COG_reclassified_220820.tif');
+
 let gradientClassesByValue;
 /** @type {import("ol/Tile").UrlFunction} */
 let getSchlagTileUrl;
@@ -34,15 +37,64 @@ const schlagStyle = new Style({
   fill: new Fill({ color: 'black' }),
 });
 
-/** @type {Array<Topic>} */
+const transparent = [0, 0, 0, 0];
+const canvas = document.createElement('canvas');
+canvas.width = 512;
+canvas.height = 512;
+const context = canvas.getContext('2d');
+const geotiffImageData = context.createImageData(512, 512);
+let gradientSource;
+
+/** @type {Array<Gradient>} */
 export const gradients = reactive([]);
+
 mapReady.then(() => {
-  const mapboxLayer = map.get('mapbox-style').layers.find((l) => l.id === 'neigungsklassen');
-  gradientClassesByValue = mapboxLayer.metadata.classes.reduce((acc, cur) => {
+  gradientSource = new TileImageSource({
+    interpolate: false,
+    projection: 'EPSG:31287',
+    tileGrid: new TileGrid({
+      extent: [112020.5, 274970.5, 685945.5, 570935.5],
+      origin: [112020.5, 570935.5],
+      resolutions: [
+        1278.229398663697,
+        639.8272017837235,
+        319.91360089186173,
+        159.95680044593087,
+        79.98954703832753,
+        39.99756080563105,
+        19.99947729727846,
+        9.999912881361839,
+        5,
+      ],
+      tileSize: 512,
+    }),
+    tileLoadFunction: async (tile, src) => {
+      // Decode the gradient colors from the URL, e.g. "0,0,0,0|255,0,0,255|0,255,0,255..."
+      const colors = src.split('|').map((color) => color.split(',').map(Number));
+      const tileCoord = tile.getTileCoord();
+      const extent = gradientSource.getTileGrid().getTileCoordExtent(tileCoord);
+      const gradientData = (await (await geotiff).readRasters({
+        bbox: extent,
+        width: 512,
+        height: 512,
+      }))[0];
+      const { data } = geotiffImageData;
+      for (let i = 0, ii = data.length; i < ii; i += 4) {
+        const color = colors[gradientData[i / 4] - 1] || transparent;
+        data.set(color, i);
+      }
+      context.putImageData(geotiffImageData, 0, 0);
+      tile.getImage().src = canvas.toDataURL('image/png');
+    },
+  });
+  getLayer(map, 'neigungsklassen').setSource(gradientSource);
+
+  const gradientMapboxLayer = getMapboxLayer(map, 'neigungsklassen');
+  gradientClassesByValue = gradientMapboxLayer.metadata.classes.reduce((acc, cur) => {
     acc[cur.value] = cur.label;
     return acc;
   }, {});
-  gradients.push(...mapboxLayer.metadata.classes.map((c) => ({
+  gradients.push(...gradientMapboxLayer.metadata.classes.map((c) => ({
     label: c.label,
     color: `rgb(${c.color.join(',')})`,
     fraction: 0,
@@ -50,9 +102,9 @@ mapReady.then(() => {
     visible: false,
   })));
 
-  const source = getSource(map, 'agrargis');
-  getSchlagTileUrl = source.getTileUrlFunction();
-  schlagTileGrid = source.getTileGrid();
+  const schlagSource = getSource(map, 'agrargis');
+  getSchlagTileUrl = schlagSource.getTileUrlFunction();
+  schlagTileGrid = schlagSource.getTileGrid();
 });
 
 const format = new MVT({ layers: [SCHLAEGE_LAYER] });
@@ -60,15 +112,10 @@ const filter = (feature) => feature.getId() === schlagInfo.value?.id;
 const schlagCanvas = document.createElement('canvas');
 // document.body.appendChild(schlagCanvas); // for debugging
 const schlagContext = schlagCanvas.getContext('2d');
-/** @type {import("geotiff").GeoTIFF} */
-let geotiff;
 
 async function calculateGradientClasses() {
   if (!schlagInfo.value || schlagInfo.value.loading) {
     return;
-  }
-  if (!geotiff) {
-    geotiff = await fromUrl('./map/raster/ALS_DNM_AT_COG_reclassified_220820.tif');
   }
 
   const schlag = schlagInfo.value;
@@ -81,7 +128,7 @@ async function calculateGradientClasses() {
   const width = getWidth(extent31287) / resolution;
   const height = getHeight(extent31287) / resolution;
 
-  const gradientData = (await geotiff.readRasters({
+  const gradientData = (await (await geotiff).readRasters({
     width,
     height,
     bbox: extent31287,
@@ -145,6 +192,24 @@ async function calculateGradientClasses() {
 }
 
 watch(schlagInfo, calculateGradientClasses);
+
+watch(gradients, (value) => {
+  const gradientLayer = getLayer(map, 'neigungsklassen');
+  const gradientLayerVisible = value.some((v) => v.visible);
+  if (gradientSource) {
+    const gradientMapboxLayer = getMapboxLayer(map, 'neigungsklassen');
+    const gradientColors = gradientMapboxLayer.metadata.classes.reduce((acc, cur, i) => {
+      acc[cur.value - 1] = value[i].visible ? [...cur.color, 255] : transparent;
+      return acc;
+    }, []);
+    // Encode the gradient colors into the URL, e.g. "0,0,0,0|255,0,0,255|0,255,0,255..."
+    gradientSource.setUrl(gradientColors.join('|'));
+  }
+  if (!gradientLayerVisible) {
+    gradientSource.clear();
+  }
+  gradientLayer.setVisible(gradientLayerVisible);
+});
 
 export function useGradient() {
   return { gradients };
