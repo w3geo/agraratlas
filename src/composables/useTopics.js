@@ -25,13 +25,14 @@ import { schlagInfo } from './useSchlag';
 
 const geojson = new GeoJSON();
 
-let mapLoading = true;
-map.on('loadstart', () => { mapLoading = true; });
-map.on('loadend', () => { mapLoading = false; });
+let tilesLoading;
 
 /** @type {Array<Topic>} */
 export const topics = reactive([]);
 mapReady.then(() => {
+  const source = getSource(map, 'agrargis');
+  source.on('tileloadstart', () => { tilesLoading = (tilesLoading || 0) + 1; });
+  source.on(['tileloadend', 'tileloaderror'], () => { tilesLoading -= 1; });
   const { layers } = map.get('mapbox-style');
   topics.push(...Object.values(layers
     .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster')
@@ -120,11 +121,19 @@ function updateTopicsInSchlagExtent() {
 }
 
 watch(mapView, () => {
-  if (mapLoading) {
-    map.once('loadend', updateTopicsInExtent);
-  } else {
-    updateTopicsInExtent();
-  }
+  setTimeout(() => {
+    if (tilesLoading === undefined || tilesLoading > 0) {
+      const source = getSource(map, 'agrargis');
+      source.on(['tileloadend', 'tileloaderror'], function onLoaded() {
+        if (!tilesLoading) {
+          source.un(['tileloadend', 'tileloaderror'], onLoaded);
+          updateTopicsInExtent();
+        }
+      });
+    } else {
+      updateTopicsInExtent();
+    }
+  }, 0);
 });
 
 watch(schlagInfo, updateTopicsInSchlagExtent);
