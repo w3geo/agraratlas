@@ -42,7 +42,6 @@
     "nugget": "^2.2.0",
     "shx": "^0.3.4",
     "vite": "^2.9.9",
-    "vite-plugin-vuetify": "^1.0.0-alpha.14",
-    "vue-cli-plugin-vuetify": "~2.5.1"
+    "vite-plugin-vuetify": "^1.0.0-alpha.14"
   }
 }
