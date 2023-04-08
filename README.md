@@ -36,6 +36,16 @@ To rebuild only the app, assuming that the vector tiles were already deployed, r
 
     npm run build-app
 
+## Deploy a release
+
+Continuous deployment to the production server takes place when a release tag (i.e. prefixed with 'v') is pushed. The easiest way to achieve this is to use `npm version`. These three steps will cut a release and deploy it to the production server:
+
+    git pull origin main
+    npm version patch # oder "minor" oder "major" statt "patch"
+    git push --follow-tags
+
+Note that this only deploys code, not data.
+
 ## Creating sprites for the Mapbox Style file
 
 The sprites in `public/map/` are created from the svg images in `pulic/map/icons/`. When adding new svg images to that folder, run
