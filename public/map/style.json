@@ -6,11 +6,7 @@
     "geolandbasemap": {
       "type": "raster",
       "tiles": [
-        "https://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
-        "https://maps1.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
-        "https://maps2.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
-        "https://maps3.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png",
-        "https://maps4.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png"
+        "https://mapsneu.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png"
       ],
       "tileSize": 256,
       "maxzoom": 19,
@@ -20,11 +16,7 @@
     "bmaporthofoto30cm": {
       "type": "raster",
       "tiles": [
-        "https://maps.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
-        "https://maps1.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
-        "https://maps2.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
-        "https://maps3.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg",
-        "https://maps4.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg"
+        "https://mapsneu.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg"
       ],
       "tileSize": 256,
       "maxzoom": 19,
