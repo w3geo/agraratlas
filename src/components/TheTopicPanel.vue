@@ -231,6 +231,7 @@ import { useTopics } from '../composables/useTopics';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useGradient } from '../composables/useGradient';
 import { useMap } from '../composables/useMap';
+import { useTools } from '../composables/useTools';
 
 const route = useRoute();
 const router = useRouter();
@@ -240,6 +241,7 @@ const { topics } = useTopics();
 const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
 const { gradients } = useGradient();
+const { elevationProfile } = useTools();
 
 function urlSort(a, b) {
   return a.urlSort - b.urlSort;
@@ -295,6 +297,9 @@ const topicVcard = computed(() => {
   }
   if (panels.value.tools) {
     minusPix += 115;
+    if (elevationProfile.value) {
+      minusPix += 120;
+    }
   }
 
   if (mobile.value) {

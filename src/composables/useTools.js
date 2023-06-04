@@ -15,7 +15,131 @@ import { Modify, Snap, Interaction } from 'ol/interaction';
 import Point from 'ol/geom/Point';
 import GeoJSON from 'ol/format/GeoJSON';
 import { ref, watch } from 'vue';
+import {
+  select, min, max, scaleLinear, axisBottom, axisLeft, line as d3Line,
+} from 'd3';
 import { map } from './useMap';
+
+/**
+ * @typedef {Object} ElevationProfileStats
+ * @property {number} highestPoint
+ * @property {number} lowestPoint
+ * @property {number} heightDiffMinMax
+ * @property {number} heightDiffStartEnd
+ * @property {number} sumUps
+ * @property {number} sumDowns
+ * @property {number} dist
+ */
+/**
+ * @typedef {Object} ElevationProfile
+ * @property {ElevationProfileStats} stats
+ * @property {Array<number>} heights
+ */
+
+/** @type {import('vue').Ref<boolean>} */
+const elevationProfilePossible = ref(false);
+
+/** @type {import('vue').Ref<boolean>} */
+const elevationProfile = ref(false);
+
+/** @type {import('vue').Ref<'LineString'|'Point'>} */
+export const draw = ref();
+
+/** @type {import('vue').Ref<'Polygon'|'LineString'} */
+export const measure = ref();
+
+/**
+ * @param {Array<import("ol/coordinate").Coordinate>} coordinates
+ * @returns {Promise<ElevationProfile>}
+ */
+async function getElevationProfile(coordinates) {
+  const response = await fetch('https://transformator.bev.gv.at/at.gv.bev.transformator/api/height/heightProfile', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      point_list: coordinates,
+      steps: 100,
+      concrete: true,
+    }),
+  });
+  return response.json();
+}
+
+async function renderElevationProfile() {
+  elevationProfile.value = true;
+  const { stats: { dist }, heights: elevations } = await getElevationProfile(measureTool.source.getFeatures().find((f) => f !== measureTool.label && f.getGeometry().getType() === 'LineString').getGeometry().getCoordinates());
+  const data = [];
+
+  // Combine the distances and elevations into a x/y data set that the chart control can understand.
+  for (let i = 0, ii = elevations.length; i < ii; i += 1) {
+    data.push({ x: (i * dist) / 100, y: elevations[i] });
+  }
+
+  // Remove any previously generated chart content.
+  const svg = select('.elevation-profile');
+  svg.selectAll('*').remove();
+
+  const { width, height } = svg.node().getBoundingClientRect();
+
+  // Set the height and width of the SVG area.
+  svg.attr('width', width);
+  svg.attr('height', height);
+
+  // Specify some margins around the chart.
+  const margins = {
+    top: 5,
+    right: 20,
+    bottom: 30,
+    left: 50,
+  };
+
+  // Create the x and y ranges.
+  const xRange = scaleLinear().range([margins.left, width - margins.right])
+    .domain([min(data, (d) => d.x), max(data, (d) => d.x)]);
+
+  const yRange = scaleLinear().range([height - margins.top, margins.bottom])
+    .domain([min(data, (d) => d.y), max(data, (d) => d.y)]);
+
+  // Create the x-axis.
+  svg.append('g')
+    .attr('transform', `translate(0,${height - margins.bottom})`)
+    .call(axisBottom(xRange));
+
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('y', height - 2)
+    .style('text-anchor', 'middle')
+    .style('font-size', '12px')
+    .text('Distanz (m)');
+
+  // Create the y-axis.
+  svg.append('g')
+    .attr('transform', `translate(${margins.left},${margins.top - margins.bottom})`)
+    .call(axisLeft(yRange));
+
+  svg.append('text')
+    .attr('x', -((height - margins.bottom) / 2))
+    .attr('y', 11)
+    .attr('transform', 'rotate(-90)')
+    .style('text-anchor', 'middle')
+    .style('font-size', '12px')
+    .text('Höhe (m)');
+
+  // Create a function for getting the points for the SVG path.
+  const lineFunc = d3Line()
+    .x((d) => xRange(d.x))
+    .y((d) => yRange(d.y));
+
+  // Create the elvation profile line.
+  svg.append('svg:path')
+    .attr('transform', `translate(0,${margins.top - margins.bottom})`)
+    .attr('d', lineFunc(data))
+    .attr('stroke', 'rgba(0, 0, 0, 0.5)')
+    .attr('stroke-width', 2)
+    .attr('fill', 'none');
+}
 
 /**
  * Style function for imported or drawn vector features.
@@ -234,7 +358,15 @@ function measureTool() {
    * initializes measure interaction, provides vector layer, styles and draw interaction
    */
   function initMeasure() {
-    measureTool.source = new VectorSource();
+    const source = new VectorSource();
+    measureTool.source = source;
+    source.on(['addfeature', 'clear'], () => {
+      const lengthMeasureCount = source.getFeatures().filter((f) => f !== measureTool.label && f.getGeometry()?.getType() === 'LineString').length;
+      elevationProfilePossible.value = lengthMeasureCount === 1;
+      if (!elevationProfilePossible.value) {
+        elevationProfile.value = false;
+      }
+    });
 
     const defaultStyle = new Style({
       fill: new Fill({
@@ -852,8 +984,6 @@ function addLayer(geoJSON) {
 
 const importJson = initJsonImport();
 
-/** @type {import('vue').Ref<'LineString'|'Point'} */
-export const draw = ref();
 const drawHandler = createSketch();
 watch(draw, (value) => {
   if (value) {
@@ -868,8 +998,6 @@ function clearDraw() {
   getTempLayer('sketch').getSource().clear();
 }
 
-/** @type {import('vue').Ref<'Polygon'|'LineString'} */
-export const measure = ref();
 const measureHandler = measureTool();
 watch(measure, (value) => {
   if (value) {
@@ -886,6 +1014,14 @@ function clearMeasure() {
 
 export function useTools() {
   return {
-    draw, clearDraw, measure, clearMeasure, importJson, exportJson,
+    draw,
+    clearDraw,
+    measure,
+    clearMeasure,
+    elevationProfilePossible,
+    elevationProfile,
+    renderElevationProfile,
+    importJson,
+    exportJson,
   };
 }

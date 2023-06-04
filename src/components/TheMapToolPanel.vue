@@ -19,7 +19,7 @@
     class="layerSwitcherButton"
     :class="{baseShow : panels.baselayer, mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
-    height="160px"
+    :height="`${160 + (elevationProfile ? 120 : 0)}px`"
   >
     <v-row
       no-gutters
@@ -122,10 +122,13 @@
         </v-btn>
       </v-col><v-col
         cols="2"
-        class="pa-2"
+        class="pr-1 pt-2"
         align="right"
       >
-        <v-icon
+        <v-btn
+          variant="plain"
+          density="compact"
+          title="Löschen"
           icon="mdi-delete"
           @click="clearDraw()"
         />
@@ -172,14 +175,34 @@
         </v-btn>
       </v-col><v-col
         cols="2"
-        class="pa-2"
+        class="pr-1 pt-2"
         align="right"
       >
-        <v-icon
+        <v-btn
+          variant="plain"
+          density="compact"
+          title="Höhenprofil"
+          icon="mdi-elevation-rise"
+          :disabled="!elevationProfilePossible"
+          @click="renderElevationProfile()"
+        />
+        <v-btn
+          variant="plain"
+          density="compact"
+          title="Löschen"
           icon="mdi-delete"
           @click="clearMeasure()"
         />
       </v-col>
+    </v-row>
+    <v-row
+      no-gutters
+      class="pl-2"
+    >
+      <svg
+        v-if="elevationProfile"
+        class="elevation-profile"
+      />
     </v-row>
   </v-card>
 </template>
@@ -201,7 +224,8 @@ watch(mobile, (newvalue, oldvalue) => {
 });
 
 const {
-  draw, clearDraw, measure, clearMeasure, importJson, exportJson,
+  draw, clearDraw, measure, clearMeasure, elevationProfilePossible, elevationProfile,
+  renderElevationProfile, importJson, exportJson,
 } = useTools();
 
 </script>
@@ -248,5 +272,10 @@ const {
   .mapMode.selected .v-img {
     border: 1px solid #333;
     opacity: 1;
+  }
+
+  .elevation-profile {
+    width: 100%;
+    height: 120px;
   }
 </style>
