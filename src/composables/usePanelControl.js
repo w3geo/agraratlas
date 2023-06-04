@@ -9,7 +9,7 @@ import { ref } from 'vue';
  * @property {search} boolean
 */
 
-const panels = ref({
+export const panels = ref({
   baselayer: false, tools: false, themen: true, schlag: true, search: false,
 });
 

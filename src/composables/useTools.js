@@ -19,6 +19,7 @@ import {
   select, min, max, scaleLinear, axisBottom, axisLeft, line as d3Line,
 } from 'd3';
 import { map } from './useMap';
+import { panels } from './usePanelControl';
 
 /**
  * @typedef {Object} ElevationProfileStats
@@ -47,6 +48,12 @@ export const draw = ref();
 
 /** @type {import('vue').Ref<'Polygon'|'LineString'} */
 export const measure = ref();
+
+watch(() => panels.value.tools, (value) => {
+  if (!value) {
+    elevationProfile.value = false;
+  }
+});
 
 /**
  * @param {Array<import("ol/coordinate").Coordinate>} coordinates
