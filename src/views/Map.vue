@@ -3,9 +3,9 @@
     ref="mapContainer"
     class="map"
   />
-  <the-schlag-info-panel-new @schlag="switchSchlag" />
-  <the-topic-panel-new />
-  <the-map-tool-panel-new />
+  <the-schlag-info-panel @schlag="switchSchlag" />
+  <the-topic-panel />
+  <the-map-tool-panel />
   <the-base-layer-switcher />
 </template>
 
@@ -14,9 +14,9 @@ import {
   ref, onMounted, onBeforeUnmount, watch,
 } from 'vue';
 import { useMap } from '../composables/useMap';
-import TheSchlagInfoPanelNew from '../components/TheSchlagInfoPanel.vue';
-import TheMapToolPanelNew from '../components/TheMapToolPanel.vue';
-import TheTopicPanelNew from '../components/TheTopicPanel.vue';
+import TheSchlagInfoPanel from '../components/TheSchlagInfoPanel.vue';
+import TheMapToolPanel from '../components/TheMapToolPanel.vue';
+import TheTopicPanel from '../components/TheTopicPanel.vue';
 import TheBaseLayerSwitcher from '../components/TheBaseLayerSwitcher.vue';
 
 const { map } = useMap();
