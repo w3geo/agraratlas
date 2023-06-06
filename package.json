@@ -42,7 +42,7 @@
     "eslint-plugin-vue": "^9.2.0",
     "nugget": "^2.2.0",
     "shx": "^0.3.4",
-    "vite": "^2.9.9",
+    "vite": "^2.9.16",
     "vite-plugin-vuetify": "^1.0.0-alpha.14"
   }
 }
