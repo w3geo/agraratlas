@@ -125,10 +125,12 @@ watch(mapView, () => {
     if (tilesLoading === undefined || tilesLoading > 0) {
       const source = getSource(map, 'agrargis');
       source.on(['tileloadend', 'tileloaderror'], function onLoaded() {
-        if (!tilesLoading) {
-          source.un(['tileloadend', 'tileloaderror'], onLoaded);
-          updateTopicsInExtent();
-        }
+        setTimeout(() => {
+          if (!tilesLoading) {
+            source.un(['tileloadend', 'tileloaderror'], onLoaded);
+            updateTopicsInExtent();
+          }
+        }, 150);
       });
     } else {
       updateTopicsInExtent();
