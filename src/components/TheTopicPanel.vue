@@ -340,6 +340,9 @@ const scrollDivLargerCalc = computed(() => {
   }
   if (panels.value.tools) {
     minusPix += 115;
+    if (elevationProfile.value) {
+      minusPix += 120;
+    }
   }
 
   if (mobile.value) {
