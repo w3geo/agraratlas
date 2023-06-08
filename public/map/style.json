@@ -444,8 +444,8 @@
     "id": "invekos_schlaege_2022_polygon-bio",
     "type": "fill",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2022_polygon",
-    "filter": ["==", "kz_bio_oepul_jn", "J"],
+    "source-layer": "invekos_schlaege_2022_bio_polygon",
+    "filter": ["any", ["==", "kz_bio_oepul_jn", "J"], ["!", ["has", "kz_bio_oepul_jn"]]],
     "paint": {
       "fill-color": "red",
       "fill-outline-color": "rgb(139, 0, 0)"
