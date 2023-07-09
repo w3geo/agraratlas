@@ -6,6 +6,7 @@ import { GeoJSON } from 'ol/format';
 import { reactive, watch } from 'vue';
 import booleanIntersects from '@turf/boolean-intersects';
 import bufferGeometry from '@turf/buffer';
+import { debounce } from 'debounce';
 import { SCHLAEGE_LAYER } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,
@@ -25,39 +26,8 @@ import { schlagInfo } from './useSchlag';
 
 const geojson = new GeoJSON();
 
-let tilesLoading;
-
 /** @type {Array<Topic>} */
 export const topics = reactive([]);
-mapReady.then(() => {
-  const source = getSource(map, 'agrargis');
-  source.on('tileloadstart', () => { tilesLoading = (tilesLoading || 0) + 1; });
-  source.on(['tileloadend', 'tileloaderror'], () => { tilesLoading -= 1; });
-  const { layers } = map.get('mapbox-style');
-  topics.push(...Object.values(layers
-    .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster')
-    .map((l) => ({
-      label: l.metadata?.label,
-      color: l.paint?.['fill-color'],
-      urlSort: l.metadata?.urlSort,
-      displaySort: l.metadata?.displaySort || Number.MAX_SAFE_INTEGER,
-    })).reduce((acc, {
-      label, color, urlSort, displaySort,
-    }) => {
-      if (!(label in acc)) {
-        acc[label] = ({
-          label,
-          color,
-          inExtent: false,
-          inSchlagExtent: false,
-          urlSort,
-          displaySort,
-          visible: false,
-        });
-      }
-      return acc;
-    }, {})));
-});
 
 function intersects(feature, candidates) {
   return candidates.some((candidate) => booleanIntersects(feature, candidate));
@@ -101,11 +71,13 @@ async function findTopics(extent, precise = false) {
 
 async function updateTopicsInExtent() {
   const { extent } = mapView.value;
-  const renderedTopics = await findTopics(transformExtent(extent, 'EPSG:4326', 'EPSG:3857'));
-  topics.forEach((topic) => {
-    topic.inExtent = renderedTopics.includes(topic.label);
-  });
-  topics.sort((a, b) => a.displaySort - b.displaySort);
+  if (extent) {
+    const renderedTopics = await findTopics(transformExtent(extent, 'EPSG:4326', 'EPSG:3857'));
+    topics.forEach((topic) => {
+      topic.inExtent = renderedTopics.includes(topic.label);
+    });
+    topics.sort((a, b) => a.displaySort - b.displaySort);
+  }
 }
 
 function updateTopicsInSchlagExtent() {
@@ -120,25 +92,36 @@ function updateTopicsInSchlagExtent() {
   }
 }
 
-watch(mapView, () => {
-  setTimeout(() => {
-    if (tilesLoading === undefined || tilesLoading > 0) {
-      const source = getSource(map, 'agrargis');
-      source.on(['tileloadend', 'tileloaderror'], function onLoaded() {
-        setTimeout(() => {
-          if (!tilesLoading) {
-            source.un(['tileloadend', 'tileloaderror'], onLoaded);
-            updateTopicsInExtent();
-          }
-        }, 150);
-      });
-    } else {
-      updateTopicsInExtent();
-    }
-  }, 0);
-});
-
 watch(schlagInfo, updateTopicsInSchlagExtent);
+
+mapReady.then(() => {
+  const { layers } = map.get('mapbox-style');
+  topics.push(...Object.values(layers
+    .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster')
+    .map((l) => ({
+      label: l.metadata?.label,
+      color: l.paint?.['fill-color'],
+      urlSort: l.metadata?.urlSort,
+      displaySort: l.metadata?.displaySort || Number.MAX_SAFE_INTEGER,
+    })).reduce((acc, {
+      label, color, urlSort, displaySort,
+    }) => {
+      if (!(label in acc)) {
+        acc[label] = ({
+          label,
+          color,
+          inExtent: false,
+          inSchlagExtent: false,
+          urlSort,
+          displaySort,
+          visible: false,
+        });
+      }
+      return acc;
+    }, {})));
+
+  map.on('postrender', debounce(updateTopicsInExtent, 200));
+});
 
 export function useTopics() {
   return { topics };

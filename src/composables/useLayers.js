@@ -17,7 +17,7 @@ const autoBaseLayerIndex = computed(() => (mapView.value.zoom > 14 ? 1 : 0));
 
 function setLayerOpacity(mapboxLayer) {
   if (mapboxLayer.metadata?.group !== 'base') {
-    if (mapboxLayer.type === 'raster') {
+    if (mapboxLayer.type !== 'raster') {
       mapboxLayer.paint = { ...mapboxLayer.paint, 'raster-opacity': opacity.value };
       updateMapboxLayer(map, mapboxLayer);
     }

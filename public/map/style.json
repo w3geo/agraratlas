@@ -166,6 +166,22 @@
       "group": "one"
     }
   }, {
+    "id": "schwerer_boden",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "schwerer_boden",
+    "paint": {
+      "fill-color": "#b4445a"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Schwerer Boden",
+      "urlSort": 21,
+      "group": "one"
+    }
+  }, {
     "id": "bdfl_l16_grundwasserschutz_acker-one",
     "type": "fill",
     "source": "agrargis",
