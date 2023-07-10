@@ -1,7 +1,7 @@
 <template>
   <v-btn
     v-if="!panels.themen || mobile"
-    class="layerSwitcherButton pa-2"
+    class="topicPanelButton pa-2"
     :class="{noSchlag : !panels.schlag, mobile : mobile}"
     size="mobile ? 20 : 30"
     @click="panels.themen = !panels.themen, closeOthers('themen', mobile)"
@@ -16,7 +16,7 @@
 
   <v-card
     v-if="panels.themen && !tooLow"
-    class="layerSwitcherButton"
+    class="topicPanelButton"
     :class="{noSchlag : !panels.schlag, mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
     :height="topicVcard"
@@ -368,27 +368,27 @@ mapReady.then(() => setVisible(route.params.visible));
 </script>
 
 <style scoped>
-  .layerSwitcherButton {
+  .topicPanelButton {
     position: absolute;
     left: 10px;
     top: 170px;
   }
 
-  .layerSwitcherButton.mobile,
-  .layerSwitcherButton.noSchlag.mobile {
+  .topicPanelButton.mobile,
+  .topicPanelButton.noSchlag.mobile {
     left: auto;
     right: 155px;
     top: 6px;
     z-index: 5000;
   }
 
-  .layerSwitcherButton.mobilepanel,
-  .layerSwitcherButton.noSchlag.mobilepanel {
+  .topicPanelButton.mobilepanel,
+  .topicPanelButton.noSchlag.mobilepanel {
     left: 0px;
     top: 50px;
   }
 
-  .layerSwitcherButton.noSchlag {
+  .topicPanelButton.noSchlag {
     top: 110px;
   }
 
@@ -457,7 +457,7 @@ mapReady.then(() => setVisible(route.params.visible));
     width: 100%;
   }
 
-  .layerSwitcherButton.noSchlag .scrollDiv {
+  .topicPanelButton.noSchlag .scrollDiv {
     height: calc(100vh - 485px);
 
   }

@@ -1,7 +1,7 @@
 <template>
   <v-btn
     v-if="!panels.schlag || mobile"
-    class="layerSwitcherButton pa-2"
+    class="schlagInfoButton pa-2"
     :class="{mobile : mobile}"
     size="mobile ? 20 : 30"
     @click="panels.schlag = !panels.schlag, closeOthers('schlag', mobile)"
@@ -16,7 +16,7 @@
 
   <v-card
     v-if="panels.schlag && !tooLow"
-    class="layerSwitcherButton"
+    class="schlagInfoButton"
     :class="{mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
     height="105px"
@@ -49,14 +49,14 @@
       v-if="schlagInfo && !schlagInfo.loading"
       no-gutters
     >
-      <v-col cols="11">
+      <v-col cols="13">
         <v-row
           no-gutters
           class="text-body-2"
         >
           <v-col
             class="pa-2 pb-1"
-            cols="3"
+            cols="4"
           >
             Nutzung:
           </v-col>
@@ -68,7 +68,7 @@
           </v-col>
           <v-col
             class="px-2"
-            cols="3"
+            cols="4"
           >
             Fläche:
           </v-col>
@@ -77,7 +77,16 @@
             cols="7"
           >
             {{ schlagInfo.sl_flaeche_brutto_ha.toLocaleString('de-AT',
-                                                              {maximumFractionDigits: 2}) }} ha
+                                                              {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2
+                                                              }) }}
+            ha<span v-if="heavySoilHectars > 0">, schwere Böden
+              {{ heavySoilHectars.toLocaleString('de-AT',
+                                                 {
+                                                   minimumFractionDigits: 2,
+                                                   maximumFractionDigits: 2
+                                                 }) }} ha</span>
           </v-col>
           <v-col cols="2" />
         </v-row>
@@ -149,11 +158,13 @@ import { useDisplay } from 'vuetify';
 import { useSchlag } from '../composables/useSchlag';
 import { useMap } from '../composables/useMap';
 import { usePanelControl } from '../composables/usePanelControl';
+import { useHeavySoil } from '../composables/useHeavySoil';
 
 const { panels, closeOthers } = usePanelControl();
 
 const { width, height } = useDisplay();
 const { schlagInfo } = useSchlag();
+const { heavySoilHectars } = useHeavySoil();
 const { map, mapView } = useMap();
 const route = useRoute();
 const router = useRouter();
@@ -223,20 +234,20 @@ setSchlagId(route.params.schlagId);
   .details {
     cursor: pointer;
   }
-  .layerSwitcherButton {
+  .schlagInfoButton {
     position: absolute;
     left: 10px;
     top: 60px;
   }
 
-  .layerSwitcherButton.mobile {
+  .schlagInfoButton.mobile {
     left: auto;
     right: 197px;
     top: 6px;
     z-index: 5000;
   }
 
-  .layerSwitcherButton.mobilepanel {
+  .schlagInfoButton.mobilepanel {
     left: 0px;
     top: 50px;
   }
