@@ -7,7 +7,7 @@ import { reactive, watch } from 'vue';
 import booleanIntersects from '@turf/boolean-intersects';
 import bufferGeometry from '@turf/buffer';
 import { debounce } from 'debounce';
-import { SCHLAEGE_LAYER } from '../constants';
+import { SCHLAEGE_SOURCE } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,
 } from './useMap';
@@ -42,7 +42,7 @@ function intersects(feature, candidates) {
 async function findTopics(extent, precise = false) {
   const features = getSource(map, 'agrargis')
     .getFeaturesInExtent(extent)
-    .filter((feature) => feature.get('layer') !== SCHLAEGE_LAYER || feature.get('kz_bio_oepul_jn') === 'J')
+    .filter((feature) => feature.get('layer') !== SCHLAEGE_SOURCE || feature.get('kz_bio_oepul_jn') === 'J')
     .map((renderFeature) => toFeature(renderFeature));
   const style = await filterStyle;
   const resolution = map.getView().getResolution();

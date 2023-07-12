@@ -470,7 +470,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "ÖPUL Bio-Schläge",
+      "label": "ÖPUL Bio-Schläge (1.7.2022)",
       "urlSort": 16,
       "displaySort": 1,
       "group": "one"
@@ -489,5 +489,12 @@
       ],
       "line-width": 5
     }
-  }]
+  }],
+  "metadata": {
+    "sources": {
+      "invekos_schlaege_2022_polygon": {
+        "lastModified": "2022-07-01T00:00:00Z"
+      }
+    }
+  }
 }

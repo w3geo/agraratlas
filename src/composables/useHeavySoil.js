@@ -12,7 +12,7 @@ import {
 import { map, mapReady } from './useMap';
 import { topics } from './useTopics';
 import { schlagInfo } from './useSchlag';
-import { SCHLAEGE_LAYER } from '../constants';
+import { SCHLAEGE_SOURCE } from '../constants';
 
 /** @type {import("vue").Ref<number>} */
 export const heavySoilHectars = ref(0);
@@ -37,7 +37,7 @@ soilLayer.on('postrender', (e) => {
 const schlagLayer = new VectorTileLayer({
   renderMode: 'vector',
   style(feature) {
-    return feature.get('layer') === SCHLAEGE_LAYER && feature.getId() === schlagInfo.value?.id ? blackFill : null;
+    return feature.get('layer') === SCHLAEGE_SOURCE && feature.getId() === schlagInfo.value?.id ? blackFill : null;
   },
 });
 let schlagImageData;
@@ -102,7 +102,7 @@ mapReady.then(() => {
   const templateSource = getSource(map, 'agrargis');
   const source = new VectorTileSource({
     format: new MVT({
-      layers: ['schwerer_boden', SCHLAEGE_LAYER],
+      layers: ['schwerer_boden', SCHLAEGE_SOURCE],
     }),
     minZoom: 15,
     maxZoom: 15,
