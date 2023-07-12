@@ -29,7 +29,7 @@
         <v-icon class="mx-1">
           mdi-information
         </v-icon>
-        Schlag-Informationen
+        Schlag-Information ({{ schlaegeLastModified }})
       </v-col>
       <v-col
         cols="2"
@@ -150,15 +150,16 @@
 </template>
 
 <script setup>
-import { watch, computed } from 'vue';
+import { watch, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getCenter } from 'ol/extent';
 import { equals } from 'ol/coordinate';
 import { useDisplay } from 'vuetify';
 import { useSchlag } from '../composables/useSchlag';
-import { useMap } from '../composables/useMap';
+import { mapReady, useMap } from '../composables/useMap';
 import { usePanelControl } from '../composables/usePanelControl';
 import { useHeavySoil } from '../composables/useHeavySoil';
+import { SCHLAEGE_SOURCE } from '../constants';
 
 const { panels, closeOthers } = usePanelControl();
 
@@ -183,6 +184,12 @@ const tooLow = computed(() => {
   }
 
   return retVal;
+});
+
+const schlaegeLastModified = ref();
+mapReady.then(() => {
+  const date = new Date(map.get('mapbox-style').metadata.sources[SCHLAEGE_SOURCE].lastModified);
+  schlaegeLastModified.value = new Intl.DateTimeFormat('de-AT').format(date);
 });
 
 function center() {

@@ -14,7 +14,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import { TileImage as TileImageSource } from 'ol/source';
 import { map, mapReady } from './useMap';
 import { schlagInfo } from './useSchlag';
-import { SCHLAEGE_LAYER } from '../constants';
+import { SCHLAEGE_SOURCE } from '../constants';
 
 /**
  * @typedef Gradient
@@ -107,7 +107,7 @@ mapReady.then(() => {
   schlagTileGrid = schlagSource.getTileGrid();
 });
 
-const format = new MVT({ layers: [SCHLAEGE_LAYER] });
+const format = new MVT({ layers: [SCHLAEGE_SOURCE] });
 const filter = (feature) => feature.getId() === schlagInfo.value?.id;
 const schlagCanvas = document.createElement('canvas');
 // document.body.appendChild(schlagCanvas); // for debugging
