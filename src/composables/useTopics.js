@@ -15,6 +15,7 @@ import { schlagInfo } from './useSchlag';
 
 /**
  * @typedef Topic
+ * @property {string} id
  * @property {string} label
  * @property {string} color
  * @property {boolean} inExtent
@@ -99,15 +100,17 @@ mapReady.then(() => {
   topics.push(...Object.values(layers
     .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster')
     .map((l) => ({
+      id: l.id,
       label: l.metadata?.label,
       color: l.paint?.['fill-color'],
       urlSort: l.metadata?.urlSort,
       displaySort: l.metadata?.displaySort || Number.MAX_SAFE_INTEGER,
     })).reduce((acc, {
-      label, color, urlSort, displaySort,
+      id, label, color, urlSort, displaySort,
     }) => {
       if (!(label in acc)) {
         acc[label] = ({
+          id,
           label,
           color,
           inExtent: false,

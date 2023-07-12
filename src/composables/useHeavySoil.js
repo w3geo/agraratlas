@@ -10,6 +10,7 @@ import {
   getBottomLeft, getCenter, getHeight, getTopRight, getWidth,
 } from 'ol/extent';
 import { map, mapReady } from './useMap';
+import { topics } from './useTopics';
 import { schlagInfo } from './useSchlag';
 import { SCHLAEGE_LAYER } from '../constants';
 
@@ -61,6 +62,9 @@ const soilMap = new Map({
 async function calculateHeavySoilArea() {
   schlagLayer.changed();
   heavySoilHectars.value = 0;
+  if (!topics.find((t) => t.id === 'schwerer_boden')?.visible) {
+    return;
+  }
   if (!schlagInfo.value || schlagInfo.value.loading) {
     return;
   }
@@ -108,7 +112,7 @@ mapReady.then(() => {
   schlagLayer.setSource(source);
 });
 
-watch(schlagInfo, calculateHeavySoilArea);
+watch([schlagInfo, topics], calculateHeavySoilArea);
 
 export function useHeavySoil() {
   return { heavySoilHectars };
