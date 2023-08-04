@@ -430,10 +430,10 @@
       "group": "one"
     }
   }, {
-    "id": "invekos_schlaege_2022_polygon-fill",
+    "id": "invekos_schlaege_2023_polygon-fill",
     "type": "fill",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2022_polygon",
+    "source-layer": "invekos_schlaege_2023_polygon",
     "paint": {
       "fill-color": [
         "case",
@@ -443,10 +443,10 @@
       ]
     }
   }, {
-    "id": "invekos_schlaege_2022_polygon-line",
+    "id": "invekos_schlaege_polygon-line",
     "type": "line",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2022_polygon",
+    "source-layer": "invekos_schlaege_2023_polygon",
     "paint": {
       "line-color": [
         "case",
@@ -457,7 +457,7 @@
       "line-width": 2
     }
   }, {
-    "id": "invekos_schlaege_2022_polygon-bio",
+    "id": "invekos_schlaege_polygon-bio",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "invekos_schlaege_2022_bio_polygon",
@@ -476,10 +476,10 @@
       "group": "one"
     }
   }, {
-    "id": "invekos_schlaege_2022_polygon-line-selected",
+    "id": "invekos_schlaege_polygon-line-selected",
     "type": "line",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2022_polygon",
+    "source-layer": "invekos_schlaege_2023_polygon",
     "paint": {
       "line-color": [
         "case",
@@ -492,8 +492,8 @@
   }],
   "metadata": {
     "sources": {
-      "invekos_schlaege_2022_polygon": {
-        "lastModified": "2022-07-01T00:00:00Z"
+      "invekos_schlaege_2023_polygon": {
+        "lastModified": "2023-07-01T00:00:00Z"
       }
     }
   }
