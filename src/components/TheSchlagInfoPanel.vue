@@ -56,37 +56,38 @@
         >
           <v-col
             class="pa-2 pb-1"
-            cols="4"
+            cols="3"
           >
             Nutzung:
           </v-col>
           <v-col
             class="pa-2 pb-1"
-            cols="7"
+            cols="8"
           >
             <b v-if="schlagInfo.kz_bio_oepul_jn === 'J'">BIO </b>{{ schlagInfo.snar_bezeichnung }}
+            ({{ schlagInfo.fnar_code }})
           </v-col>
           <v-col
             class="px-2"
-            cols="4"
+            cols="3"
           >
             Fläche:
           </v-col>
           <v-col
             class="px-2"
-            cols="7"
+            cols="8"
           >
             {{ schlagInfo.sl_flaeche_brutto_ha.toLocaleString('de-AT',
                                                               {
                                                                 minimumFractionDigits: 2,
                                                                 maximumFractionDigits: 2
                                                               }) }}
-            ha<span v-if="heavySoilHectars > 0">, schwere Böden
+            ha<span v-if="heavySoilHectars > 0">, davon
               {{ heavySoilHectars.toLocaleString('de-AT',
                                                  {
                                                    minimumFractionDigits: 2,
                                                    maximumFractionDigits: 2
-                                                 }) }} ha</span>
+                                                 }) }} ha schwere Böden</span>
           </v-col>
           <v-col cols="2" />
         </v-row>

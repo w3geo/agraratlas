@@ -14,11 +14,9 @@ import { draw, measure } from './useTools';
  * @typedef SchlagInfo
  * @property {number} id
  * @property {boolean} loading
- * @property {number} [fart_id]
- * @property {number} [fs_kennung]
  * @property {number} [sl_flaeche_brutto_ha]
  * @property {string} [snar_bezeichnung]
- * @property {string} [snar_code]
+ * @property {string} [fnar_code]
  * @property {string} [kz_bio_oepul_jn]
  * @property {import("ol/extent").Extent} [extent]
  * @property {Array<import('ol/format/GeoJSON').GeoJSONGeometry>} [parts]
