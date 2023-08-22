@@ -6,11 +6,11 @@ import Link from 'ol/interaction/Link';
 import { useGeographic } from 'ol/proj';
 import {
   apply, applyStyle, getLayer, getSource, renderTransparent,
+  MapboxVectorLayer,
 } from 'ol-mapbox-style';
 import { getCenter } from 'ol/extent';
 import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import { MapboxVector } from 'ol/layer';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { INITIAL_EXTENT } from '../constants';
@@ -67,7 +67,7 @@ map.on('moveend', () => {
   };
 });
 
-map.addLayer(new MapboxVector({
+map.addLayer(new MapboxVectorLayer({
   declutter: true,
   visible: false,
   minZoom: 14,

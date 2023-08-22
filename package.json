@@ -20,29 +20,28 @@
     "data": "npm run data:vector && npm run data:raster"
   },
   "dependencies": {
-    "@mdi/font": "5.9.55",
+    "@mdi/font": "^7.2.96",
     "@turf/boolean-intersects": "^6.5.0",
     "@turf/buffer": "^6.5.0",
     "d3": "^7.8.5",
     "debounce": "^1.2.1",
     "geotiff": "^2.0.7",
-    "ol": "^7.4.0",
-    "ol-mapbox-style": "^10.6.0",
-    "proj4": "^2.8.1",
+    "ol": "^8.0.0-dev.1692689010366",
+    "ol-mapbox-style": "^11.0.1",
+    "proj4": "^2.9.0",
     "roboto-fontface": "*",
-    "vue": "^3.2.25",
-    "vue-router": "^4.1.2",
-    "vuetify": "^3.0.0-beta.10"
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
+    "vuetify": "^3.3.13"
   },
   "devDependencies": {
-    "@gatsbylabs/vite-plugin-unused": "^1.0.2",
-    "@vitejs/plugin-vue": "^2.3.3",
-    "eslint": "^8.19.0",
+    "@vitejs/plugin-vue": "^4.3.1",
+    "eslint": "^8.47.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-vue": "^9.2.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-vue": "^9.17.0",
     "shx": "^0.3.4",
-    "vite": "^2.9.16",
-    "vite-plugin-vuetify": "^1.0.0-alpha.14"
+    "vite": "^4.4.9",
+    "vite-plugin-vuetify": "^1.0.2"
   }
 }

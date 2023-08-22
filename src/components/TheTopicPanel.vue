@@ -90,7 +90,6 @@
                   v-model="topic.visible"
                   :label="topic.label"
                   hide-details
-                  class="denseBox"
                   density="compact"
                   :class="{fat : schlagInfo && topic.inSchlagExtent}"
                 /><v-label
@@ -161,7 +160,6 @@
             >
               <v-checkbox
                 v-model="gradient.visible"
-                class="denseBox"
                 :disabled="mapView.zoom < 9"
                 density="compact"
                 hide-details
@@ -476,8 +474,8 @@ mapReady.then(() => setVisible(route.params.visible));
     opacity: 1;
   }
 
-  .v-checkbox.denseBox .v-selection-control {
-    height: auto!important;
+  div.v-selection-control.v-checkbox-btn {
+    min-height: auto;
   }
 
   .v-radio.v-selection-control .v-label {
