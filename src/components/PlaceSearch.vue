@@ -2,19 +2,19 @@
   <v-autocomplete
     v-model="model"
     v-model:search="search"
+    :loading="abortController"
+    :items="items"
+    return-object
     hide-details
     single-line
     clearable
     density="compact"
     prepend-inner-icon="mdi-magnify"
-    :items="items"
-    :loading="isLoading"
     item-title="properties.name"
     hide-no-data
     hide-selected
     filter-mode="contains"
     placeholder="Adresse, Ort, Riedname, ..."
-    return-object
     class="roundedStyle"
     :class="{mobile : mobile}"
   />
@@ -26,7 +26,8 @@ import { useDisplay } from 'vuetify';
 
 const model = ref(null);
 const items = ref();
-const isLoading = ref(false);
+/** @type {import("vue").Ref<AbortController>} */
+const abortController = ref(null);
 const search = ref('');
 const emit = defineEmits(['search']);
 
@@ -34,10 +35,14 @@ const { width, height } = useDisplay();
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 
 const getPlaces = async (value) => {
-  if (!isLoading.value && value.length > 3) {
-    isLoading.value = true;
+  if (value.length > 3) {
+    if (abortController.value) {
+      abortController.value.abort();
+    }
+    abortController.value = new AbortController();
+    const { signal } = abortController.value;
     try {
-      const response = await fetch(`https://kataster.bev.gv.at/api/all/?term=${encodeURIComponent(value)}`);
+      const response = await fetch(`https://kataster.bev.gv.at/api/all/?term=${encodeURIComponent(value)}`, { signal });
       const { data } = await response.json();
       data?.features.forEach((feature) => {
         const { properties } = feature;
@@ -50,8 +55,9 @@ const getPlaces = async (value) => {
       });
       items.value = data?.features
         .filter((feature) => ![4, 21].includes(feature.properties.objectType));
-    } finally {
-      isLoading.value = false;
+      abortController.value = null;
+    } catch (error) {
+      // empty catch block
     }
   }
 };
