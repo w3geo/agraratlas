@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { pluginUnused as unused } from '@gatsbylabs/vite-plugin-unused';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -19,9 +18,6 @@ export default defineConfig({
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
-    unused({
-      ext: ['*.vue', '*.js'],
-    }),
   ],
   resolve: {
     alias: {
