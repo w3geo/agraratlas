@@ -113,7 +113,8 @@
     "metadata": {
       "label": "Benachteiligtes Gebiet – Berggebiet",
       "urlSort": 17,
-      "group": "one"
+      "group": "one",
+      "category": "Ausgleichszulage"
     }
   }, {
     "id": "benachteiligte_gebiete-kleines_gebiet",
@@ -130,7 +131,8 @@
     "metadata": {
       "label": "Benachteiligtes Gebiet – Kleines Gebiet",
       "urlSort": 18,
-      "group": "one"
+      "group": "one",
+      "category": "Ausgleichszulage"
     }
   }, {
     "id": "benachteiligte_gebiete-sonstiges",
@@ -147,7 +149,8 @@
     "metadata": {
       "label": "Benachteiligtes Gebiet – Sonstiges",
       "urlSort": 19,
-      "group": "one"
+      "group": "one",
+      "category": "Ausgleichszulage"
     }
   }, {
     "id": "bdfl_l08_seehoehe_1200m-one",
@@ -163,13 +166,14 @@
     "metadata": {
       "label": "Seehöhe über 1200m",
       "urlSort": 11,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
-    "id": "schwerer_boden",
+    "id": "schwere_boeden",
     "type": "fill",
     "source": "agrargis",
-    "source-layer": "schwerer_boden",
+    "source-layer": "schwere_boeden",
     "paint": {
       "fill-color": "#b4445a"
     },
@@ -177,9 +181,44 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Schwerer Boden",
+      "label": "6 Schwere Böden",
       "urlSort": 21,
-      "group": "one"
+      "group": "one",
+      "category": "GLÖZ"
+    }
+  }, {
+    "id": "natura2000",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "natura2000",
+    "paint": {
+      "fill-color": "rgb(182,204,157)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Natura 2000",
+      "urlSort": 22,
+      "group": "one",
+      "category": "Sonstige Informationen"
+    }
+  }, {
+    "id": "natura2000_sg",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "natura2000_sg",
+    "paint": {
+      "fill-color": "rgb(243,174,61)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Natura 2000",
+      "urlSort": 23,
+      "group": "one",
+      "category": "Sonstige Informationen"
     }
   }, {
     "id": "bdfl_l16_grundwasserschutz_acker-one",
@@ -195,7 +234,8 @@
     "metadata": {
       "label": "Grundwasserschutz Acker",
       "urlSort": 9,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "nitrataktionsprogramm",
@@ -212,7 +252,8 @@
     "metadata": {
       "label": "Nitrataktionsprogramm",
       "urlSort": 20,
-      "group": "one"
+      "group": "one",
+      "category": "NAPV"
     }
   }, {
     "id": "bdfl_l40_gab8-one",
@@ -228,7 +269,8 @@
     "metadata": {
        "label": "PSM-Schutzgebiete (WRRL)",
        "urlSort": 15,
-       "group": "one"
+       "group": "one",
+       "category": "GAB8"
      }
   }, {
     "id": "bdfl_l13_besondere_lebensraumtypen-one",
@@ -242,9 +284,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Besondere Lebensraumtypen",
+      "label": "9 Besondere Lebensraumtypen",
       "urlSort": 10,
-      "group": "one"
+      "group": "one",
+      "category": "GLÖZ"
     }
   }, {
     "id": "bdfl_l34_feucht_torfgebiete-one",
@@ -258,9 +301,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Feuchtgebiete und Torfflächen",
+      "label": "2 Feuchtgebiete und Torfflächen",
       "urlSort": 14,
-      "group": "one"
+      "group": "one",
+      "category": "GLÖZ"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch_3",
@@ -275,9 +319,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL hoch 3",
+      "label": "WRRL Steiermark EL hoch 3",
       "urlSort": 3,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch_2",
@@ -292,9 +337,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL hoch 2",
+      "label": "WRRL Steiermark EL hoch 2",
       "urlSort": 4,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_hoch_1",
@@ -309,9 +355,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL hoch 1",
+      "label": "WRRL Steiermark EL hoch 1",
       "urlSort": 5,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_mittel",
@@ -326,9 +373,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL mittel",
+      "label": "WRRL Steiermark EL mittel",
       "urlSort": 6,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_mittel_10",
@@ -343,9 +391,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL mittel -10%",
+      "label": "WRRL Steiermark EL mittel -10%",
       "urlSort": 7,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l26_wasserrahmenrichtlinie_ertragslagen-el_niedrig",
@@ -360,9 +409,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Wasserrahmenrichtlinie EL niedrig",
+      "label": "WRRL Steiermark EL niedrig",
       "urlSort": 8,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l31_begruente_abflusswege-one",
@@ -378,7 +428,8 @@
     "metadata": {
       "label": "Begrünte Abflusswege",
       "urlSort": 2,
-      "group": "one"
+      "group": "one",
+      "category": "ÖPUL"
     }
   }, {
     "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
@@ -392,9 +443,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Pufferstreifen belasteter Gewässer",
+      "label": "4 Pufferstreifen belasteter Gewässer",
       "urlSort": 1,
-      "group": "one"
+      "group": "one",
+      "category": "GLÖZ"
     }
   }, {
     "id": "stehende_gewaesser-one",
@@ -410,7 +462,8 @@
     "metadata": {
       "label": "Gewässer",
       "urlSort": 12,
-      "group": "one"
+      "group": "one",
+      "category": "NAPV"
     }
   }, {
     "id": "gewaessernetz-one",
@@ -427,7 +480,8 @@
     "metadata": {
       "label": "Gewässer",
       "urlSort": 13,
-      "group": "one"
+      "group": "one",
+      "category": "NAPV"
     }
   }, {
     "id": "invekos_schlaege_2023_polygon-fill",
@@ -470,10 +524,12 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "ÖPUL Bio-Schläge (1.7.2022)",
+      "label": "Bio-Schläge MFA 2022",
+      "warning": "Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist daher bei der Ausbringung von Betriebsmitteln auf Nachbarfeldstücken besondere Sorgfalt walten zu lassen",
       "urlSort": 16,
       "displaySort": 1,
-      "group": "one"
+      "group": "one",
+      "category": "BIO"
     }
   }, {
     "id": "invekos_schlaege_polygon-line-selected",

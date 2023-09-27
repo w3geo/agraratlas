@@ -76,39 +76,46 @@
           :style="scrollDivCalc"
         >
           <template
-            v-for="(topic, index) in topics"
-            :key="index"
+            v-for="(category, key) in topicsByCategory"
+            :key="key"
           >
-            <v-row
-              v-if="
-                schlagInfo && onlyTopicsInSchlagExtent ? topic.inSchlagExtent : topic.inExtent
-                  || topic.visible"
-              no-gutters
-            >
-              <v-col cols="10">
-                <v-checkbox
-                  v-model="topic.visible"
-                  :label="topic.label"
-                  hide-details
-                  density="compact"
-                  :class="{fat : schlagInfo && topic.inSchlagExtent}"
-                /><v-label
-                  v-if="topic.visible && topic.label === 'ÖPUL Bio-Schläge'"
-                  class="pl-7 pb-1 bio-warning"
-                  text="Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist
-                  daher bei der Ausbringung von Betriebsmitteln auf Nachbarfeldstücken besondere
-                  Sorgfalt walten zu lassen."
-                />
-              </v-col><v-col
-                cols="2"
-                class="pa-1"
+            <v-row no-gutters="">
+              <v-col
+                cols="10"
+                class="category pt-1"
               >
-                <div
-                  class="colorBox"
-                  :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
-                />
+                {{ key }}
               </v-col>
             </v-row>
+            <template
+              v-for="(topic, index) in topicsByCategory[key]"
+              :key="index"
+            >
+              <v-row
+                no-gutters
+              >
+                <v-col cols="10">
+                  <v-checkbox
+                    v-model="topic.visible"
+                    :label="topic.label"
+                    hide-details
+                    density="compact"
+                  /><v-label
+                    v-if="topic.visible && topic.warning"
+                    class="pl-7 pb-1 topic-warning"
+                    :text="topic.warning"
+                  />
+                </v-col><v-col
+                  cols="2"
+                  class="pa-1"
+                >
+                  <div
+                    class="colorBox"
+                    :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
+                  />
+                </v-col>
+              </v-row>
+            </template>
           </template>
         </div>
         <div
@@ -263,6 +270,17 @@ function setVisible(value) {
 
 const tab = ref();
 const { width, height } = useDisplay();
+
+const topicsByCategory = computed(() => topics.reduce((acc, topic) => {
+  if (schlagInfo.value && onlyTopicsInSchlagExtent.value ? topic.inSchlagExtent : topic.inExtent
+      || topic.visible) {
+    if (!acc[topic.category]) {
+      acc[topic.category] = [];
+    }
+    acc[topic.category].push(topic);
+  }
+  return acc;
+}, {}));
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 panels.value.themen = !mobile.value;
@@ -438,6 +456,11 @@ mapReady.then(() => setVisible(route.params.visible));
   width: 18px;
   height: 18px;
 }
+.category {
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87);
+}
 </style>
 
 <style>
@@ -468,12 +491,6 @@ mapReady.then(() => setVisible(route.params.visible));
     font-size: 15px!important;
   }
 
-  .scrollDiv .v-selection-control.fat .v-label {
-    font-weight: bold;
-    color: #000;
-    opacity: 1;
-  }
-
   div.v-selection-control.v-checkbox-btn {
     min-height: auto;
   }
@@ -486,7 +503,7 @@ mapReady.then(() => setVisible(route.params.visible));
     color: #000;
     opacity: .9;
   }
-  .bio-warning {
+  .topic-warning {
     color: red;
     font-weight: bold;
     opacity: 1;
