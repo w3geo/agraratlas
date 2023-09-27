@@ -215,6 +215,22 @@
       "group": "one"
     }
   }, {
+    "id": "bdfl_l40_gab8-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l40_gab8",
+    "paint": {
+      "fill-color": "rgb(191, 191, 191)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+       "label": "PSM-Schutzgebiete (WRRL)",
+       "urlSort": 15,
+       "group": "one"
+     }
+  }, {
     "id": "bdfl_l13_besondere_lebensraumtypen-one",
     "type": "fill",
     "source": "agrargis",
