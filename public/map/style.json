@@ -198,10 +198,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Natura 2000",
+      "label": "9 Natura 2000",
       "urlSort": 22,
       "group": "one",
-      "category": "Sonstige Informationen"
+      "category": "GLÖZ"
     }
   }, {
     "id": "natura2000_sg",
@@ -215,10 +215,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Natura 2000",
+      "label": "9 Natura 2000 Sonstige Gebiete",
       "urlSort": 23,
       "group": "one",
-      "category": "Sonstige Informationen"
+      "category": "GLÖZ"
     }
   }, {
     "id": "bdfl_l16_grundwasserschutz_acker-one",
