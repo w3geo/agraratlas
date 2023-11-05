@@ -80,7 +80,6 @@ export const mapReady = apply(map, './map/style.json').then(() => {
     getSource(map, layer.source).tileOptions.transition = undefined;
   });
   getLayer(map, 'neigungsklassen').setSource(null);
-  // getSource(map, 'agrargis').overlaps_ = false; // eslint-disable-line
 });
 
 /**
