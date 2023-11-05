@@ -170,6 +170,40 @@
       "category": "ÖPUL"
     }
   }, {
+    "id": "bdfl_l34_feucht_torfgebiete-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l34_feucht_torfgebiete",
+    "paint": {
+      "fill-color": "rgb(116, 216, 249)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "2: Feuchtgebiete und Torfflächen",
+      "urlSort": 14,
+      "group": "one",
+      "category": "GLÖZ"
+    }
+  }, {
+    "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "bdfl_l33_pufferstreifen_belastete_gewaesser",
+    "paint": {
+      "fill-color": "rgb(147, 248, 104)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "4: Pufferstreifen belasteter Gewässer",
+      "urlSort": 1,
+      "group": "one",
+      "category": "GLÖZ"
+    }
+  }, {
     "id": "schwere_boeden",
     "type": "fill",
     "source": "agrargis",
@@ -181,7 +215,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "6 Schwere Böden",
+      "label": "6: Schwere Böden",
       "urlSort": 21,
       "group": "one",
       "category": "GLÖZ"
@@ -198,7 +232,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "9 Natura 2000",
+      "label": "9: Natura 2000",
       "urlSort": 22,
       "group": "one",
       "category": "GLÖZ"
@@ -215,7 +249,7 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "9 Natura 2000 Sonstige Gebiete",
+      "label": "9: Natura 2000 Sonstige Gebiete",
       "urlSort": 23,
       "group": "one",
       "category": "GLÖZ"
@@ -250,10 +284,10 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Nitrataktionsprogramm",
+      "label": "2: NAPV-Anlage 5 Gebiete",
       "urlSort": 20,
       "group": "one",
-      "category": "NAPV"
+      "category": "GAB"
     }
   }, {
     "id": "bdfl_l40_gab8-one",
@@ -267,10 +301,10 @@
       "visibility": "none"
     },
     "metadata": {
-       "label": "PSM-Schutzgebiete (WRRL)",
+       "label": "8: PSM-Schutzgebiete (WRRL)",
        "urlSort": 15,
        "group": "one",
-       "category": "GAB8"
+       "category": "GAB"
      }
   }, {
     "id": "bdfl_l13_besondere_lebensraumtypen-one",
@@ -284,25 +318,8 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "9 Besondere Lebensraumtypen",
+      "label": "9: Besondere Lebensraumtypen",
       "urlSort": 10,
-      "group": "one",
-      "category": "GLÖZ"
-    }
-  }, {
-    "id": "bdfl_l34_feucht_torfgebiete-one",
-    "type": "fill",
-    "source": "agrargis",
-    "source-layer": "bdfl_l34_feucht_torfgebiete",
-    "paint": {
-      "fill-color": "rgb(116, 216, 249)"
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "2 Feuchtgebiete und Torfflächen",
-      "urlSort": 14,
       "group": "one",
       "category": "GLÖZ"
     }
@@ -432,23 +449,6 @@
       "category": "ÖPUL"
     }
   }, {
-    "id": "bdfl_l33_pufferstreifen_belastete_gewaesser-one",
-    "type": "fill",
-    "source": "agrargis",
-    "source-layer": "bdfl_l33_pufferstreifen_belastete_gewaesser",
-    "paint": {
-      "fill-color": "rgb(147, 248, 104)"
-    },
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "label": "4 Pufferstreifen belasteter Gewässer",
-      "urlSort": 1,
-      "group": "one",
-      "category": "GLÖZ"
-    }
-  }, {
     "id": "stehende_gewaesser-one",
     "type": "fill",
     "source": "agrargis",
@@ -463,7 +463,7 @@
       "label": "Gewässer",
       "urlSort": 12,
       "group": "one",
-      "category": "NAPV"
+      "category": "GAB"
     }
   }, {
     "id": "gewaessernetz-one",
@@ -481,7 +481,7 @@
       "label": "Gewässer",
       "urlSort": 13,
       "group": "one",
-      "category": "NAPV"
+      "category": "GAB"
     }
   }, {
     "id": "invekos_schlaege_2023_polygon-fill",
