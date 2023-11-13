@@ -221,19 +221,38 @@
       "category": "GLÖZ"
     }
   }, {
-    "id": "natura2000",
+    "id": "natura2000_ffh",
     "type": "fill",
     "source": "agrargis",
     "source-layer": "natura2000",
+    "filter": ["==", "gebietsart", "FFH"],
     "paint": {
-      "fill-color": "rgb(182,204,157)"
+      "fill-color": "#ffe600"
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "label": "9: Natura 2000",
+      "label": "9: Natura 2000 Fauna Flora Habitat",
       "urlSort": 22,
+      "group": "one",
+      "category": "GLÖZ"
+    }
+  }, {
+    "id": "natura2000_vs",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "natura2000",
+    "filter": ["==", "gebietsart", "VS"],
+    "paint": {
+      "fill-color": "#b43200"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "9: Natura 2000 Vogelschutz",
+      "urlSort": 23,
       "group": "one",
       "category": "GLÖZ"
     }
@@ -243,14 +262,14 @@
     "source": "agrargis",
     "source-layer": "natura2000_sg",
     "paint": {
-      "fill-color": "rgb(243,174,61)"
+      "fill-color": "#00ff00"
     },
     "layout": {
       "visibility": "none"
     },
     "metadata": {
-      "label": "9: Natura 2000 Sonstige Gebiete",
-      "urlSort": 23,
+      "label": "9: Natura 2000 Sonstige Schutzgebiete",
+      "urlSort": 24,
       "group": "one",
       "category": "GLÖZ"
     }
