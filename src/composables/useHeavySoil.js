@@ -25,7 +25,7 @@ const blackFill = new Style({
 const soilLayer = new VectorTileLayer({
   renderMode: 'vector',
   style(feature) {
-    return feature.get('layer') === 'schwerer_boden' ? blackFill : null;
+    return feature.get('layer') === 'schwere_boeden' ? blackFill : null;
   },
 });
 let soilImageData;
@@ -62,7 +62,7 @@ const soilMap = new Map({
 async function calculateHeavySoilArea() {
   schlagLayer.changed();
   heavySoilHectars.value = 0;
-  if (!topics.find((t) => t.id === 'schwerer_boden')?.visible) {
+  if (!topics.find((t) => t.id === 'schwere_boeden')?.visible) {
     return;
   }
   if (!schlagInfo.value || schlagInfo.value.loading) {
@@ -102,7 +102,7 @@ mapReady.then(() => {
   const templateSource = getSource(map, 'agrargis');
   const source = new VectorTileSource({
     format: new MVT({
-      layers: ['schwerer_boden', SCHLAEGE_SOURCE],
+      layers: ['schwere_boeden', SCHLAEGE_SOURCE],
     }),
     minZoom: 15,
     maxZoom: 15,
