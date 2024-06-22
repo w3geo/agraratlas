@@ -486,10 +486,10 @@
       "category": "GAB"
     }
   }, {
-    "id": "invekos_schlaege_2023_polygon-fill",
+    "id": "invekos_schlaege_20241_polygon-fill",
     "type": "fill",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2023_polygon",
+    "source-layer": "invekos_schlaege_20241_polygon",
     "paint": {
       "fill-color": [
         "case",
@@ -502,7 +502,7 @@
     "id": "invekos_schlaege_polygon-line",
     "type": "line",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2023_polygon",
+    "source-layer": "invekos_schlaege_20241_polygon",
     "paint": {
       "line-color": [
         "case",
@@ -537,7 +537,7 @@
     "id": "invekos_schlaege_polygon-line-selected",
     "type": "line",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2023_polygon",
+    "source-layer": "invekos_schlaege_20241_polygon",
     "paint": {
       "line-color": [
         "case",
@@ -550,8 +550,8 @@
   }],
   "metadata": {
     "sources": {
-      "invekos_schlaege_2023_polygon": {
-        "lastModified": "2023-07-01T00:00:00Z"
+      "invekos_schlaege_20241_polygon": {
+        "lastModified": "2024-06-14T00:00:00Z"
       }
     }
   }
