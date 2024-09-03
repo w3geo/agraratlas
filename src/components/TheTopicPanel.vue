@@ -79,7 +79,7 @@
             v-for="(category, key) in topicsByCategory"
             :key="key"
           >
-            <v-row no-gutters="">
+            <v-row no-gutters>
               <v-col
                 cols="10"
                 class="category pt-1"
