@@ -486,10 +486,10 @@
       "category": "GAB"
     }
   }, {
-    "id": "invekos_schlaege_20241_polygon-fill",
+    "id": "invekos_schlaege_polygon-fill",
     "type": "fill",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_20241_polygon",
+    "source-layer": "invekos_schlaege_polygon",
     "paint": {
       "fill-color": [
         "case",
@@ -502,7 +502,7 @@
     "id": "invekos_schlaege_polygon-line",
     "type": "line",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_20241_polygon",
+    "source-layer": "invekos_schlaege_polygon",
     "paint": {
       "line-color": [
         "case",
@@ -516,7 +516,7 @@
     "id": "invekos_schlaege_polygon-bio",
     "type": "fill",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_2023_bio_polygon",
+    "source-layer": "invekos_schlaege_bio_polygon",
     "filter": ["any", ["==", "kz_bio_oepul_jn", "J"], ["!", ["has", "kz_bio_oepul_jn"]]],
     "paint": {
       "fill-color": "red",
@@ -537,7 +537,7 @@
     "id": "invekos_schlaege_polygon-line-selected",
     "type": "line",
     "source": "agrargis",
-    "source-layer": "invekos_schlaege_20241_polygon",
+    "source-layer": "invekos_schlaege_polygon",
     "paint": {
       "line-color": [
         "case",
@@ -550,8 +550,9 @@
   }],
   "metadata": {
     "sources": {
-      "invekos_schlaege_20241_polygon": {
-        "lastModified": "2024-06-14T00:00:00Z"
+      "invekos_schlaege_polygon": {
+        "lastModified": "2024-06-14T00:00:00Z",
+        "collectionId": "i009501:invekos_schlaege_2024_1_polygon"
       }
     }
   }
