@@ -14,6 +14,14 @@ module.exports = {
   plugins: [
     'vue',
   ],
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.ts', '.tsx'],
+        moduleDirectory: ['src', 'node_modules'],
+      },
+    },
+  },
   rules: {
     'no-continue': 'off',
     'no-param-reassign': 'off',
