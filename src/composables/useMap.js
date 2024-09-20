@@ -33,9 +33,6 @@ useGeographic();
 proj4.defs('EPSG:31287', '+proj=lcc +lat_0=47.5 +lon_0=13.3333333333333 +lat_1=49 +lat_2=46 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs +type=crs');
 register(proj4);
 
-const pmtiles = new PMTiles('./map/tiles/agraratlas.pmtiles');
-const tileUrlRegex = /\/([0-9]+)\/([0-9]+)\/([0-9]+)\.pbf$/;
-
 export const map = new Map({
   controls: defaults({ attributionOptions: { collapsible: false } }),
   view: new View({
@@ -80,6 +77,8 @@ map.addLayer(new MapboxVectorLayer({
 
 const agraratlasStyleUrl = new URL(AGRARATLAS_STYLE_URL, window.location.href);
 const agraratlasPMTilesUrl = new URL('./tiles/', agraratlasStyleUrl);
+const pmtiles = new PMTiles(`${agraratlasPMTilesUrl}agraratlas.pmtiles`);
+const tileUrlRegex = /\/([0-9]+)\/([0-9]+)\/([0-9]+)\.pbf$/;
 export const transformRequest = async (url, type) => {
   if (type === 'Tiles' && url.startsWith(agraratlasPMTilesUrl.origin)) {
     const [z, x, y] = url.match(tileUrlRegex).slice(1, 4).map(Number);
