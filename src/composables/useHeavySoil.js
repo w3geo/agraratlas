@@ -49,13 +49,13 @@ schlagLayer.on('postrender', (e) => {
 const resolution = 5;
 
 const soilMap = new Map({
-  pixelRatio: 1,
+  pixelRatio: 1 / resolution,
   controls: [],
   interactions: [],
   target: document.createElement('div'),
   layers: [soilLayer, schlagLayer],
   view: new View({
-    resolutions: [resolution],
+    resolutions: [1],
   }),
 });
 
@@ -74,8 +74,8 @@ async function calculateHeavySoilArea() {
   const tr = getTopRight(extent).map((y) => Math.ceil(y / resolution) * resolution);
   const adjustedExtent = [...bl, ...tr];
   soilMap.setSize([
-    Math.ceil(getWidth(adjustedExtent) / resolution),
-    Math.ceil(getHeight(adjustedExtent) / resolution),
+    Math.ceil(getWidth(adjustedExtent)),
+    Math.ceil(getHeight(adjustedExtent)),
   ]);
   soilMap.once('rendercomplete', () => {
     const pixelResolution = resolution * getPointResolution('EPSG:3857', 1, getCenter(adjustedExtent));
