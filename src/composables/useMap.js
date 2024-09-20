@@ -13,7 +13,8 @@ import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
-import { INITIAL_EXTENT } from '../constants';
+import { PMTiles } from 'pmtiles';
+import { AGRARATLAS_STYLE_URL, INITIAL_EXTENT } from '../constants';
 
 /**
  * @typedef {Object} MapView
@@ -31,6 +32,9 @@ renderTransparent(true);
 useGeographic();
 proj4.defs('EPSG:31287', '+proj=lcc +lat_0=47.5 +lon_0=13.3333333333333 +lat_1=49 +lat_2=46 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs +type=crs');
 register(proj4);
+
+const pmtiles = new PMTiles('./map/tiles/agraratlas.pmtiles');
+const tileUrlRegex = /\/([0-9]+)\/([0-9]+)\/([0-9]+)\.pbf$/;
 
 export const map = new Map({
   controls: defaults({ attributionOptions: { collapsible: false } }),
@@ -74,7 +78,23 @@ map.addLayer(new MapboxVectorLayer({
   styleUrl: 'https://kataster.bev.gv.at/styles/kataster/style_basic.json',
 }));
 
-export const mapReady = apply(map, './map/style.json').then(() => {
+const agraratlasStyleUrl = new URL(AGRARATLAS_STYLE_URL, window.location.href);
+const agraratlasPMTilesUrl = new URL('./tiles/', agraratlasStyleUrl);
+export const transformRequest = async (url, type) => {
+  if (type === 'Tiles' && url.startsWith(agraratlasPMTilesUrl.origin)) {
+    const [z, x, y] = url.match(tileUrlRegex).slice(1, 4).map(Number);
+    const tileResult = await pmtiles.getZxy(z, x, y);
+    const data = tileResult?.data ?? new ArrayBuffer(0);
+    const objectUrl = URL.createObjectURL(new Blob([data]));
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 10000);
+    return objectUrl;
+  }
+  return url;
+};
+
+export const mapReady = apply(map, AGRARATLAS_STYLE_URL, {
+  transformRequest,
+}).then(() => {
   const { layers } = map.get('mapbox-style');
   layers.forEach((layer) => {
     getSource(map, layer.source).tileOptions.transition = undefined;
@@ -95,7 +115,7 @@ export const filterStyle = mapReady.then(async () => {
     }
   });
   const filterLayer = new VectorTileLayer();
-  await applyStyle(filterLayer, style, 'agrargis', './map/style.json');
+  await applyStyle(filterLayer, style, { source: 'agrargis', transformRequest });
   return filterLayer.getStyle();
 });
 

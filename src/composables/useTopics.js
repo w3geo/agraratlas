@@ -1,4 +1,4 @@
-import { getSource, recordStyleLayer } from 'ol-mapbox-style';
+import { getLayer, recordStyleLayer } from 'ol-mapbox-style';
 import { buffer as bufferExtent } from 'ol/extent';
 import { transformExtent } from 'ol/proj';
 import { toFeature } from 'ol/render/Feature';
@@ -7,7 +7,7 @@ import { reactive, watch } from 'vue';
 import booleanIntersects from '@turf/boolean-intersects';
 import bufferGeometry from '@turf/buffer';
 import { debounce } from 'debounce';
-import { SCHLAEGE_SOURCE } from '../constants';
+import { SCHLAEGE_LAYER, SCHLAEGE_SOURCE } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,
 } from './useMap';
@@ -42,8 +42,7 @@ function intersects(feature, candidates) {
  * @returns {Promise<Array<string>>}
  */
 async function findTopics(extent, precise = false) {
-  const features = getSource(map, 'agrargis')
-    .getFeaturesInExtent(extent)
+  const features = getLayer(map, SCHLAEGE_LAYER).getFeaturesInExtent(extent)
     .filter((feature) => feature.get('layer') !== SCHLAEGE_SOURCE || feature.get('kz_bio_oepul_jn') === 'J')
     .map((renderFeature) => toFeature(renderFeature));
   const style = await filterStyle;

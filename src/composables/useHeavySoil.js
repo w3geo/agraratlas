@@ -107,6 +107,7 @@ mapReady.then(() => {
     minZoom: 15,
     maxZoom: 15,
     tileUrlFunction: templateSource.getTileUrlFunction(),
+    tileLoadFunction: templateSource.getTileLoadFunction(),
   });
   soilLayer.setSource(source);
   schlagLayer.setSource(source);
