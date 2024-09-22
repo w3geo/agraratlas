@@ -37,12 +37,7 @@
     },
     "agrargis": {
       "type": "vector",
-      "tiles": [
-        "./tiles/{z}/{x}/{y}.pbf"
-      ],
-      "attribution": "&copy; <a href=\"https://www.bml.gv.at/\">BML</a>",
-      "maxzoom": 15,
-      "bounds": [9.532874, 46.367811, 17.160773, 49.001157]
+      "url": "pmtiles://tiles/agraratlas.pmtiles"
     }
   },
   "layers": [{
