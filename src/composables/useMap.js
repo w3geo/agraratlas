@@ -115,6 +115,7 @@ export const mapReady = apply(map, AGRARATLAS_STYLE_URL, {
     getSource(map, layer.source).tileOptions.transition = undefined;
   });
   getLayer(map, 'neigungsklassen').setSource(null);
+  getSource(map, 'agrargis').overlaps_ = false;
 });
 
 /**
