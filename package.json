@@ -8,7 +8,6 @@
   },
   "scripts": {
     "build": "vite build && node scripts/set-tiles-url.js",
-    "build-app": "shx mv public/map data/map && vite build && shx mv data/map public/map",
     "dev": "cross-env VITE_APP_TILES_URL=pmtiles://map/tiles/agraratlas.pmtiles vite",
     "lint": "eslint --ext .js,.vue src .eslintrc.cjs",
     "preview": "vite preview",
