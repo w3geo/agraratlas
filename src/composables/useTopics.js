@@ -55,7 +55,7 @@ async function findTopics(extent, precise = false) {
     if (topic) {
       let ofInterest;
       if (precise) {
-        const distance = cur.get('kz_bio_oepul_jn') === 'J' ? 100 : 10;
+        const distance = cur.get('kz_bio_oepul_jn') === 'J' || cur.get('layer') === 'invekos_schlaege_bio_polygon' ? 100 : 10;
         const buffered = bufferGeometry(geojson.writeGeometryObject(cur.getGeometry(), { featureProjection: 'EPSG:3857' }), distance, { units: 'meters' });
         ofInterest = intersects(buffered, schlagInfo.value.parts);
       } else {

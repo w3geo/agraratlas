@@ -46,12 +46,6 @@ Continuous deployment to the production server takes place when a release tag (i
 
 Note that this only deploys code, not data.
 
-## Creating sprites for the Mapbox Style file
-
-The sprites in `public/map/` are created from the svg images in `pulic/map/icons/`. When adding new svg images to that folder, run
-
-    npm run sprites
-
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)

@@ -12,7 +12,7 @@ import CanvasImmediateRenderer from 'ol/render/canvas/Immediate';
 import { fromUrl } from 'geotiff';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import { TileImage as TileImageSource } from 'ol/source';
-import { map, mapReady, transformRequest } from './useMap';
+import { map, mapReady } from './useMap';
 import { schlagInfo } from './useSchlag';
 import { SCHLAEGE_SOURCE } from '../constants';
 
@@ -140,7 +140,7 @@ async function calculateGradientClasses() {
   const tileExtents = [];
   schlagTileGrid.forEachTileCoord(extent3857, tileZoom, (tileCoord) => {
     tileFetchPromises.push((async () => {
-      const url = await transformRequest(getSchlagTileUrl(tileCoord), 'Tiles');
+      const url = getSchlagTileUrl(tileCoord);
       const response = await fetch(url);
       return response.arrayBuffer();
     })());
