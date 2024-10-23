@@ -13,7 +13,6 @@ import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
-import { PMTiles } from 'pmtiles';
 import { AGRARATLAS_STYLE_URL, INITIAL_EXTENT } from '../constants';
 
 /**
@@ -75,48 +74,25 @@ map.addLayer(new MapboxVectorLayer({
   styleUrl: 'https://kataster.bev.gv.at/styles/kataster/style_basic.json',
 }));
 
-const pmtilesByUrl = {};
-const tileUrlRegex = /^pmtiles:\/\/(.+)\/([0-9]+)\/([0-9]+)\/([0-9]+).mvt$/;
-const tileCoordRegex = /\/([0-9]+)\/([0-9]+)\/([0-9]+).mvt$/;
-export const transformRequest = async (url, type) => {
-  /** @type {PMTiles} */
-  let pmtiles;
-  if (url.startsWith('pmtiles://')) {
-    const baseUrl = url.slice(10).replace(tileCoordRegex, '');
-    if (!pmtilesByUrl[baseUrl]) {
-      const agraratlasStyleUrl = new URL(AGRARATLAS_STYLE_URL, window.location.href);
-      pmtilesByUrl[baseUrl] = new PMTiles(new URL(url.slice(10), agraratlasStyleUrl).href);
-    }
-    pmtiles = pmtilesByUrl[baseUrl];
+export const mapReady = (async () => {
+  const response = await fetch(AGRARATLAS_STYLE_URL);
+  const style = await response.json();
+  const agrargisSource = style.sources.agrargis;
+  const overrideSourceURL = import.meta.env.VITE_APP_TILES_URL;
+  if (overrideSourceURL) {
+    agrargisSource.url = overrideSourceURL;
   }
-  if (!pmtiles) {
-    return url;
+  if (agrargisSource.url?.startsWith('pmtiles://')) {
+    (await import('pmtiles-protocol')).register();
   }
-  if (type === 'Source') {
-    const tileJson = await pmtiles.getTileJson(url);
-    return `data:application/json,${encodeURIComponent(JSON.stringify(tileJson))}`;
-  }
-  if (type === 'Tiles') {
-    const [, baseUrl, z, x, y] = url.match(tileUrlRegex);
-    const tileResult = await pmtilesByUrl[baseUrl].getZxy(Number(z), Number(x), Number(y));
-    const data = tileResult?.data ?? new ArrayBuffer(0);
-    const objectUrl = URL.createObjectURL(new Blob([data]));
-    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 10000);
-    return objectUrl;
-  }
-  return url;
-};
-
-export const mapReady = apply(map, AGRARATLAS_STYLE_URL, {
-  transformRequest,
-}).then(() => {
+  await apply(map, style);
   const { layers } = map.get('mapbox-style');
   layers.forEach((layer) => {
     getSource(map, layer.source).tileOptions.transition = undefined;
   });
   getLayer(map, 'neigungsklassen').setSource(null);
   getSource(map, 'agrargis').overlaps_ = false;
-});
+})();
 
 /**
  * @type {Promise<import("ol/style/Style.js").StyleFunction>}
@@ -131,7 +107,7 @@ export const filterStyle = mapReady.then(async () => {
     }
   });
   const filterLayer = new VectorTileLayer();
-  await applyStyle(filterLayer, style, { source: 'agrargis', transformRequest });
+  await applyStyle(filterLayer, style, { source: 'agrargis' });
   return filterLayer.getStyle();
 });
 
