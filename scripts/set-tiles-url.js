@@ -9,7 +9,7 @@ const main = () => {
     return;
   }
 
-  const styleFile = join('__dirname', '..', 'dist', 'map', 'style.json');
+  const styleFile = join(__dirname, '..', 'dist', 'map', 'style.json');
   const style = JSON.parse(readFileSync(styleFile, 'utf8'));
   if (style.sources.agrargis) {
     style.sources.agrargis.url = process.env.TILES_URL;
