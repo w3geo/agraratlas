@@ -55,42 +55,6 @@
       "group": "base"
     }
   }, {
-    "id": "neigungsklassen",
-    "type": "raster",
-    "source": "neigungsklassen",
-    "minzoom": 9,
-    "layout": {
-      "visibility": "none"
-    },
-    "metadata": {
-      "group": "multi",
-      "classes": [{
-        "label": "0 - <10%",
-        "value": 1,
-        "color": [255, 255, 154]
-      }, {
-        "label": "10 - <18%",
-        "value": 2,
-        "color": [12, 156, 205]
-      }, {
-        "label": "18 - <25%",
-        "value": 3,
-        "color": [255, 190, 255]
-      }, {
-        "label": "25 - <35%",
-        "value": 4,
-        "color": [0, 51, 255]
-      }, {
-        "label": "35 - <50%",
-        "value": 5,
-        "color": [255, 0, 0]
-      }, {
-        "label": ">=50%",
-        "value": 6,
-        "color": [164, 164, 164]
-      }]
-    }
-  }, {
     "id": "benachteiligte_gebiete-berggebiet",
     "type": "fill",
     "source": "agrargis",
@@ -476,6 +440,42 @@
       "urlSort": 13,
       "group": "one",
       "category": "GAB"
+    }
+  }, {
+    "id": "neigungsklassen",
+    "type": "raster",
+    "source": "neigungsklassen",
+    "minzoom": 9,
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "group": "multi",
+      "classes": [{
+        "label": "0 - <10%",
+        "value": 1,
+        "color": [255, 255, 154]
+      }, {
+        "label": "10 - <18%",
+        "value": 2,
+        "color": [12, 156, 205]
+      }, {
+        "label": "18 - <25%",
+        "value": 3,
+        "color": [255, 190, 255]
+      }, {
+        "label": "25 - <35%",
+        "value": 4,
+        "color": [0, 51, 255]
+      }, {
+        "label": "35 - <50%",
+        "value": 5,
+        "color": [255, 0, 0]
+      }, {
+        "label": ">=50%",
+        "value": 6,
+        "color": [164, 164, 164]
+      }]
     }
   }, {
     "id": "invekos_schlaege_polygon-fill",
