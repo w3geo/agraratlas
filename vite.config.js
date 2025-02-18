@@ -25,4 +25,7 @@ export default defineConfig({
       rbush: `${_dirname}/node_modules/rbush/rbush.js`,
     },
   },
+  define: {
+    'import.meta.env.VITE_TRACKER_SCRIPT': JSON.stringify(process.env.VITE_TRACKER_SCRIPT || ''), // eslint-disable-line no-undef
+  },
 });

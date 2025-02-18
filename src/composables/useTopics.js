@@ -6,7 +6,7 @@ import { GeoJSON } from 'ol/format';
 import { reactive, watch } from 'vue';
 import booleanIntersects from '@turf/boolean-intersects';
 import bufferGeometry from '@turf/buffer';
-import { debounce } from 'debounce';
+import debounce from 'debounce';
 import { SCHLAEGE_LAYER, SCHLAEGE_SOURCE } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,

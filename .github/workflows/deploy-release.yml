@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Set environment variable
+      run: echo "VITE_TRACKER_SCRIPT=${{ secrets.VITE_TRACKER_SCRIPT }}" >> $GITHUB_ENV
+
     - name: Checkout
       uses: actions/checkout@v3
 
     - name: Build
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'npm'
