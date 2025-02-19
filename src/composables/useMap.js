@@ -13,7 +13,7 @@ import { shallowRef } from 'vue';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
-import { AGRARATLAS_STYLE_URL, INITIAL_EXTENT } from '../constants';
+import { AGRARATLAS_PMTILES_STYLE_URL, INITIAL_EXTENT } from '../constants';
 
 /**
  * @typedef {Object} MapView
@@ -75,13 +75,9 @@ map.addLayer(new MapboxVectorLayer({
 }));
 
 export const mapReady = (async () => {
-  const response = await fetch(AGRARATLAS_STYLE_URL);
+  const response = await fetch(AGRARATLAS_PMTILES_STYLE_URL);
   const style = await response.json();
   const agrargisSource = style.sources.agrargis;
-  const overrideSourceURL = import.meta.env.VITE_APP_TILES_URL;
-  if (overrideSourceURL) {
-    agrargisSource.url = overrideSourceURL;
-  }
   if (agrargisSource.url?.startsWith('pmtiles://')) {
     (await import('pmtiles-protocol')).register();
   }

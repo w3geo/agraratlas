@@ -34,7 +34,7 @@
     },
     "agrargis": {
       "type": "vector",
-      "url": "pmtiles://https://agraratlas.inspire.gv.at/map/tiles/agraratlas.pmtiles"
+      "url": "https://agraratlas.inspire.gv.at/map/tiles.json"
     }
   },
   "layers": [{

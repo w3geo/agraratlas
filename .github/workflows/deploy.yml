@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Set environment variable
-      run: echo "TILES_URL=${{ secrets.TILES_URL_DEV }}" >> $GITHUB_ENV
+      run: echo "TILEJSON_URL=${{ secrets.TILEJSON_URL_DEV }}" >> $GITHUB_ENV
   
     - name: Checkout
       uses: actions/checkout@v3
