@@ -50,13 +50,13 @@ const main = () => {
       objectMode: true,
       write({ value }, encoding, callback) {
         const inspireIdParts = value.properties.inspire_id.split('/');
-        const fid = inspireIdParts[inspireIdParts.length - 2];
+        const localID = inspireIdParts[inspireIdParts.length - 2];
         if (isFirst) {
-          inspireIdParts[inspireIdParts.length - 2] = '{fid}';
+          inspireIdParts[inspireIdParts.length - 2] = '{localID}';
           console.log(`${infile} inspire_id:`, inspireIdParts.join('/')); // eslint-disable-line no-console
         }
 
-        value.id = Number(fid);
+        value.properties.localID = localID;
         delete value.properties.inspire_id;
         if (!isFirst) {
           outputStream.write(',\n');
