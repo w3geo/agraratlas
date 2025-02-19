@@ -545,12 +545,12 @@
       "invekos_schlaege_polygon": {
         "lastModified": "2025-01-31T13:18:00Z",
         "collectionId": "i009501:invekos_schlaege_2024_2_polygon",
-        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_schlaege_2024_2_polygon/items?filter=inspire_id='https://data.inspire.gv.at/0095/b037d48d-06f3-4af2-ac48-ae07e7ca1e00/elu.ExistingLandUseObject/{fid}/MFA-2024'"
+        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_schlaege_2024_2_polygon/items?filter=inspire_id='https://data.inspire.gv.at/0095/b037d48d-06f3-4af2-ac48-ae07e7ca1e00/elu.ExistingLandUseObject/{localID}/MFA-2024'"
       },
       "invekos_hofstellen": {
         "lastModified": "2025-01-31T13:19:00Z",
         "collectionId": "i009501:invekos_hofstellen_2024_2",
-        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_2024_2/items?filter=inspire_id='https://data.inspire.gv.at/0095/90c91343-a573-4cf2-a5d9-09ccd97f13cf/bu.Building/{fid}/MFA-2024'"
+        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_2024_2/items?filter=inspire_id='https://data.inspire.gv.at/0095/90c91343-a573-4cf2-a5d9-09ccd97f13cf/bu.Building/{localID}/MFA-2024'"
       }
     }
   }
