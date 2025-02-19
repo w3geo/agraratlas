@@ -5,16 +5,14 @@ import esMain from 'es-main';
 const __dirname = new URL('.', import.meta.url).pathname;
 
 const main = () => {
-  if (!process.env.TILES_URL) {
-    return;
-  }
-
-  const styleFile = join(__dirname, '..', 'dist', 'map', 'style.json');
+  const path = join(__dirname, '..', 'dist', 'map');
+  const styleFile = join(path, 'style.json');
+  const appStyleFile = join(path, 'style-pmtiles.json');
   const style = JSON.parse(readFileSync(styleFile, 'utf8'));
   if (style.sources.agrargis) {
-    style.sources.agrargis.url = process.env.TILES_URL;
+    style.sources.agrargis.url = process.env.TILEJSON_URL || 'pmtiles://map/tiles/agraratlas.pmtiles';
   }
-  writeFileSync(styleFile, JSON.stringify(style, null, 2), 'utf8');
+  writeFileSync(appStyleFile, JSON.stringify(style, null, 2), 'utf8');
 };
 
 export default main;

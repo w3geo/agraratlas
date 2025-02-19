@@ -23,6 +23,7 @@ export default defineConfig({
     alias: {
       // https://github.com/Turfjs/turf/issues/2200#issuecomment-1085439431
       rbush: `${_dirname}/node_modules/rbush/rbush.js`,
+      '/map/tiles/style-pmtiles.json': `${_dirname}/dist/map/style-pmtiles.json`,
     },
   },
   define: {

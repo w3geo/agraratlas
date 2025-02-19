@@ -12,7 +12,9 @@ jobs:
 
     steps:
     - name: Set environment variable
-      run: echo "VITE_TRACKER_SCRIPT=${{ secrets.VITE_TRACKER_SCRIPT }}" >> $GITHUB_ENV
+      run: |
+        echo "VITE_TRACKER_SCRIPT=${{ secrets.VITE_TRACKER_SCRIPT }}" >> $GITHUB_ENV
+        echo "TILEJSON_URL=${{ secrets.TILEJSON_URL }}" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v3
@@ -34,5 +36,5 @@ jobs:
         space_name: 'w3geo'
         space_region: 'fra1'
         source: 'dist'
-        out_dir: 'agraratlas'
+        out_dir: ${{ secrets.S3_BUCKET }}
 
