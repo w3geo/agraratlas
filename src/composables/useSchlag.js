@@ -13,6 +13,7 @@ import { draw, measure } from './useTools';
 /**
  * @typedef SchlagInfo
  * @property {number} id
+ * @property {string} localID
  * @property {boolean} loading
  * @property {number} [sl_flaeche_brutto_ha]
  * @property {string} [snar_bezeichnung]
@@ -80,12 +81,22 @@ async function getSchlagParts(feature) {
 function findSchlag(schlagId) {
   return new Promise((resolve) => {
     mapReady.then(() => {
-      map.once('rendercomplete', () => {
+      map.once('rendercomplete', async () => {
         const extent = transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857');
         const features = getLayer(map, SCHLAEGE_LAYER)
           .getFeaturesInExtent(extent)
           .filter((feature) => feature.get('layer') === SCHLAEGE_SOURCE);
-        const feature = features.find((f) => f.getId() === Number(schlagId));
+        const feature = features.find((f) => f.get('localID') === schlagId);
+        if (!feature) {
+          const response = await fetch(map.get('mapbox-style').metadata.sources[SCHLAEGE_SOURCE].featureUrlTemplate.replace('{localID}', schlagId));
+          const [geojsonFeature] = geojson.readFeatures(await response.json());
+          map.getView().fit(geojsonFeature.getGeometry().getExtent(), {
+            padding: [50, 50, 50, 50],
+            duration: 500,
+            callback: () => findSchlag(schlagId).then(resolve),
+          });
+          return;
+        }
         resolve(feature);
       });
       map.render();
@@ -105,6 +116,7 @@ async function setSchlagInfo(feature) {
     ...feature.getProperties(),
     loading: false,
     id: feature.getId(),
+    localID: feature.get('localID'),
     extent: transformExtent(extent, 'EPSG:3857', 'EPSG:4326'),
     parts: features.map((f) => geojson.writeGeometryObject(toGeometry(f), { featureProjection: 'EPSG:3857' })),
   };
@@ -128,7 +140,7 @@ watch(schlagInfo, (value, oldValue) => {
   }
   if (value) {
     if (value.loading) {
-      findSchlag(value.id).then((feature) => {
+      findSchlag(value.localID).then((feature) => {
         setSchlagInfo(feature);
       });
     } else {
