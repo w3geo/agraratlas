@@ -202,10 +202,10 @@ function center() {
 }
 
 function setSchlagId(id) {
-  if (Number(id) !== schlagInfo.value?.id) {
+  if (id !== schlagInfo.value?.localID) {
     schlagInfo.value = id ? {
       loading: true,
-      id: Number(id),
+      localID: id,
     } : null;
   }
 }
@@ -216,8 +216,8 @@ const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
 ) || mapView.value.zoom < 12));
 
 watch(schlagInfo, (value) => {
-  if (value?.id !== Number(route.params.schlagId)) {
-    router.push({ params: { ...route.params, schlagId: value?.id } });
+  if (value?.localID !== route.params.schlagId) {
+    router.push({ params: { ...route.params, schlagId: value?.localID } });
   }
   if (value && !value.loading) {
     emit('schlag', true);
