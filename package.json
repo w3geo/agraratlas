@@ -54,7 +54,7 @@
     "shx": "^0.3.4",
     "stream-chain": "^3.4.0",
     "stream-json": "^1.9.1",
-    "vite": "^6.2.2",
+    "vite": "^6.2.4",
     "vite-plugin-vuetify": "^2.1.0",
     "yargs": "^17.7.2"
   }
