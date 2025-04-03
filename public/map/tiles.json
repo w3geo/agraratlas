@@ -4,7 +4,7 @@
   "tiles": [
     "https://agraratlas.inspire.gv.at/map/tiles/{z}/{x}/{y}.pbf"
   ],
-  "attribution": "&copy; <a href='https://www.bml.gv.at/'>BML</a>",
+  "attribution": "&copy; <a href='https://www.bmluk.gv.at/'>BMLUK</a>",
   "bounds": [8.858705, 46.073231, 17.578125, 49.037868],
   "center": [13.760376, 46.878968, 15],
   "minzoom": 0,

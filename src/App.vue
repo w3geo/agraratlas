@@ -11,12 +11,12 @@
             Sehr geehrte Benutzerin, sehr geehrter Benutzer,
           </p>
           <p>
-            herzlichen Dank, dass Sie den INSPIRE Agraratlas des BML verwenden.
+            herzlichen Dank, dass Sie den INSPIRE Agraratlas des BMLUK verwenden.
           </p>
           <p>
             Aus den Karteninhalten (Darstellungen) und den dazugehörenden Texten können
             Rechtsansprüche weder begründet noch abgeleitet werden. Das Bundesministerium für Land-
-            und Forstwirtschaft, Regionen und Wasserwirtschaft (BML) übernimmt keine Haftung für
+            und Forstwirtschaft, Regionen und Wasserwirtschaft (BMLUK) übernimmt keine Haftung für
             Richtigkeit, Vollständigkeit, Aktualität oder dauernde Verfügbarkeit dieses
             Webkartendienstes. Die Karten und Texte sind keine amtliche Auskunft oder
             rechtsverbindliche Aussage. Amtliche Auskünfte zu einem bestimmten Gebiet oder einer
@@ -36,9 +36,9 @@
           </p>
           <p>
             Alle Angaben (Berechnungsergebnisse) sind trotz sorgfältigster Bearbeitung/Verarbeitung
-            ohne Gewähr und nicht rechtsverbindlich. Eine Haftung des BML für Nachteile, die
+            ohne Gewähr und nicht rechtsverbindlich. Eine Haftung des BMLUK für Nachteile, die
             aufgrund der auf INSPIRE.Agraratlas.gv.at angezeigten und abgefragten Inhalte entstanden
-            sind, wird ausgeschlossen. Das BML behält sich ausdrücklich vor, Inhalte des INSPIRE
+            sind, wird ausgeschlossen. Das BMLUK behält sich ausdrücklich vor, Inhalte des INSPIRE
             Agraratlas jederzeit ohne Ankündigung ganz oder teilweise zu ändern, zu ergänzen, zu
             löschen oder zeitweise nicht zu veröffentlichen.
           </p>
@@ -131,7 +131,7 @@
         >
           <a
             class="drawerLink"
-            href="https://info.bml.gv.at/impressum.html"
+            href="https://info.bmluk.gv.at/impressum.html"
             target="_blank"
           >Impressum</a>
         </v-col>
