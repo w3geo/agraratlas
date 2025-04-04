@@ -131,7 +131,7 @@
         >
           <a
             class="drawerLink"
-            href="https://info.bmluk.gv.at/impressum.html"
+            href="https://bmluk.gv.at/impressum.html"
             target="_blank"
           >Impressum</a>
         </v-col>
