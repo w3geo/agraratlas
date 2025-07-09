@@ -55,6 +55,25 @@
       "group": "base"
     }
   }, {
+    "id": "referenzflaechen_polygon",
+    "type": "fill",
+    "source": "agrargis",
+    "source-layer": "invekos_referenzflaechen",
+    "paint": {
+      "fill-color": "rgb(136, 136, 247)",
+      "fill-outline-color": "rgb(37, 37, 48)"
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    "metadata": {
+      "label": "Referenzflächen",
+      "urlSort": 24,
+      "displaySort": -1,
+      "group": "one",
+      "category": ""
+    }
+  }, {
     "id": "benachteiligte_gebiete-berggebiet",
     "type": "fill",
     "source": "agrargis",
