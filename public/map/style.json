@@ -67,11 +67,11 @@
       "visibility": "none"
     },
     "metadata": {
-      "label": "Referenzflächen",
+      "label": "Referenzflächen (Stand 30.06.2025)",
       "urlSort": 24,
       "displaySort": -1,
       "group": "one",
-      "category": ""
+      "category": "INVEKOS Rereferenzflächen"
     }
   }, {
     "id": "benachteiligte_gebiete-berggebiet",
