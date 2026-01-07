@@ -90,7 +90,7 @@
       },
       "metadata": {
         "label": "Alm",
-        "urlSort": 25,
+        "urlSort": 30,
         "displaySort": -1,
         "group": "one",
         "category": "INVEKOS Rereferenzflächen (Stand 30.06.2025)"
@@ -115,7 +115,7 @@
       },
       "metadata": {
         "label": "Forst",
-        "urlSort": 25,
+        "urlSort": 26,
         "displaySort": -1,
         "group": "one",
         "category": "INVEKOS Rereferenzflächen (Stand 30.06.2025)"
@@ -140,7 +140,7 @@
       },
       "metadata": {
         "label": "Heimgut",
-        "urlSort": 25,
+        "urlSort": 27,
         "displaySort": -1,
         "group": "one",
         "category": "INVEKOS Rereferenzflächen (Stand 30.06.2025)"
@@ -165,7 +165,7 @@
       },
       "metadata": {
         "label": "Hutweide",
-        "urlSort": 25,
+        "urlSort": 28,
         "displaySort": -1,
         "group": "one",
         "category": "INVEKOS Rereferenzflächen (Stand 30.06.2025)"
@@ -190,7 +190,7 @@
       },
       "metadata": {
         "label": "Landschaftsschutzelemente (Fläche)",
-        "urlSort": 25,
+        "urlSort": 29,
         "displaySort": -1,
         "group": "one",
         "category": "INVEKOS Rereferenzflächen (Stand 30.06.2025)"
@@ -836,7 +836,7 @@
       "metadata": {
         "label": "Referenzpunkte",
         "urlSort": 24,
-        "displaySort": -1,
+        "displaySort": -2,
         "group": "one",
         "category": "INVEKOS Rereferenzflächen (Stand 30.06.2025)"
       }
