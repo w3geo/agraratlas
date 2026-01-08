@@ -19,7 +19,6 @@
     class="schlagInfoButton"
     :class="{ mobilepanel: mobile }"
     :width="mobile ? '100%' : '440px'"
-    height="105px"
   >
     <v-row
       no-gutters
@@ -68,10 +67,13 @@
             {{ schlagInfo.snar_bezeichnung }} ({{ schlagInfo.fnar_code }})
           </v-col>
           <v-row no-gutters>
-            <v-sheet class="px-2 v-col-3">
+            <v-col
+              class="px-2"
+              cols="3"
+            >
               Fläche:
-            </v-sheet>
-            <v-sheet class="px-2">
+            </v-col>
+            <v-col class="px-2 flex-grow-1 flex-shrink-0">
               {{
                 schlagInfo.sl_flaeche_brutto_ha.toLocaleString("de-AT", {
                   minimumFractionDigits: 2,
@@ -86,27 +88,10 @@
                   })
                 }}
                 ha schwere Böden</span>
-            </v-sheet>
-            <v-spacer />
-            <v-sheet class="d-flex align-center mr-2">
-              <v-btn
-                width="26"
-                height="26"
-                icon
-                flat
-                rounded
-                color="grey-lighten-3"
-                title="Download Schlaginformationen als GeoJSON"
-                @click.stop="downloadSchlagGeoJSON"
-              >
-                <v-icon
-                  size="20"
-                  icon="mdi-file-download-outline"
-                />
-              </v-btn>
+            </v-col>
+            <v-col class="d-flex flex-grow-0 flex-shrink-1 align-end justify-end mr-2 mb-2">
               <v-btn
                 v-if="canCenter"
-                class="ml-1"
                 width="26"
                 height="26"
                 icon
@@ -119,6 +104,22 @@
                 <v-icon
                   size="20"
                   icon="mdi-crosshairs"
+                />
+              </v-btn>
+              <v-btn
+                class="ml-1"
+                width="26"
+                height="26"
+                icon
+                flat
+                rounded
+                color="grey-lighten-3"
+                title="Download Schlaginformationen als GeoJSON"
+                @click.stop="downloadSchlagGeoJSON"
+              >
+                <v-icon
+                  size="20"
+                  icon="mdi-file-download-outline"
                 />
               </v-btn>
               <v-btn
@@ -138,7 +139,7 @@
                   icon="mdi-trash-can-outline"
                 />
               </v-btn>
-            </v-sheet>
+            </v-col>
           </v-row>
         </v-row>
       </v-col>
