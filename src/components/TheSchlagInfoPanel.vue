@@ -2,9 +2,9 @@
   <v-btn
     v-if="!panels.schlag || mobile"
     class="schlagInfoButton pa-2"
-    :class="{ mobile: mobile }"
+    :class="{mobile : mobile}"
     size="mobile ? 20 : 30"
-    @click="(panels.schlag = !panels.schlag), closeOthers('schlag', mobile)"
+    @click="panels.schlag = !panels.schlag, closeOthers('schlag', mobile)"
   >
     <v-icon
       :size="mobile ? 18 : 24"
@@ -17,8 +17,9 @@
   <v-card
     v-if="panels.schlag && !tooLow"
     class="schlagInfoButton"
-    :class="{ mobilepanel: mobile }"
+    :class="{mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
+    height="109px"
   >
     <v-row
       no-gutters
@@ -48,7 +49,7 @@
       v-if="schlagInfo && !schlagInfo.loading"
       no-gutters
     >
-      <v-col cols="14">
+      <v-col cols="13">
         <v-row
           no-gutters
           class="text-body-2"
@@ -63,85 +64,89 @@
             class="pa-2 pb-1"
             cols="8"
           >
-            <b v-if="schlagInfo.kz_bio_oepul_jn === 'J'">BIO </b>
-            {{ schlagInfo.snar_bezeichnung }} ({{ schlagInfo.fnar_code }})
+            <b v-if="schlagInfo.kz_bio_oepul_jn === 'J'">BIO </b>{{ schlagInfo.snar_bezeichnung }}
+            ({{ schlagInfo.fnar_code }})
           </v-col>
-          <v-row no-gutters>
-            <v-col
-              class="px-2"
-              cols="3"
-            >
-              Fläche:
-            </v-col>
-            <v-col class="px-2 flex-grow-1 flex-shrink-0">
-              {{
-                schlagInfo.sl_flaeche_brutto_ha.toLocaleString("de-AT", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-              }}
-              ha<span v-if="heavySoilHectars > 0">, davon
-                {{
-                  heavySoilHectars.toLocaleString("de-AT", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                }}
-                ha schwere Böden</span>
-            </v-col>
-            <v-col class="d-flex flex-grow-0 flex-shrink-1 align-end justify-end mr-2 mb-2">
-              <v-btn
-                v-if="canCenter"
-                width="26"
-                height="26"
-                icon
-                flat
-                rounded
-                color="grey-lighten-3"
-                title="Auf Schlag zoomen"
-                @click.stop="center"
-              >
-                <v-icon
-                  size="20"
-                  icon="mdi-crosshairs"
-                />
-              </v-btn>
-              <v-btn
-                class="ml-1"
-                width="26"
-                height="26"
-                icon
-                flat
-                rounded
-                color="grey-lighten-3"
-                title="Download Schlaginformationen als GeoJSON"
-                @click.stop="downloadSchlagGeoJSON"
-              >
-                <v-icon
-                  size="20"
-                  icon="mdi-file-download-outline"
-                />
-              </v-btn>
-              <v-btn
-                v-if="schlagInfo"
-                class="ml-1"
-                width="26"
-                height="26"
-                icon
-                flat
-                rounded
-                color="grey-lighten-3"
-                title="Schlag abwählen"
-                @click.stop="schlagInfo = null"
-              >
-                <v-icon
-                  size="20"
-                  icon="mdi-trash-can-outline"
-                />
-              </v-btn>
-            </v-col>
-          </v-row>
+          <v-col
+            class="px-2"
+            cols="3"
+          >
+            Fläche:
+          </v-col>
+          <v-col
+            class="px-2"
+            cols="8"
+          >
+            {{ schlagInfo.sl_flaeche_brutto_ha.toLocaleString('de-AT',
+                                                              {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2
+                                                              }) }}
+            ha<span v-if="heavySoilHectars > 0">, davon
+              {{ heavySoilHectars.toLocaleString('de-AT',
+                                                 {
+                                                   minimumFractionDigits: 2,
+                                                   maximumFractionDigits: 2
+                                                 }) }} ha schwere Böden</span>
+          </v-col>
+          <v-col cols="2" />
         </v-row>
+      </v-col>
+      <v-col
+        cols="1"
+        class="pa-1 schlagTools"
+        align="right"
+      >
+        <v-btn
+          class="mt-0 pa-0"
+          width="24"
+          height="24"
+          icon
+          flat
+          rounded
+          color="grey-lighten-3"
+          title="Download Schlaginformationen als GeoJSON"
+          @click.stop="downloadSchlagGeoJSON"
+        >
+          <v-icon
+            size="20"
+            icon="mdi-file-download-outline"
+          />
+        </v-btn>
+        <v-btn
+          v-if="canCenter"
+          class="mt-0 pa-0"
+          width="24"
+          height="24"
+          icon
+          flat
+          rounded
+          color="grey-lighten-3"
+          title="Auf Schlag zoomen"
+          @click.stop="center"
+        >
+          <v-icon
+            size="20"
+            icon="mdi-crosshairs"
+          />
+        </v-btn>
+        <v-btn
+          v-if="schlagInfo"
+          class="mt-0 pa-0"
+          width="24"
+          height="24"
+          icon
+          flat
+          rounded
+          color="grey-lighten-3"
+          title="Schlag abwählen"
+          @click.stop="schlagInfo = null"
+        >
+          <v-icon
+            size="20"
+            icon="mdi-trash-can-outline"
+          />
+        </v-btn>
       </v-col>
     </v-row>
     <v-row
@@ -149,8 +154,7 @@
       no-gutters
       class="pa-2 text-body-2"
     >
-      Verwenden Sie die Suche oder klicken Sie in die Karte, um Schläge
-      anzuzeigen.
+      Verwenden Sie die Suche oder klicken Sie in die Karte, um Schläge anzuzeigen.
     </v-row>
     <v-row
       v-else
@@ -185,8 +189,8 @@ const router = useRouter();
 
 const emit = defineEmits(['schlag']);
 
-const mobile = computed(() => width.value < 800 || height.value < 520);
-const lowVertical = computed(() => height.value < 740);
+const mobile = computed(() => (width.value < 800 || height.value < 520));
+const lowVertical = computed(() => (height.value < 740));
 
 const tooLow = computed(() => {
   let retVal = false;
@@ -201,9 +205,7 @@ const tooLow = computed(() => {
 
 const schlaegeLastModified = ref();
 mapReady.then(() => {
-  const date = new Date(
-    map.get('mapbox-style').metadata.sources[SCHLAEGE_SOURCE].lastModified,
-  );
+  const date = new Date(map.get('mapbox-style').metadata.sources[SCHLAEGE_SOURCE].lastModified);
   schlaegeLastModified.value = new Intl.DateTimeFormat('de-AT').format(date);
 });
 
@@ -246,23 +248,17 @@ async function downloadSchlagGeoJSON() {
 
 function setSchlagId(id) {
   if (id !== schlagInfo.value?.localID) {
-    schlagInfo.value = id
-      ? {
-        loading: true,
-        localID: id,
-      }
-      : null;
+    schlagInfo.value = id ? {
+      loading: true,
+      localID: id,
+    } : null;
   }
 }
 
-const canCenter = computed(
-  () => schlagInfo.value?.extent
-    && (!equals(
-      getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
-      mapView.value.center.map((v) => v.toFixed(4)),
-    )
-      || mapView.value.zoom < 12),
-);
+const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
+  getCenter(schlagInfo.value.extent).map((v) => v.toFixed(4)),
+  mapView.value.center.map((v) => v.toFixed(4)),
+) || mapView.value.zoom < 12));
 
 watch(schlagInfo, (value) => {
   if (value?.localID !== route.params.schlagId) {
@@ -288,32 +284,32 @@ setSchlagId(route.params.schlagId);
 </script>
 
 <style scoped>
-.details {
-  cursor: pointer;
-}
-.schlagInfoButton {
-  position: absolute;
-  left: 10px;
-  top: 60px;
-}
+  .details {
+    cursor: pointer;
+  }
+  .schlagInfoButton {
+    position: absolute;
+    left: 10px;
+    top: 55px;
+  }
 
-.schlagInfoButton.mobile {
-  left: auto;
-  right: 197px;
-  top: 6px;
-  z-index: 5000;
-}
+  .schlagInfoButton.mobile {
+    left: auto;
+    right: 197px;
+    top: 6px;
+    z-index: 5000;
+  }
 
-.schlagInfoButton.mobilepanel {
-  left: 0px;
-  top: 50px;
-}
+  .schlagInfoButton.mobilepanel {
+    left: 0px;
+    top: 50px;
+  }
 
-.boxHeader .v-col {
-  height: 30px;
-  line-height: 30px;
-  background-color: #777;
-}
+  .boxHeader .v-col {
+    height: 30px;
+    line-height: 30px;
+    background-color: #777;
+  }
 
 .schlagTools button {
   display: block;
