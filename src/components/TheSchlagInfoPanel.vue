@@ -19,7 +19,7 @@
     class="schlagInfoButton"
     :class="{mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
-    height="105px"
+    height="109px"
   >
     <v-row
       no-gutters
@@ -98,10 +98,26 @@
         align="right"
       >
         <v-btn
+          class="mt-0 pa-0"
+          width="24"
+          height="24"
+          icon
+          flat
+          rounded
+          color="grey-lighten-3"
+          title="Download Schlaginformationen als GeoJSON"
+          @click.stop="downloadSchlagGeoJSON"
+        >
+          <v-icon
+            size="20"
+            icon="mdi-file-download-outline"
+          />
+        </v-btn>
+        <v-btn
           v-if="canCenter"
-          class="mt-1"
-          width="26"
-          height="26"
+          class="mt-0 pa-0"
+          width="24"
+          height="24"
           icon
           flat
           rounded
@@ -116,9 +132,9 @@
         </v-btn>
         <v-btn
           v-if="schlagInfo"
-          class="mt-2"
-          width="26"
-          height="26"
+          class="mt-0 pa-0"
+          width="24"
+          height="24"
           icon
           flat
           rounded
@@ -201,6 +217,35 @@ function center() {
   });
 }
 
+async function downloadSchlagGeoJSON() {
+  const schlagId = schlagInfo.value?.localID;
+  if (!schlagId) return;
+
+  const { featureUrlTemplate } = map
+    .get('mapbox-style')
+    .metadata.sources.invekos_schlaege_polygon;
+  const url = featureUrlTemplate.replace('{localID}', schlagId);
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Server returned ${res.status}`);
+    }
+    const blob = await res.blob();
+    const filename = `schlag_${schlagId}.geojson`;
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(objectUrl);
+  } catch (err) {
+    //
+  }
+}
+
 function setSchlagId(id) {
   if (id !== schlagInfo.value?.localID) {
     schlagInfo.value = id ? {
@@ -245,7 +290,7 @@ setSchlagId(route.params.schlagId);
   .schlagInfoButton {
     position: absolute;
     left: 10px;
-    top: 60px;
+    top: 55px;
   }
 
   .schlagInfoButton.mobile {

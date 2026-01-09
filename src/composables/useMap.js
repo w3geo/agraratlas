@@ -81,7 +81,7 @@ export const mapReady = (async () => {
   if (agrargisSource.url?.startsWith('pmtiles://')) {
     (await import('pmtiles-protocol')).register();
   }
-  await apply(map, style);
+  await apply(map, style, { styleUrl: AGRARATLAS_PMTILES_STYLE_URL });
   const { layers } = map.get('mapbox-style');
   layers.forEach((layer) => {
     getSource(map, layer.source).tileOptions.transition = undefined;
@@ -103,7 +103,7 @@ export const filterStyle = mapReady.then(async () => {
     }
   });
   const filterLayer = new VectorTileLayer();
-  await applyStyle(filterLayer, style, { source: 'agrargis' });
+  await applyStyle(filterLayer, style, { source: 'agrargis', styleUrl: AGRARATLAS_PMTILES_STYLE_URL });
   return filterLayer.getStyle();
 });
 
