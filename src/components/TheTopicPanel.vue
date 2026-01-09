@@ -110,7 +110,7 @@
                   class="pa-1"
                 >
                   <div
-                    class="colorBox"
+                    :class="topic.icon ? 'iconBox' : 'colorBox'"
                     :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
                   />
                 </v-col>
@@ -455,6 +455,12 @@ mapReady.then(() => setVisible(route.params.visible));
   border: 1px solid #666;
   width: 18px;
   height: 18px;
+}
+.iconBox {
+  border: 2px solid black;
+  width: 14px;
+  height: 14px;
+  margin: 2px;
 }
 .category {
   font-weight: bold;

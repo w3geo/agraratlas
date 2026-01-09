@@ -19,6 +19,7 @@ import { schlagInfo } from './useSchlag';
  * @property {string} label
  * @property {string|undefined} warning
  * @property {string} color
+ * @property {boolean} icon
  * @property {boolean} inExtent
  * @property {boolean} inSchlagExtent
  * @property {number} urlSort
@@ -104,12 +105,13 @@ mapReady.then(() => {
       id: l.id,
       label: l.metadata?.label,
       warning: l.metadata?.warning,
-      color: l.paint?.['fill-color'],
+      color: l.paint?.['fill-color'] || l.paint?.['icon-color'],
+      icon: !!l.paint?.['icon-color'],
       urlSort: l.metadata?.urlSort,
       displaySort: l.metadata?.displaySort || Number.MAX_SAFE_INTEGER,
       category: l.metadata?.category,
     })).reduce((acc, {
-      id, label, warning, color, urlSort, displaySort, category,
+      id, label, warning, color, icon, urlSort, displaySort, category,
     }) => {
       if (!(label in acc)) {
         acc[label] = ({
@@ -117,6 +119,7 @@ mapReady.then(() => {
           label,
           warning,
           color,
+          icon,
           inExtent: false,
           inSchlagExtent: false,
           urlSort,

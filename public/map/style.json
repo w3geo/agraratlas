@@ -833,8 +833,11 @@
         "icon-size": 0.3,
         "icon-allow-overlap": true
       },
+      "paint": {
+        "icon-color": "rgb(117,20,245)"
+      },
       "metadata": {
-        "label": "Referenzpunkte",
+        "label": "Landschaftsschutzelemente (Punkt)",
         "urlSort": 24,
         "displaySort": -2,
         "group": "one",
