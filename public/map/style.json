@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "sprite": "./map/sprite/sprite",
+  "sprite": "sprite/sprite",
   "center": [
     15.886230,
     46.754915
