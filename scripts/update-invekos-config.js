@@ -147,7 +147,7 @@ async function updatePackageJson(
 /**
  * Update style.json metadata
  */
-async function updateStyleJson(schlaege, hofstellen, schlaegeBio) {
+async function updateStyleJson(schlaege, hofstellen, schlaegeBio, referenzenPolygon) {
   const stylePath = STYLE_JSON;
   const styleContent = await readFile(stylePath, 'utf-8');
   const styleJson = JSON.parse(styleContent);
@@ -155,9 +155,11 @@ async function updateStyleJson(schlaege, hofstellen, schlaegeBio) {
   // Extract inspire_id templates
   const schlaegePath = join(DATA_DIR, schlaege.filename);
   const hofstellenPath = join(DATA_DIR, hofstellen.filename);
+  const referenzenPath = join(DATA_DIR, referenzenPolygon.filename);
 
   const schlaegStats = await stat(schlaegePath);
   const hofstellenStats = await stat(hofstellenPath);
+  const referenzenStats = await stat(referenzenPath);
 
   const schlaegTemplate = await extractInspireIdTemplate(schlaegePath);
   const hofstellenTemplate = await extractInspireIdTemplate(hofstellenPath);
@@ -180,6 +182,15 @@ async function updateStyleJson(schlaege, hofstellen, schlaegeBio) {
   if (bioLayer && bioLayer.metadata) {
     bioLayer.metadata.label = `ÖPUL Bio-Schläge MFA ${schlaegeBio.year}`;
   }
+
+  // Update Referenzen label in layers
+  const date = new Date(referenzenStats.mtime);
+  const referenzenDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
+  styleJson.layers.forEach((layer) => {
+    if (layer.id.startsWith('referenzflaechen') && layer.metadata && layer.metadata.category) {
+      layer.metadata.category = layer.metadata.category.replace(/\(Stand \d{2}\.\d{2}\.\d{4}\)/, `(Stand ${referenzenDate})`);
+    }
+  });
 
   await writeFile(stylePath, JSON.stringify(styleJson, null, 2));
   console.log(`✓ Updated ${stylePath}`); // eslint-disable-line no-console
@@ -230,7 +241,12 @@ async function main() {
       newest.referenzen_point,
       newest.schlaege_bio,
     );
-    await updateStyleJson(newest.schlaege, newest.hofstellen, newest.schlaege_bio);
+    await updateStyleJson(
+      newest.schlaege,
+      newest.hofstellen,
+      newest.schlaege_bio,
+      newest.referenzen_polygon,
+    );
 
     console.log('\n✓ Update complete!'); // eslint-disable-line no-console
     console.log('\nNext steps:'); // eslint-disable-line no-console
