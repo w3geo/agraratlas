@@ -2,7 +2,7 @@
   "version": 8,
   "sprite": "sprite/sprite",
   "center": [
-    15.886230,
+    15.88623,
     46.754915
   ],
   "zoom": 6,
@@ -17,7 +17,7 @@
       "attribution": "Grundkarte: <a href=\"https://basemap.at/\">basemap.at</a>",
       "bounds": [
         8.782379,
-        46.358770,
+        46.35877,
         17.5,
         49.037872
       ]
@@ -32,7 +32,7 @@
       "attribution": "Grundkarte: <a href=\"https://basemap.at/\">basemap.at</a>",
       "bounds": [
         8.782379,
-        46.358770,
+        46.35877,
         17.5,
         49.037872
       ]
@@ -93,7 +93,7 @@
         "urlSort": 30,
         "displaySort": -1,
         "group": "one",
-        "category": "INVEKOS Referenzflächen (Stand 30.06.2025)"
+        "category": "INVEKOS Referenzflächen (Stand 28.01.2026)"
       }
     },
     {
@@ -118,7 +118,7 @@
         "urlSort": 26,
         "displaySort": -1,
         "group": "one",
-        "category": "INVEKOS Referenzflächen (Stand 30.06.2025)"
+        "category": "INVEKOS Referenzflächen (Stand 28.01.2026)"
       }
     },
     {
@@ -143,7 +143,7 @@
         "urlSort": 27,
         "displaySort": -1,
         "group": "one",
-        "category": "INVEKOS Referenzflächen (Stand 30.06.2025)"
+        "category": "INVEKOS Referenzflächen (Stand 28.01.2026)"
       }
     },
     {
@@ -168,7 +168,7 @@
         "urlSort": 28,
         "displaySort": -1,
         "group": "one",
-        "category": "INVEKOS Referenzflächen (Stand 30.06.2025)"
+        "category": "INVEKOS Referenzflächen (Stand 28.01.2026)"
       }
     },
     {
@@ -193,7 +193,7 @@
         "urlSort": 29,
         "displaySort": -1,
         "group": "one",
-        "category": "INVEKOS Referenzflächen (Stand 30.06.2025)"
+        "category": "INVEKOS Referenzflächen (Stand 28.01.2026)"
       }
     },
     {
@@ -792,7 +792,7 @@
         "visibility": "none"
       },
       "metadata": {
-        "label": "ÖPUL Bio-Schläge MFA 2024",
+        "label": "ÖPUL Bio-Schläge MFA 2025",
         "warning": "Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist daher bei der Ausbringung von Betriebsmitteln auf Nachbarfeldstücken besondere Sorgfalt walten zu lassen",
         "urlSort": 16,
         "displaySort": 1,
@@ -841,21 +841,21 @@
         "urlSort": 24,
         "displaySort": -2,
         "group": "one",
-        "category": "INVEKOS Referenzflächen (Stand 30.06.2025)"
+        "category": "INVEKOS Referenzflächen (Stand 28.01.2026)"
       }
     }
   ],
   "metadata": {
     "sources": {
       "invekos_schlaege_polygon": {
-        "lastModified": "2025-06-30T13:28:00Z",
-        "collectionId": "i009501:invekos_schlaege_2025_1_polygon",
-        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_schlaege_2025_1_polygon/items?filter=inspire_id='https://data.inspire.gv.at/0095/b2bd27c3-ccd9-4e5a-98ce-28deab1266f5/elu.ExistingLandUseObject/{localID}/MFA-2025'"
+        "lastModified": "2026-01-28T11:29:50.000Z",
+        "collectionId": "i009501:invekos_schlaege_2025_2_polygon",
+        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_schlaege_2025_2_polygon/items?filter=inspire_id='https://data.inspire.gv.at/0095/c6e594ce-e151-4ad5-8525-942208f956e8/elu.ExistingLandUseObject/{localID}/MFA-2025'"
       },
       "invekos_hofstellen": {
-        "lastModified": "2025-06-30T13:29:00Z",
-        "collectionId": "i009501:invekos_hofstellen_2025_1",
-        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_2025_1/items?filter=inspire_id='https://data.inspire.gv.at/0095/a1491e6d-c462-4340-a167-5c1aadaa635d/bu.Building/{localID}/MFA-2025'"
+        "lastModified": "2026-01-28T11:30:48.000Z",
+        "collectionId": "i009501:invekos_hofstellen_2025_2",
+        "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_2025_2/items?filter=inspire_id='https://data.inspire.gv.at/0095/f11e035a-b356-44b6-8ae3-7f20f716f17f/bu.Building/{localID}/MFA-2025'"
       }
     }
   }
