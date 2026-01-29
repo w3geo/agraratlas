@@ -7,6 +7,7 @@ import streamJson from 'stream-json';
 import Pick from 'stream-json/filters/Pick.js';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
 import { Writable } from 'stream';
+import { extractInspireIdTemplate } from './extract-inspire-id.js';
 
 const { parser } = streamJson;
 const { pick } = Pick;
@@ -30,9 +31,18 @@ const { argv } = yargs(hideBin(process.argv))
 const { infile } = argv;
 const { outfile } = argv;
 
-const main = () => {
+const main = async () => {
   if (!existsSync(infile)) {
     console.error(`Input file ${infile} does not exist.`); // eslint-disable-line no-console
+    process.exit(1);
+  }
+
+  // Extract and log the inspire_id template
+  try {
+    const { template } = await extractInspireIdTemplate(infile);
+    console.log(`${infile} inspire_id:`, template); // eslint-disable-line no-console
+  } catch (err) {
+    console.error(`Failed to extract inspire_id template from ${infile}:`, err.message); // eslint-disable-line no-console
     process.exit(1);
   }
 
@@ -51,10 +61,6 @@ const main = () => {
       write({ value }, encoding, callback) {
         const inspireIdParts = value.properties.inspire_id.split('/');
         const localID = inspireIdParts[inspireIdParts.length - 2];
-        if (isFirst) {
-          inspireIdParts[inspireIdParts.length - 2] = '{localID}';
-          console.log(`${infile} inspire_id:`, inspireIdParts.join('/')); // eslint-disable-line no-console
-        }
 
         value.properties.localID = localID;
         delete value.properties.inspire_id;

@@ -20,6 +20,12 @@ This project requires vector tiles and styles for its maps. Vector tiles are cre
     
    to build the vector tiles and download the GeoTIFF for the raster data.
 
+## Data updates
+
+See [scripts/README-update-invekos.md](scripts/README-update-invekos.md) for instructions on how to update INVEKOS data.
+
+When done, commit/push the changes to `package.json` and `public/map/style.json`. To update only the new vector tiles on the server, run `npm run build` and deploy `dist/map/tiles/agraratlas.pmtiles`.
+
 ## Run the development server
 
     npm run dev
