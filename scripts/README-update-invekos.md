@@ -11,16 +11,19 @@ When new INVEKOS data is released, the script:
    - `invekos_hofstellen_{year}-{revision}.geojson`
    - `invekos_referenzen_{year}-{revision}_polygon.geojson`
    - `invekos_referenzen_{year}-{revision}_point.geojson`
+   - `invekos_schlaege_{year}_bio_polygon.geojson`
 
 2. **Extracts inspire_id templates** from the first feature in each file
 
 3. **Updates package.json** scripts:
    - `data:vector:prepare` - References to schlaege and hofstellen files
-   - `data:vector:15` - References to referenzen files
+   - `data:vector:15` - References to referenzen and bio_polygon files
+   - `data:vector:12-14` - References to bio_polygon files
 
 4. **Updates public/map/style.json** metadata:
    - `invekos_schlaege_polygon` - collectionId, featureUrlTemplate, lastModified
    - `invekos_hofstellen` - collectionId, featureUrlTemplate, lastModified
+   - `invekos_schlaege_polygon-bio` - label (updates MFA year)
 
 ## Usage
 
@@ -31,6 +34,7 @@ When new INVEKOS data is released, the script:
    data/invekos_hofstellen_2025-2.geojson
    data/invekos_referenzen_2025-2_polygon.geojson
    data/invekos_referenzen_2025-2_point.geojson
+   data/invekos_schlaege_2025_bio_polygon.geojson
    ```
 
 2. **Run the update script**:
@@ -63,6 +67,9 @@ The script expects files to follow these naming patterns:
   
 - **Referenzen Point**: `invekos_referenzen_{YYYY}-{R}_point.geojson`
   - Example: `invekos_referenzen_2025-2_point.geojson`
+
+- **Bio Schläge**: `invekos_schlaege_{YYYY}_bio_polygon.geojson`
+  - Example: `invekos_schlaege_2025_bio_polygon.geojson`
 
 Where:
 - `{YYYY}` is the 4-digit year (e.g., 2025)
@@ -98,6 +105,7 @@ Found newest files:
   Hofstellen: invekos_hofstellen_2025-2.geojson (2025-2)
   Referenzen Polygon: invekos_referenzen_2025-2_polygon.geojson (2025-2)
   Referenzen Point: invekos_referenzen_2025-2_point.geojson (2025-2)
+  Schläge Bio: invekos_schlaege_2025_bio_polygon.geojson (2025)
 
 Updating configuration files...
 ✓ Updated package.json

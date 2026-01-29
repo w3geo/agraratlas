@@ -1,4 +1,6 @@
-import { readdir, readFile, writeFile } from 'fs/promises';
+import {
+  readdir, readFile, writeFile, stat,
+} from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, basename } from 'path';
 import esMain from 'es-main';
@@ -20,6 +22,15 @@ function parseInvekosFilename(filename) {
       year: parseInt(schlaegMatch[1], 10),
       revision: parseInt(schlaegMatch[2], 10),
       type: 'schlaege',
+    };
+  }
+
+  const schlaegeBioMatch = filename.match(/^invekos_schlaege_(\d{4})_bio_polygon\.geojson$/);
+  if (schlaegeBioMatch) {
+    return {
+      year: parseInt(schlaegeBioMatch[1], 10),
+      revision: 0,
+      type: 'schlaege_bio',
     };
   }
 
@@ -69,6 +80,7 @@ async function findNewestInvekosFiles() {
     hofstellen: null,
     referenzen_polygon: null,
     referenzen_point: null,
+    schlaege_bio: null,
   };
 
   parsedFiles.forEach(({ filename, parsed }) => {
@@ -88,13 +100,28 @@ async function findNewestInvekosFiles() {
 /**
  * Update package.json scripts
  */
-async function updatePackageJson(schlaege, hofstellen, referenzenPolygon, referenzenPoint) {
+async function updatePackageJson(
+  schlaege,
+  hofstellen,
+  referenzenPolygon,
+  referenzenPoint,
+  schlaegeBio,
+) {
   const packagePath = PACKAGE_JSON;
   const packageContent = await readFile(packagePath, 'utf-8');
   const packageJson = JSON.parse(packageContent);
 
   // Update data:vector:prepare script
   packageJson.scripts['data:vector:prepare'] = `node scripts/inspireid-to-localid.js -i data/${schlaege.filename} -o data/invekos_schlaege_polygon.geojson && node scripts/inspireid-to-localid.js -i data/${hofstellen.filename} -o data/invekos_hofstellen.geojson`;
+
+  // Update data:vector:12-14 script
+  const script1214 = packageJson.scripts['data:vector:12-14'];
+  const updated1214 = script1214
+    .replace(
+      /invekos_schlaege_\d{4}_bio_polygon\.geojson/g,
+      schlaegeBio.filename,
+    );
+  packageJson.scripts['data:vector:12-14'] = updated1214;
 
   // Update data:vector:15 script
   const script15 = packageJson.scripts['data:vector:15'];
@@ -106,6 +133,10 @@ async function updatePackageJson(schlaege, hofstellen, referenzenPolygon, refere
     .replace(
       /invekos_referenzen_\d{4}-\d_point\.geojson/g,
       referenzenPoint.filename,
+    )
+    .replace(
+      /invekos_schlaege_\d{4}_bio_polygon\.geojson/g,
+      schlaegeBio.filename,
     );
   packageJson.scripts['data:vector:15'] = updated15;
 
@@ -116,7 +147,7 @@ async function updatePackageJson(schlaege, hofstellen, referenzenPolygon, refere
 /**
  * Update style.json metadata
  */
-async function updateStyleJson(schlaege, hofstellen) {
+async function updateStyleJson(schlaege, hofstellen, schlaegeBio) {
   const stylePath = STYLE_JSON;
   const styleContent = await readFile(stylePath, 'utf-8');
   const styleJson = JSON.parse(styleContent);
@@ -125,23 +156,30 @@ async function updateStyleJson(schlaege, hofstellen) {
   const schlaegePath = join(DATA_DIR, schlaege.filename);
   const hofstellenPath = join(DATA_DIR, hofstellen.filename);
 
+  const schlaegStats = await stat(schlaegePath);
+  const hofstellenStats = await stat(hofstellenPath);
+
   const schlaegTemplate = await extractInspireIdTemplate(schlaegePath);
   const hofstellenTemplate = await extractInspireIdTemplate(hofstellenPath);
 
   // Update metadata
-  const now = new Date().toISOString();
-
   styleJson.metadata.sources.invekos_schlaege_polygon = {
-    lastModified: now,
+    lastModified: schlaegStats.mtime.toISOString(),
     collectionId: `i009501:invekos_schlaege_${schlaege.year}_${schlaege.revision}_polygon`,
     featureUrlTemplate: `https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_schlaege_${schlaege.year}_${schlaege.revision}_polygon/items?filter=inspire_id='${schlaegTemplate.template}'`,
   };
 
   styleJson.metadata.sources.invekos_hofstellen = {
-    lastModified: now,
+    lastModified: hofstellenStats.mtime.toISOString(),
     collectionId: `i009501:invekos_hofstellen_${hofstellen.year}_${hofstellen.revision}`,
     featureUrlTemplate: `https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_${hofstellen.year}_${hofstellen.revision}/items?filter=inspire_id='${hofstellenTemplate.template}'`,
   };
+
+  // Update Bio-Schläge label in layers
+  const bioLayer = styleJson.layers.find((l) => l.id === 'invekos_schlaege_polygon-bio');
+  if (bioLayer && bioLayer.metadata) {
+    bioLayer.metadata.label = `ÖPUL Bio-Schläge MFA ${schlaegeBio.year}`;
+  }
 
   await writeFile(stylePath, JSON.stringify(styleJson, null, 2));
   console.log(`✓ Updated ${stylePath}`); // eslint-disable-line no-console
@@ -158,7 +196,10 @@ async function main() {
 
     if (
       !newest.schlaege
-      || !newest.hofstellen || !newest.referenzen_polygon || !newest.referenzen_point
+      || !newest.hofstellen
+      || !newest.referenzen_polygon
+      || !newest.referenzen_point
+      || !newest.schlaege_bio
     ) {
       console.error('ERROR: Could not find all required INVEKOS files'); // eslint-disable-line no-console
       console.error('Found:', newest); // eslint-disable-line no-console
@@ -170,6 +211,7 @@ async function main() {
     console.log(`  Hofstellen: ${newest.hofstellen.filename} (${newest.hofstellen.year}-${newest.hofstellen.revision})`); // eslint-disable-line no-console
     console.log(`  Referenzen Polygon: ${newest.referenzen_polygon.filename} (${newest.referenzen_polygon.year}-${newest.referenzen_polygon.revision})`); // eslint-disable-line no-console
     console.log(`  Referenzen Point: ${newest.referenzen_point.filename} (${newest.referenzen_point.year}-${newest.referenzen_point.revision})`); // eslint-disable-line no-console
+    console.log(`  Schläge Bio: ${newest.schlaege_bio.filename} (${newest.schlaege_bio.year})`); // eslint-disable-line no-console
 
     // Verify files exist
     Object.values(newest).forEach((value) => {
@@ -186,8 +228,9 @@ async function main() {
       newest.hofstellen,
       newest.referenzen_polygon,
       newest.referenzen_point,
+      newest.schlaege_bio,
     );
-    await updateStyleJson(newest.schlaege, newest.hofstellen);
+    await updateStyleJson(newest.schlaege, newest.hofstellen, newest.schlaege_bio);
 
     console.log('\n✓ Update complete!'); // eslint-disable-line no-console
     console.log('\nNext steps:'); // eslint-disable-line no-console
