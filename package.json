@@ -35,7 +35,7 @@
     "geotiff": "^2.1.3",
     "ol": "^10.4.0",
     "ol-mapbox-style": "^12.4.1",
-    "pmtiles-protocol": "^1.0.5",
+    "pmtiles-protocol": "^1.1.2",
     "roboto-fontface": "*",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
