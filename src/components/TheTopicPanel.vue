@@ -163,13 +163,42 @@
         </div>
       </v-window-item>
       <v-window-item value="finbod">
-        <TopicCategoryList
-          :topics-by-category="finbodByCategory"
-          :opacity="opacity"
-          :scroll-style="scrollDivCalc"
-          :schlag-info="schlagInfo"
-          v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
-        />
+        <template v-if="mapView.zoom >= 15">
+          <TopicCategoryList
+            :topics-by-category="finbodByCategory"
+            :opacity="opacity"
+            :scroll-style="scrollDivCalc"
+            :schlag-info="schlagInfo"
+            v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
+          />
+        </template>
+        <template v-else>
+          <div
+            class="pa-4 text-center scrollDiv"
+            :style="scrollDivCalc"
+          >
+            <p class="text-body-2 mb-3">
+              Diese Information ist erst ab Zoomstufe 15 verfügbar.
+            </p>
+            <v-btn
+              color="grey-darken-2"
+              variant="outlined"
+              size="small"
+              @click="map.getView().animate({ zoom: 15, duration: 500 })"
+            >
+              Auf Zoomstufe 15 vergrößern
+            </v-btn>
+          </div>
+          <div class="topicFilter px-2">
+            <v-checkbox
+              v-model="onlyTopicsInSchlagExtent"
+              density="compact"
+              hide-details
+              label="Nur für den gewählten Schlag interessante Kategorien"
+              :disabled="!schlagInfo"
+            />
+          </div>
+        </template>
       </v-window-item>
     </v-window>
     <v-row
@@ -209,7 +238,7 @@ import { useTools } from '../composables/useTools';
 const route = useRoute();
 const router = useRouter();
 const { panels, closeOthers } = usePanelControl();
-const { mapView, mapReady } = useMap();
+const { map, mapView, mapReady } = useMap();
 const { topics } = useTopics();
 const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
