@@ -654,6 +654,126 @@
       }
     },
     {
+      "id": "finbod_class-lte30",
+      "type": "fill",
+      "source": "agrargis",
+      "source-layer": "finbod_class",
+      "minzoom": 15,
+      "filter": ["==", "wz2_class", "≤ 30"],
+      "paint": {
+        "fill-color": "#feebe2"
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "label": "≤ 30",
+        "urlSort": 31,
+        "group": "one",
+        "category": "FinBod W22"
+      }
+    },
+    {
+      "id": "finbod_class-gt30-lte40",
+      "type": "fill",
+      "source": "agrargis",
+      "source-layer": "finbod_class",
+      "minzoom": 15,
+      "filter": ["==", "wz2_class", "> 30 - ≤ 40"],
+      "paint": {
+        "fill-color": "#fcc5c0"
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "label": "> 30 - ≤ 40",
+        "urlSort": 32,
+        "group": "one",
+        "category": "FinBod W22"
+      }
+    },
+    {
+      "id": "finbod_class-gt40-lte50",
+      "type": "fill",
+      "source": "agrargis",
+      "source-layer": "finbod_class",
+      "minzoom": 15,
+      "filter": ["==", "wz2_class", "> 40 - ≤ 50"],
+      "paint": {
+        "fill-color": "#fa9fb5"
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "label": "> 40 - ≤ 50",
+        "urlSort": 33,
+        "group": "one",
+        "category": "FinBod W22"
+      }
+    },
+    {
+      "id": "finbod_class-gt50-lte60",
+      "type": "fill",
+      "source": "agrargis",
+      "source-layer": "finbod_class",
+      "minzoom": 15,
+      "filter": ["==", "wz2_class", "> 50 - ≤ 60"],
+      "paint": {
+        "fill-color": "#f768a1"
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "label": "> 50 - ≤ 60",
+        "urlSort": 34,
+        "group": "one",
+        "category": "FinBod W22"
+      }
+    },
+    {
+      "id": "finbod_class-gt60-lte70",
+      "type": "fill",
+      "source": "agrargis",
+      "source-layer": "finbod_class",
+      "minzoom": 15,
+      "filter": ["==", "wz2_class", "> 60 - ≤ 70"],
+      "paint": {
+        "fill-color": "#c51b8a"
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "label": "> 60 - ≤ 70",
+        "urlSort": 35,
+        "group": "one",
+        "category": "FinBod W22"
+      }
+    },
+    {
+      "id": "finbod_class-gt70",
+      "type": "fill",
+      "source": "agrargis",
+      "source-layer": "finbod_class",
+      "minzoom": 15,
+      "filter": ["==", "wz2_class", "> 70"],
+      "paint": {
+        "fill-color": "#7a0177"
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "label": "> 70",
+        "urlSort": 36,
+        "group": "one",
+        "category": "FinBod W22"
+      }
+    },
+    {
       "id": "neigungsklassen",
       "type": "raster",
       "source": "neigungsklassen",
