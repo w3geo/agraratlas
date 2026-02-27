@@ -63,72 +63,30 @@
         value="neigungen"
         height="40"
         class="tabInActive"
-        selected-class="tabActive right"
+        selected-class="tabActive middle"
       >
         Hangneigungen
+      </v-tab>
+      <!-- FinBod WZ2 https://colorbrewer2.org/?type=sequential&scheme=RdPu&n=6#type=sequential&scheme=RdPu&n=6 -->
+      <v-tab
+        value="finbod"
+        height="40"
+        class="tabInActive"
+        selected-class="tabActive right"
+      >
+        FinBod W22
       </v-tab>
     </v-tabs>
 
     <v-window v-model="tab">
       <v-window-item value="themen">
-        <div
-          class="pa-2 scrollDiv"
-          :style="scrollDivCalc"
-        >
-          <template
-            v-for="(category, key) in topicsByCategory"
-            :key="key"
-          >
-            <v-row no-gutters>
-              <v-col
-                cols="10"
-                class="category pt-1"
-              >
-                {{ key }}
-              </v-col>
-            </v-row>
-            <template
-              v-for="(topic, index) in topicsByCategory[key]"
-              :key="index"
-            >
-              <v-row
-                no-gutters
-              >
-                <v-col cols="10">
-                  <v-checkbox
-                    v-model="topic.visible"
-                    :label="topic.label"
-                    hide-details
-                    density="compact"
-                  /><v-label
-                    v-if="topic.visible && topic.warning"
-                    class="pl-7 pb-1 topic-warning"
-                    :text="topic.warning"
-                  />
-                </v-col><v-col
-                  cols="2"
-                  class="pa-1"
-                >
-                  <div
-                    :class="topic.icon ? 'iconBox' : 'colorBox'"
-                    :style="'background-color: ' + topic.color +'; opacity: ' + opacity + ';'"
-                  />
-                </v-col>
-              </v-row>
-            </template>
-          </template>
-        </div>
-        <div
-          class="topicFilter px-2"
-        >
-          <v-checkbox
-            v-model="onlyTopicsInSchlagExtent"
-            density="compact"
-            hide-details
-            label="Nur für den gewählten Schlag interessante Themen"
-            :disabled="!schlagInfo"
-          />
-        </div>
+        <TopicCategoryList
+          :topics-by-category="topicsByCategory"
+          :opacity="opacity"
+          :scroll-style="scrollDivCalc"
+          :schlag-info="schlagInfo"
+          v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
+        />
       </v-window-item>
       <v-window-item value="neigungen">
         <div
@@ -204,6 +162,15 @@
           </v-row>
         </div>
       </v-window-item>
+      <v-window-item value="finbod">
+        <TopicCategoryList
+          :topics-by-category="finbodByCategory"
+          :opacity="opacity"
+          :scroll-style="scrollDivCalc"
+          :schlag-info="schlagInfo"
+          v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
+        />
+      </v-window-item>
     </v-window>
     <v-row
       no-gutters
@@ -230,6 +197,7 @@
 import { computed, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useRoute, useRouter } from 'vue-router';
+import TopicCategoryList from './TopicCategoryList.vue';
 import { useLayers } from '../composables/useLayers';
 import { useSchlag } from '../composables/useSchlag';
 import { useTopics } from '../composables/useTopics';
@@ -271,16 +239,24 @@ function setVisible(value) {
 const tab = ref();
 const { width, height } = useDisplay();
 
-const topicsByCategory = computed(() => topics.reduce((acc, topic) => {
-  if (schlagInfo.value && onlyTopicsInSchlagExtent.value ? topic.inSchlagExtent : topic.inExtent
-      || topic.visible) {
-    if (!acc[topic.category]) {
-      acc[topic.category] = [];
+function groupByCategory(categoryFilter) {
+  return topics.filter(categoryFilter).reduce((acc, topic) => {
+    const isRelevant = schlagInfo.value && onlyTopicsInSchlagExtent.value
+      ? topic.inSchlagExtent
+      : topic.inExtent;
+    if (isRelevant || topic.visible) {
+      if (!acc[topic.category]) {
+        acc[topic.category] = [];
+      }
+      acc[topic.category].push(topic);
     }
-    acc[topic.category].push(topic);
-  }
-  return acc;
-}, {}));
+    return acc;
+  }, {});
+}
+
+const finbodByCategory = computed(() => groupByCategory((t) => t.category === 'FinBod W22'));
+
+const topicsByCategory = computed(() => groupByCategory((t) => t.category !== 'FinBod W22'));
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 panels.value.themen = !mobile.value;
@@ -431,6 +407,13 @@ mapReady.then(() => setVisible(route.params.visible));
   border-right: 1px solid #666;
   border-top-right-radius: 8px!important;
 }
+.tabActive.middle {
+  border-left: 1px solid #666;
+  border-right: 1px solid #666;
+  border-top-left-radius: 8px!important;
+  border-top-right-radius: 8px!important;
+}
+
 .tabActive.right {
   border-left: 1px solid #666;
   border-top-left-radius: 8px!important;
