@@ -661,7 +661,7 @@
       "minzoom": 15,
       "filter": ["==", "wz2_class", "≤ 30"],
       "paint": {
-        "fill-color": "#feebe2"
+        "fill-color": "#ffffcc"
       },
       "layout": {
         "visibility": "none"
@@ -681,7 +681,7 @@
       "minzoom": 15,
       "filter": ["==", "wz2_class", "> 30 - ≤ 40"],
       "paint": {
-        "fill-color": "#fcc5c0"
+        "fill-color": "#a1dab4"
       },
       "layout": {
         "visibility": "none"
@@ -701,7 +701,7 @@
       "minzoom": 15,
       "filter": ["==", "wz2_class", "> 40 - ≤ 50"],
       "paint": {
-        "fill-color": "#fa9fb5"
+        "fill-color": "#41b6c4"
       },
       "layout": {
         "visibility": "none"
@@ -721,7 +721,7 @@
       "minzoom": 15,
       "filter": ["==", "wz2_class", "> 50 - ≤ 60"],
       "paint": {
-        "fill-color": "#f768a1"
+        "fill-color": "#2c7fb8"
       },
       "layout": {
         "visibility": "none"
@@ -741,7 +741,7 @@
       "minzoom": 15,
       "filter": ["==", "wz2_class", "> 60 - ≤ 70"],
       "paint": {
-        "fill-color": "#c51b8a"
+        "fill-color": "#253494"
       },
       "layout": {
         "visibility": "none"
