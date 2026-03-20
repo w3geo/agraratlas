@@ -140,8 +140,11 @@ watch(schlagInfo, (value, oldValue) => {
   }
   if (value) {
     if (value.loading) {
-      findSchlag(value.localID).then((feature) => {
-        setSchlagInfo(feature);
+      const { localID } = value;
+      findSchlag(localID).then((feature) => {
+        if (schlagInfo.value?.localID === localID) {
+          setSchlagInfo(feature);
+        }
       });
     } else {
       setFeatureState(map, { source: 'agrargis', id: value.id }, { selected: true });

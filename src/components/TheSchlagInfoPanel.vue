@@ -262,7 +262,14 @@ const canCenter = computed(() => schlagInfo.value?.extent && (!equals(
 
 watch(schlagInfo, (value) => {
   if (value?.localID !== route.params.schlagId) {
-    router.push({ params: { ...route.params, schlagId: value?.localID } });
+    const params = { visible: route.params.visible };
+    if (value?.localID) {
+      if (value.loading) return;
+      params.schlagId = value.localID;
+      router.push({ name: 'map', params });
+    } else {
+      router.replace({ name: 'map', params });
+    }
   }
   if (value && !value.loading) {
     emit('schlag', true);
