@@ -380,7 +380,7 @@ watch([topics, gradients], ([t, g]) => {
     ...g.map((gradient) => (gradient.visible ? '1' : '0')),
   ].join('');
   if (visible !== route.params.visible) {
-    router.push({ params: { ...route.params, visible } });
+    router.replace({ name: 'map', params: { ...route.params, visible } });
   }
 });
 watch(() => route.params.visible, setVisible);
