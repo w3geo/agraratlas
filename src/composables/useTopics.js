@@ -108,7 +108,7 @@ mapReady.then(() => {
       color: l.paint?.['fill-color'] || l.paint?.['icon-color'],
       icon: !!l.paint?.['icon-color'],
       urlSort: l.metadata?.urlSort,
-      displaySort: l.metadata?.displaySort || Number.MAX_SAFE_INTEGER,
+      displaySort: l.metadata?.displaySort || 0,
       category: l.metadata?.category,
     })).reduce((acc, {
       id, label, warning, color, icon, urlSort, displaySort, category,

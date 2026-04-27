@@ -63,18 +63,9 @@
         value="neigungen"
         height="40"
         class="tabInActive"
-        selected-class="tabActive middle"
-      >
-        Hangneigungen
-      </v-tab>
-      <!-- FinBod WZ2 https://colorbrewer2.org/?type=sequential&scheme=RdPu&n=6#type=sequential&scheme=RdPu&n=6 -->
-      <v-tab
-        value="finbod"
-        height="40"
-        class="tabInActive"
         selected-class="tabActive right"
       >
-        FinBod W22
+        Hangneigungen
       </v-tab>
     </v-tabs>
 
@@ -162,44 +153,6 @@
           </v-row>
         </div>
       </v-window-item>
-      <v-window-item value="finbod">
-        <template v-if="mapView.zoom >= 15">
-          <TopicCategoryList
-            :topics-by-category="finbodByCategory"
-            :opacity="opacity"
-            :scroll-style="scrollDivCalc"
-            :schlag-info="schlagInfo"
-            v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
-          />
-        </template>
-        <template v-else>
-          <div
-            class="pa-4 text-center scrollDiv"
-            :style="scrollDivCalc"
-          >
-            <p class="text-body-2 mb-3">
-              Diese Information ist erst ab Zoomstufe 15 verfügbar.
-            </p>
-            <v-btn
-              color="grey-darken-2"
-              variant="outlined"
-              size="small"
-              @click="map.getView().animate({ zoom: 15, duration: 500 })"
-            >
-              Auf Zoomstufe 15 vergrößern
-            </v-btn>
-          </div>
-          <div class="topicFilter px-2">
-            <v-checkbox
-              v-model="onlyTopicsInSchlagExtent"
-              density="compact"
-              hide-details
-              label="Nur für den gewählten Schlag interessante Kategorien"
-              :disabled="!schlagInfo"
-            />
-          </div>
-        </template>
-      </v-window-item>
     </v-window>
     <v-row
       no-gutters
@@ -238,7 +191,7 @@ import { useTools } from '../composables/useTools';
 const route = useRoute();
 const router = useRouter();
 const { panels, closeOthers } = usePanelControl();
-const { map, mapView, mapReady } = useMap();
+const { mapView, mapReady } = useMap();
 const { topics } = useTopics();
 const { opacity } = useLayers();
 const { schlagInfo } = useSchlag();
@@ -268,8 +221,8 @@ function setVisible(value) {
 const tab = ref();
 const { width, height } = useDisplay();
 
-function groupByCategory(categoryFilter) {
-  return topics.filter(categoryFilter).reduce((acc, topic) => {
+function groupByCategory() {
+  return topics.reduce((acc, topic) => {
     const isRelevant = schlagInfo.value && onlyTopicsInSchlagExtent.value
       ? topic.inSchlagExtent
       : topic.inExtent;
@@ -283,9 +236,7 @@ function groupByCategory(categoryFilter) {
   }, {});
 }
 
-const finbodByCategory = computed(() => groupByCategory((t) => t.category === 'FinBod W22'));
-
-const topicsByCategory = computed(() => groupByCategory((t) => t.category !== 'FinBod W22'));
+const topicsByCategory = computed(() => groupByCategory());
 
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 panels.value.themen = !mobile.value;
@@ -436,13 +387,6 @@ mapReady.then(() => setVisible(route.params.visible));
   border-right: 1px solid #666;
   border-top-right-radius: 8px!important;
 }
-.tabActive.middle {
-  border-left: 1px solid #666;
-  border-right: 1px solid #666;
-  border-top-left-radius: 8px!important;
-  border-top-right-radius: 8px!important;
-}
-
 .tabActive.right {
   border-left: 1px solid #666;
   border-top-left-radius: 8px!important;

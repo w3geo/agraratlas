@@ -669,6 +669,7 @@
       "metadata": {
         "label": "≤ 30",
         "urlSort": 31,
+        "displaySort": 2,
         "group": "one",
         "category": "FinBod W22"
       }
@@ -689,6 +690,7 @@
       "metadata": {
         "label": "> 30 - ≤ 40",
         "urlSort": 32,
+        "displaySort": 2,
         "group": "one",
         "category": "FinBod W22"
       }
@@ -709,6 +711,7 @@
       "metadata": {
         "label": "> 40 - ≤ 50",
         "urlSort": 33,
+        "displaySort": 2,
         "group": "one",
         "category": "FinBod W22"
       }
@@ -729,6 +732,7 @@
       "metadata": {
         "label": "> 50 - ≤ 60",
         "urlSort": 34,
+        "displaySort": 2,
         "group": "one",
         "category": "FinBod W22"
       }
@@ -749,6 +753,7 @@
       "metadata": {
         "label": "> 60 - ≤ 70",
         "urlSort": 35,
+        "displaySort": 2,
         "group": "one",
         "category": "FinBod W22"
       }
@@ -769,6 +774,7 @@
       "metadata": {
         "label": "> 70",
         "urlSort": 36,
+        "displaySort": 2,
         "group": "one",
         "category": "FinBod W22"
       }
