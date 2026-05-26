@@ -65,8 +65,9 @@ watch(topics, (value) => {
   const { layers } = map.get('mapbox-style');
   const one = layers.filter((layer) => layer.metadata?.group === 'one' && layer.type !== 'raster');
   one.forEach((layer) => {
-    const { visible } = value.find((v) => v.label === layer.metadata?.label);
-    layer.layout = { ...layer.layout, visibility: visible ? 'visible' : 'none' };
+    const topic = value.find((v) => v.label === layer.metadata?.label);
+    if (!topic) return;
+    layer.layout = { ...layer.layout, visibility: topic.visible ? 'visible' : 'none' };
     updateMapboxLayer(map, layer);
   });
 });

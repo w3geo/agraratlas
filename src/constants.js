@@ -2,3 +2,13 @@ export const AGRARATLAS_PMTILES_STYLE_URL = './map/style-pmtiles.json';
 export const SCHLAEGE_SOURCE = 'invekos_schlaege_polygon';
 export const SCHLAEGE_LAYER = 'invekos_schlaege_polygon-fill';
 export const INITIAL_EXTENT = [8.782379, 46.358770, 17.5, 49.037872];
+export const HIDDEN_CATEGORIES = (() => {
+  const value = import.meta.env.VITE_HIDDEN_CATEGORIES;
+  if (!value) return null;
+  try {
+    return new RegExp(value);
+  } catch {
+    console.error(`VITE_HIDDEN_CATEGORIES: invalid regular expression "${value}"`);
+    return null;
+  }
+})();

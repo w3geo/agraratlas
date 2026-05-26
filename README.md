@@ -38,6 +38,10 @@ Note that this will take a while, because not only the application, but also the
 
 To deploy the application, copy the contents of the `dist/` folder of your S3 or http server.
 
+## Environment variables
+
+Environment variables are described in `.env.example`. Copy that file to `.env` and adjust the values as needed.
+
 ## Deploy a release
 
 Continuous deployment to the production server takes place when a release tag (i.e. prefixed with 'v') is pushed. The easiest way to achieve this is to use `npm version`. These three steps will cut a release and deploy it to the production server:
