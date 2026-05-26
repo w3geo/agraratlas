@@ -978,7 +978,7 @@
       "source": "agrargis",
       "source-layer": "invekos_referenzflaechen_point",
       "layout": {
-        "visibility": "visible",
+        "visibility": "none",
         "icon-image": "square-stroked",
         "icon-size": 0.3,
         "icon-allow-overlap": true

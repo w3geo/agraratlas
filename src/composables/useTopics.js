@@ -7,7 +7,7 @@ import { reactive, watch } from 'vue';
 import booleanIntersects from '@turf/boolean-intersects';
 import bufferGeometry from '@turf/buffer';
 import debounce from 'debounce';
-import { SCHLAEGE_LAYER, SCHLAEGE_SOURCE } from '../constants';
+import { HIDDEN_CATEGORIES, SCHLAEGE_LAYER, SCHLAEGE_SOURCE } from '../constants';
 import {
   filterStyle, map, mapReady, mapView,
 } from './useMap';
@@ -100,7 +100,7 @@ watch(schlagInfo, updateTopicsInSchlagExtent);
 mapReady.then(() => {
   const { layers } = map.get('mapbox-style');
   topics.push(...Object.values(layers
-    .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster')
+    .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster' && !HIDDEN_CATEGORIES?.test(l.metadata?.category))
     .map((l) => ({
       id: l.id,
       label: l.metadata?.label,
