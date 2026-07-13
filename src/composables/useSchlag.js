@@ -35,7 +35,7 @@ export const schlagInfo = shallowRef();
 function getSchlagAtPixel(pixel) {
   return map.forEachFeatureAtPixel(
     pixel,
-    (feature) => (feature.get('layer') === SCHLAEGE_SOURCE ? feature : undefined),
+    (feature) => (feature.get('mvt:layer') === SCHLAEGE_SOURCE ? feature : undefined),
   );
 }
 
@@ -72,7 +72,7 @@ async function getSchlagParts(feature) {
   const tiles = await Promise.all(tilePromises);
   return tiles.reduce((acc, tile) => {
     tile.getSourceTiles().forEach((sourceTile) => {
-      acc.push(...sourceTile.getFeatures().filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('layer') === SCHLAEGE_SOURCE));
+      acc.push(...sourceTile.getFeatures().filter((renderFeature) => renderFeature.getId() === id && renderFeature.get('mvt:layer') === SCHLAEGE_SOURCE));
     });
     return acc;
   }, []);
@@ -85,7 +85,7 @@ function findSchlag(schlagId) {
         const extent = transformExtent(map.getView().calculateExtent(), 'EPSG:4326', 'EPSG:3857');
         const features = getLayer(map, SCHLAEGE_LAYER)
           .getFeaturesInExtent(extent)
-          .filter((feature) => feature.get('layer') === SCHLAEGE_SOURCE);
+          .filter((feature) => feature.get('mvt:layer') === SCHLAEGE_SOURCE);
         const feature = features.find((f) => f.get('localID') === schlagId);
         if (!feature) {
           const response = await fetch(map.get('mapbox-style').metadata.sources[SCHLAEGE_SOURCE].featureUrlTemplate.replace('{localID}', schlagId));
