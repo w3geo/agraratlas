@@ -95,6 +95,7 @@ export const mapReady = (async () => {
  */
 export const filterStyle = mapReady.then(async () => {
   const style = JSON.parse(JSON.stringify(map.get('mapbox-style')));
+  style.id = 'agraratlas-filter'; // force a fresh function cache; the clone shares the same id as the live style
   style.layers.forEach((l) => {
     if (l.metadata?.group === 'one') {
       l.layout = { ...l.layout, visibility: 'visible' };

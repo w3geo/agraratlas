@@ -44,7 +44,7 @@ function intersects(feature, candidates) {
  */
 async function findTopics(extent, precise = false) {
   const features = getLayer(map, SCHLAEGE_LAYER).getFeaturesInExtent(extent)
-    .filter((feature) => feature.get('layer') !== SCHLAEGE_SOURCE || feature.get('kz_bio_oepul_jn') === 'J')
+    .filter((feature) => feature.get('mvt:layer') !== SCHLAEGE_SOURCE || feature.get('kz_bio_oepul_jn') === 'J')
     .map((renderFeature) => toFeature(renderFeature));
   const style = await filterStyle;
   const resolution = map.getView().getResolution();
