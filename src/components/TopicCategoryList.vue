@@ -24,10 +24,20 @@
           <v-col cols="10">
             <v-checkbox
               v-model="topic.visible"
-              :label="topic.label"
               hide-details
               density="compact"
-            /><v-label
+            >
+              <template #label>
+                {{ topic.label }}
+                <v-chip
+                  v-if="topic.isNew"
+                  color="green"
+                  size="x-small"
+                  class="ml-2"
+                >NEU</v-chip>
+              </template>
+            </v-checkbox>
+            <v-label
               v-if="topic.visible && topic.warning"
               class="pl-7 pb-1 topic-warning"
               :text="topic.warning"
