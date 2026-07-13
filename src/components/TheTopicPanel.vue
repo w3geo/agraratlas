@@ -16,10 +16,9 @@
 
   <v-card
     v-if="panels.themen && !tooLow"
-    class="topicPanelButton"
-    :class="{noSchlag : !panels.schlag, mobilepanel : mobile}"
+    class="topicPanelButton topicPanelCard"
+    :class="cardClasses"
     :width="mobile ? '100%' : '440px'"
-    :height="topicVcard"
   >
     <v-row
       no-gutters
@@ -72,17 +71,15 @@
     <v-window v-model="tab">
       <v-window-item value="themen">
         <TopicCategoryList
+          v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
           :topics-by-category="topicsByCategory"
           :opacity="opacity"
-          :scroll-style="scrollDivCalc"
           :schlag-info="schlagInfo"
-          v-model:only-in-schlag-extent="onlyTopicsInSchlagExtent"
         />
       </v-window-item>
       <v-window-item value="neigungen">
         <div
           class="scrollDiv"
-          :style="scrollDivLargerCalc"
         >
           <v-row
             no-gutters
@@ -156,7 +153,7 @@
     </v-window>
     <v-row
       no-gutters
-      class="pa-2"
+      class="pa-2 pt-1"
     >
       <v-slider
         v-model="opacity"
@@ -237,7 +234,6 @@ function groupByCategory() {
 }
 
 const topicsByCategory = computed(() => groupByCategory());
-
 const mobile = computed(() => (width.value < 800 || height.value < 520));
 panels.value.themen = !mobile.value;
 
@@ -248,6 +244,14 @@ watch(mobile, (newvalue, oldvalue) => {
 });
 const lowVertical = computed(() => (height.value < 740));
 
+const cardClasses = computed(() => ({
+  noSchlag: !panels.value.schlag,
+  mobilepanel: mobile.value,
+  baselayerOpen: panels.value.baselayer,
+  toolsOpen: panels.value.tools,
+  elevationOpen: elevationProfile.value,
+}));
+
 const tooLow = computed(() => {
   let retVal = false;
   if (lowVertical.value) {
@@ -257,71 +261,6 @@ const tooLow = computed(() => {
   }
 
   return retVal;
-});
-
-const topicVcard = computed(() => {
-  let minusPix = 320;
-  if (!panels.value.schlag) {
-    minusPix -= 60;
-  }
-  if (panels.value.baselayer) {
-    minusPix += 70;
-  }
-  if (panels.value.tools) {
-    minusPix += 115;
-    if (elevationProfile.value) {
-      minusPix += 120;
-    }
-  }
-
-  if (mobile.value) {
-    minusPix = 50;
-  }
-  return `${window.innerHeight - minusPix}px`;
-});
-
-const scrollDivCalc = computed(() => {
-  let minusPix = 475;
-  if (!panels.value.schlag) {
-    minusPix -= 60;
-  }
-  if (panels.value.baselayer) {
-    minusPix += 70;
-  }
-  if (panels.value.tools) {
-    minusPix += 115;
-    if (elevationProfile.value) {
-      minusPix += 120;
-    }
-  }
-
-  if (mobile.value) {
-    minusPix = 211;
-  }
-
-  return `height: ${window.innerHeight - minusPix}px;`;
-});
-
-const scrollDivLargerCalc = computed(() => {
-  let minusPix = 475 - 41;
-  if (!panels.value.schlag) {
-    minusPix -= 60;
-  }
-  if (panels.value.baselayer) {
-    minusPix += 70;
-  }
-  if (panels.value.tools) {
-    minusPix += 115;
-    if (elevationProfile.value) {
-      minusPix += 120;
-    }
-  }
-
-  if (mobile.value) {
-    minusPix = 170;
-  }
-
-  return `height: ${window.innerHeight - minusPix}px;`;
 });
 
 watch([topics, gradients], ([t, g]) => {
@@ -343,7 +282,7 @@ mapReady.then(() => setVisible(route.params.visible));
   .topicPanelButton {
     position: absolute;
     left: 10px;
-    top: 170px;
+    top: 186px;
   }
 
   .topicPanelButton.mobile,
@@ -362,6 +301,57 @@ mapReady.then(() => setVisible(route.params.visible));
 
   .topicPanelButton.noSchlag {
     top: 110px;
+  }
+
+  .topicPanelCard {
+    bottom: 134px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .topicPanelCard > :deep(.v-row),
+  .topicPanelCard > :deep(.v-tabs) {
+    flex: none;
+  }
+
+  .topicPanelCard.baselayerOpen {
+    bottom: 216px;
+  }
+
+  .topicPanelCard.toolsOpen {
+    bottom: 254px;
+  }
+
+  .topicPanelCard.baselayerOpen.toolsOpen {
+    bottom: 336px;
+  }
+
+  .topicPanelCard.toolsOpen.elevationOpen {
+    bottom: 374px;
+  }
+
+  .topicPanelCard.baselayerOpen.toolsOpen.elevationOpen {
+    bottom: 456px;
+  }
+
+  .topicPanelCard.mobilepanel {
+    bottom: 50px;
+  }
+
+  .topicPanelCard :deep(.v-window) {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .topicPanelCard :deep(.v-window__container) {
+    height: 100% !important;
+  }
+
+  .topicPanelCard :deep(.v-window-item) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .boxHeader .v-col {
@@ -433,16 +423,13 @@ mapReady.then(() => setVisible(route.params.visible));
   }
 
   .scrollDiv {
+    flex: 1;
+    min-height: 0;
     overflow: auto;
   }
 
   div.width100 .v-selection-control-group {
     width: 100%;
-  }
-
-  .topicPanelButton.noSchlag .scrollDiv {
-    height: calc(100vh - 485px);
-
   }
 
   .scrollDiv .mdi-radiobox-blank, .scrollDiv .mdi-radiobox-marked {

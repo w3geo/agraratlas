@@ -19,7 +19,7 @@
     class="schlagInfoButton"
     :class="{mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
-    height="109px"
+    height="125px"
   >
     <v-row
       no-gutters
@@ -87,7 +87,7 @@
                                                  {
                                                    minimumFractionDigits: 2,
                                                    maximumFractionDigits: 2
-                                                 }) }} ha schwere Böden</span>
+                                                 }) }} ha schwer bearbeitbare Böden</span>
           </v-col>
           <v-col cols="2" />
         </v-row>
@@ -98,7 +98,7 @@
         align="right"
       >
         <v-btn
-          class="mt-0 pa-0"
+          class="mt-1 pa-0"
           width="24"
           height="24"
           icon
@@ -115,7 +115,7 @@
         </v-btn>
         <v-btn
           v-if="canCenter"
-          class="mt-0 pa-0"
+          class="mt-1 pa-0"
           width="24"
           height="24"
           icon
@@ -132,7 +132,7 @@
         </v-btn>
         <v-btn
           v-if="schlagInfo"
-          class="mt-0 pa-0"
+          class="mt-1 pa-0"
           width="24"
           height="24"
           icon

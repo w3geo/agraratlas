@@ -130,7 +130,7 @@ function switchMode(newMode) {
   .layerSwitcherButton {
     position: absolute;
     left: 10px;
-    bottom: 50px;
+    bottom: 42px;
   }
 
   .layerSwitcherButton.lower {
