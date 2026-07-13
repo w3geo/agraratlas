@@ -8,7 +8,7 @@ export const HIDDEN_CATEGORIES = (() => {
   try {
     return new RegExp(value);
   } catch {
-    console.error(`VITE_HIDDEN_CATEGORIES: invalid regular expression "${value}"`);
+    console.error(`VITE_HIDDEN_CATEGORIES: invalid regular expression "${value}"`); // eslint-disable-line no-console
     return null;
   }
 })();

@@ -1,7 +1,7 @@
 <template>
   <v-btn
     v-if="!panels.tools || mobile"
-    class="layerSwitcherButton pa-2"
+    class="mapToolButton pa-2"
     :class="{baseShow : panels.baselayer, mobile : mobile}"
     size="mobile ? 20 : 30"
     @click="panels.tools = !panels.tools, closeOthers('tools', mobile)"
@@ -16,7 +16,7 @@
 
   <v-card
     v-if="panels.tools"
-    class="layerSwitcherButton"
+    class="mapToolButton"
     :class="{baseShow : panels.baselayer, mobilepanel : mobile}"
     :width="mobile ? '100%' : '440px'"
     :height="`${160 + (elevationProfile ? 120 : 0)}px`"
@@ -231,17 +231,17 @@ const {
 </script>
 
 <style scoped>
-  .layerSwitcherButton {
+  .mapToolButton {
     position: absolute;
     left: 10px;
-    bottom: 100px;
+    bottom: 88px;
   }
 
-  .layerSwitcherButton.baseShow {
+  .mapToolButton.baseShow {
     bottom: 170px;
   }
 
-  .layerSwitcherButton.baseShow.mobile, .layerSwitcherButton.mobile  {
+  .mapToolButton.baseShow.mobile, .mapToolButton.mobile  {
     position: absolute;
     left: auto;
     bottom: auto;
@@ -250,7 +250,7 @@ const {
     z-index: 5000;
   }
 
-  .layerSwitcherButton.baseShow.mobilepanel, .layerSwitcherButton.mobilepanel  {
+  .mapToolButton.baseShow.mobilepanel, .mapToolButton.mobilepanel  {
     left: 0px;
     top: 50px;
   }

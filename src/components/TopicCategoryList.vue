@@ -1,7 +1,6 @@
 <template>
   <div
     class="pa-2 scrollDiv"
-    :style="scrollStyle"
   >
     <template
       v-for="(category, key) in topicsByCategory"
@@ -68,10 +67,6 @@ defineProps({
   },
   opacity: {
     type: Number,
-    required: true,
-  },
-  scrollStyle: {
-    type: String,
     required: true,
   },
   schlagInfo: {
