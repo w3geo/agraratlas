@@ -3,7 +3,6 @@ import {
 } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, basename } from 'path';
-import { statSync } from 'fs';
 import esMain from 'es-main';
 import { extractInspireIdTemplate } from './extract-inspire-id.js';
 
@@ -148,7 +147,7 @@ async function updatePackageJson(
 /**
  * Update style.json metadata
  */
-async function updateStyleJson(schlaege, hofstellen, schlaegeBio, referenzenPolygon, referenzenPoint) {
+async function updateStyleJson(schlaege, hofstellen, schlaegeBio, referenzenPolygon) {
   const stylePath = STYLE_JSON;
   const styleContent = await readFile(stylePath, 'utf-8');
   const styleJson = JSON.parse(styleContent);
@@ -157,14 +156,9 @@ async function updateStyleJson(schlaege, hofstellen, schlaegeBio, referenzenPoly
   const schlaegePath = join(DATA_DIR, schlaege.filename);
   const hofstellenPath = join(DATA_DIR, hofstellen.filename);
   const referenzenPath = join(DATA_DIR, referenzenPolygon.filename);
-  const referenzenPointPath = join(DATA_DIR, referenzenPoint.filename);
-  const schlaegeBioPath = join(DATA_DIR, schlaegeBio.filename);
-
   const schlaegStats = await stat(schlaegePath);
   const hofstellenStats = await stat(hofstellenPath);
   const referenzenStats = await stat(referenzenPath);
-  const referenzenPointStats = await stat(referenzenPointPath);
-  const schlaegeBioStats = await stat(schlaegeBioPath);
 
   const schlaegTemplate = await extractInspireIdTemplate(schlaegePath);
   const hofstellenTemplate = await extractInspireIdTemplate(hofstellenPath);
@@ -181,32 +175,6 @@ async function updateStyleJson(schlaege, hofstellen, schlaegeBio, referenzenPoly
     collectionId: `i009501:invekos_hofstellen_${hofstellen.year}_${hofstellen.revision}`,
     featureUrlTemplate: `https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_${hofstellen.year}_${hofstellen.revision}/items?filter=inspire_id='${hofstellenTemplate.template}'`,
   };
-
-  styleJson.metadata.sources.invekos_schlaege_bio_polygon = {
-    lastModified: schlaegeBioStats.mtime.toISOString(),
-  };
-
-  styleJson.metadata.sources.invekos_referenzflaechen = {
-    lastModified: referenzenStats.mtime.toISOString(),
-  };
-
-  styleJson.metadata.sources.invekos_referenzflaechen_point = {
-    lastModified: referenzenPointStats.mtime.toISOString(),
-  };
-
-  // Update lastModified for other file-based source layers
-  const sourceLayers = new Set(
-    styleJson.layers.filter((l) => l['source-layer']).map((l) => l['source-layer']),
-  );
-  for (const sourceLayer of sourceLayers) {
-    if (styleJson.metadata.sources[sourceLayer]) continue;
-    try {
-      const { mtime } = statSync(join(DATA_DIR, `${sourceLayer}.geojson`));
-      styleJson.metadata.sources[sourceLayer] = { lastModified: mtime.toISOString() };
-    } catch {
-      // no directly-named geojson file for this source-layer, skip
-    }
-  }
 
   // Update Bio-Schläge label in layers
   const bioLayer = styleJson.layers.find((l) => l.id === 'invekos_schlaege_polygon-bio');
@@ -277,7 +245,6 @@ async function main() {
       newest.hofstellen,
       newest.schlaege_bio,
       newest.referenzen_polygon,
-      newest.referenzen_point,
     );
 
     console.log('\n✓ Update complete!'); // eslint-disable-line no-console

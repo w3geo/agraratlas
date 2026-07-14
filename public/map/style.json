@@ -335,7 +335,8 @@
         "label": "6: Schwer bearbeitbare Böden",
         "urlSort": 21,
         "group": "one",
-        "category": "GLÖZ"
+        "category": "GLÖZ",
+        "new": true
       }
     },
     {
@@ -1007,60 +1008,6 @@
         "lastModified": "2026-05-20T14:14:32.000Z",
         "collectionId": "i009501:invekos_hofstellen_2026_1",
         "featureUrlTemplate": "https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/collections/i009501:invekos_hofstellen_2026_1/items?filter=inspire_id='https://data.inspire.gv.at/0095/6df2425c-926e-40ad-bf83-2e87e4639c26/bu.Building/{localID}/MFA-2026'"
-      },
-      "invekos_schlaege_bio_polygon": {
-        "lastModified": "2026-01-28T12:38:52.000Z"
-      },
-      "invekos_referenzflaechen": {
-        "lastModified": "2026-05-20T14:47:22.000Z"
-      },
-      "invekos_referenzflaechen_point": {
-        "lastModified": "2026-05-20T15:23:02.000Z"
-      },
-      "benachteiligte_gebiete": {
-        "lastModified": "2023-09-26T08:40:32.000Z"
-      },
-      "bdfl_l08_seehoehe_1200m": {
-        "lastModified": "2023-09-26T08:24:16.000Z"
-      },
-      "bdfl_l34_feucht_torfgebiete": {
-        "lastModified": "2023-09-26T08:25:08.000Z"
-      },
-      "bdfl_l33_pufferstreifen_belastete_gewaesser": {
-        "lastModified": "2023-11-28T09:39:46.000Z"
-      },
-      "schwere_boeden": {
-        "lastModified": "2026-07-08T07:21:28.000Z"
-      },
-      "natura2000": {
-        "lastModified": "2024-08-27T07:54:16.000Z"
-      },
-      "bdfl_l16_grundwasserschutz_acker": {
-        "lastModified": "2024-08-27T07:52:14.000Z"
-      },
-      "nitrataktionsprogramm": {
-        "lastModified": "2023-09-26T08:40:28.000Z"
-      },
-      "bdfl_l40_gab8": {
-        "lastModified": "2024-08-27T07:53:38.000Z"
-      },
-      "bdfl_l13_besondere_lebensraumtypen": {
-        "lastModified": "2024-08-27T07:51:38.000Z"
-      },
-      "bdfl_l26_wasserrahmenrichtlinie_ertragslagen": {
-        "lastModified": "2023-09-26T08:24:30.000Z"
-      },
-      "bdfl_l31_begruente_abflusswege": {
-        "lastModified": "2023-09-26T08:24:44.000Z"
-      },
-      "stehende_gewaesser": {
-        "lastModified": "2023-09-26T08:39:42.000Z"
-      },
-      "gewaessernetz": {
-        "lastModified": "2023-09-26T08:40:24.000Z"
-      },
-      "finbod_class": {
-        "lastModified": "2025-09-09T08:05:30.000Z"
       }
     }
   }

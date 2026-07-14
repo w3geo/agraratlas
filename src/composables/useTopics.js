@@ -98,11 +98,7 @@ function updateTopicsInSchlagExtent() {
 watch(schlagInfo, updateTopicsInSchlagExtent);
 
 mapReady.then(() => {
-  const mapboxStyle = map.get('mapbox-style');
-  const { layers } = mapboxStyle;
-  const metaSources = mapboxStyle.metadata?.sources || {};
-  const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  const { layers } = map.get('mapbox-style');
   topics.push(...Object.values(layers
     .filter((l) => l.metadata?.group === 'one' && l.type !== 'raster' && !HIDDEN_CATEGORIES?.test(l.metadata?.category))
     .map((l) => ({
@@ -114,12 +110,11 @@ mapReady.then(() => {
       urlSort: l.metadata?.urlSort,
       displaySort: l.metadata?.displaySort || 0,
       category: l.metadata?.category,
-      sourceLayer: l['source-layer'],
+      isNew: !!l.metadata?.new,
     })).reduce((acc, {
-      id, label, warning, color, icon, urlSort, displaySort, category, sourceLayer,
+      id, label, warning, color, icon, urlSort, displaySort, category, isNew,
     }) => {
       if (!(label in acc)) {
-        const lastModified = metaSources[sourceLayer]?.lastModified;
         acc[label] = ({
           id,
           label,
@@ -132,7 +127,7 @@ mapReady.then(() => {
           displaySort,
           category,
           visible: false,
-          isNew: lastModified ? new Date(lastModified) > threeMonthsAgo : false,
+          isNew,
         });
       }
       return acc;
