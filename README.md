@@ -26,6 +26,49 @@ See [scripts/README-update-invekos.md](scripts/README-update-invekos.md) for ins
 
 When done, commit/push the changes to `package.json` and `public/map/style.json`. To update only the new vector tiles on the server, run `npm run build` and deploy `dist/map/tiles/agraratlas.pmtiles`.
 
+## Schlag bbox index
+
+The data preparation step produces `invekos_schlaege_polygon.index.bin`, a compact
+lookup table mapping each Schlag `localID` to its bounding box. It is served
+alongside the vector tiles at `map/tiles/invekos_schlaege_polygon.index.bin` and is
+intended to be consumed by separate applications (e.g. to zoom to a Schlag by its
+`localID` without querying a feature service).
+
+The file is a single little-endian binary blob with three sections. Entries are
+sorted ascending by `localID` so lookups can use a binary search:
+
+| Section    | Type              | Description                                        |
+| ---------- | ----------------- | -------------------------------------------------- |
+| count      | `uint32`          | Number of entries `N`                              |
+| localIDs   | `uint32[N]`       | Schlag `localID`s, sorted ascending                |
+| bboxes     | `float32[N * 4]`  | `[minX, minY, maxX, maxY]` per entry, same order   |
+
+The bboxes are in EPSG:4326 (lon/lat), stored as `float32` (rounded to nearest),
+which is accurate to ~0.3 m at these coordinate magnitudes. A `localID` must fit in
+a `uint32`; the encoder skips any that do not.
+
+Example reader:
+
+```js
+const buf = await (await fetch(url)).arrayBuffer();
+const count = new Uint32Array(buf, 0, 1)[0];
+const localIDs = new Uint32Array(buf, 4, count);
+const bboxes = new Float32Array(buf, 4 + count * 4, count * 4);
+
+function lookup(id) {
+  let lo = 0;
+  let hi = count - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    const value = localIDs[mid];
+    if (value === id) return bboxes.subarray(mid * 4, mid * 4 + 4); // [minX, minY, maxX, maxY]
+    if (value < id) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return null;
+}
+```
+
 ## Run the development server
 
     npm run dev

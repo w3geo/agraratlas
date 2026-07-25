@@ -2,7 +2,7 @@ import {
   readdir, readFile, writeFile, stat,
 } from 'fs/promises';
 import { existsSync } from 'fs';
-import { join, basename } from 'path';
+import { join } from 'path';
 import esMain from 'es-main';
 import { extractInspireIdTemplate } from './extract-inspire-id.js';
 
@@ -112,7 +112,7 @@ async function updatePackageJson(
   const packageJson = JSON.parse(packageContent);
 
   // Update data:vector:prepare script
-  packageJson.scripts['data:vector:prepare'] = `node scripts/inspireid-to-localid.js -i data/${schlaege.filename} -o data/invekos_schlaege_polygon.geojson && node scripts/inspireid-to-localid.js -i data/${hofstellen.filename} -o data/invekos_hofstellen.geojson`;
+  packageJson.scripts['data:vector:prepare'] = `node scripts/preprocess-invekos-geojson.js -i data/${schlaege.filename} -o data/invekos_schlaege_polygon.geojson --index data/invekos_schlaege_polygon.index.bin && node scripts/preprocess-invekos-geojson.js -i data/${hofstellen.filename} -o data/invekos_hofstellen.geojson`;
 
   // Update data:vector:12-14 script
   const script1214 = packageJson.scripts['data:vector:12-14'];
