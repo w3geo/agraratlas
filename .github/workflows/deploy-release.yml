@@ -18,24 +18,31 @@ jobs:
         echo "VITE_HIDDEN_CATEGORIES=${{ secrets.VITE_HIDDEN_CATEGORIES }}" >> $GITHUB_ENV
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Build
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
-        node-version: 20
+        node-version: 24
         cache: 'npm'
     - run: |
         npm ci
         npm run build
 
     - name: Deploy
-      uses: BetaHuhn/do-spaces-action@v2.0.58
-      with:
-        access_key: ${{ secrets.S3_KEY }}
-        secret_key: ${{ secrets.S3_SECRET }}
-        space_name: 'w3geo'
-        space_region: 'fra1'
-        source: 'dist'
-        out_dir: ${{ secrets.S3_BUCKET }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET }}
+        ENDPOINT: https://fra1.digitaloceanspaces.com
+        TARGET: s3://w3geo/${{ secrets.S3_BUCKET }}
+      run: |
+        # Everything except map/ is purged of stale files (hashed assets pile up otherwise)
+        aws s3 sync dist "$TARGET" \
+          --delete --exclude 'map/*' --exclude '*.DS_Store' \
+          --acl public-read --endpoint-url "$ENDPOINT"
+        # map/ mixes build output with content from outside the build, and has no
+        # hashed filenames, so nothing needs pruning here - upload without --delete
+        aws s3 sync dist/map "$TARGET/map" \
+          --exclude '*.DS_Store' \
+          --acl public-read --endpoint-url "$ENDPOINT"
 
