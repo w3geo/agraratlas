@@ -27,12 +27,19 @@ jobs:
         npm run build
 
     - name: Deploy
-      uses: BetaHuhn/do-spaces-action@v2.0.58
-      with:
-        access_key: ${{ secrets.S3_KEY }}
-        secret_key: ${{ secrets.S3_SECRET }}
-        space_name: 'w3geo'
-        space_region: 'fra1'
-        source: 'dist'
-        out_dir: ${{ secrets.S3_BUCKET_DEV }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET }}
+        ENDPOINT: https://fra1.digitaloceanspaces.com
+        TARGET: s3://w3geo/${{ secrets.S3_BUCKET_DEV }}
+      run: |
+        # Everything except map/ is purged of stale files (hashed assets pile up otherwise)
+        aws s3 sync dist "$TARGET" \
+          --delete --exclude 'map/*' --exclude '*.DS_Store' \
+          --acl public-read --endpoint-url "$ENDPOINT"
+        # map/ mixes build output with content from outside the build, and has no
+        # hashed filenames, so nothing needs pruning here - upload without --delete
+        aws s3 sync dist/map "$TARGET/map" \
+          --exclude '*.DS_Store' \
+          --acl public-read --endpoint-url "$ENDPOINT"
 
