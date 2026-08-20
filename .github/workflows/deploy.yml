@@ -15,12 +15,12 @@ jobs:
       run: echo "TILEJSON_URL=${{ secrets.TILEJSON_URL_DEV }}" >> $GITHUB_ENV
   
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Build
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
-        node-version: 20
+        node-version: 24
         cache: 'npm'
     - run: |
         npm ci
